@@ -15,15 +15,11 @@ target_include_directories(zappy_gui PRIVATE src)
 # Dependencies
 include(FetchContent)
 
-find_package(SFML 2.5 REQUIRED COMPONENTS graphics window system)
-
-if (NOT SFML_FOUND)
-    FetchCOntent_Declare(
-            SFML
-            URL "https://github.com/SFML/SFML/archive/2.5.1.zip"
-    )
-    FetchContent_MakeAvailable(SFML)
-endif ()
+FetchCOntent_Declare(
+        SFML
+        URL "https://github.com/SFML/SFML/archive/2.5.1.zip"
+)
+FetchContent_MakeAvailable(SFML)
 
 FetchContent_Declare(
         imgui
