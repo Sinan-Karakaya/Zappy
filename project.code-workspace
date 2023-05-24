@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "name": "AI",
+            "path": "zappy_ai"
+        },
+        {
+            "name": "GUI",
+            "path": "zappy_gui"
+        },
+        {
+            "name": "Server",
+            "path": "zappy_server"
+        }
+    ]
+}
