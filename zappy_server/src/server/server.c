@@ -67,9 +67,9 @@ static int read_cmd(my_zappy_t *zappy)
     return 0;
 }
 
-int create_server(char **av)
+int create_server(parsing_t *parsing)
 {
-    my_zappy_t *zappy = init_zappy(av);
+    my_zappy_t *zappy = init_zappy(parsing);
     int fd_max = 0;
 
     if (!zappy)

@@ -14,6 +14,8 @@
     #include "utils.h"
     #include "team.h"
     #include "clients.h"
+    #include "parsing.h"
+
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
@@ -45,7 +47,7 @@
         void *last;
     } list_t;
 
-    my_zappy_t *init_zappy(char **av);
+    my_zappy_t *init_zappy(parsing_t *parsing);
     list_t *init_list(void);
 
     // Sockets
@@ -56,7 +58,7 @@
     int close_socket(socket_t *my_socket);
 
     // Server
-    int create_server(char **av);
+    int create_server(parsing_t *parsing);
     bool is_running(int sig);
     void sigint_handler(int sig);
     int handle_commands(my_zappy_t *zappy, int client_fd, char **args);

@@ -10,7 +10,16 @@
 
     #include <stddef.h>
 
-    size_t port;
+    typedef struct parsing_s {
+        int port;
+        int width;
+        int height;
+        int clients_nb;
+        int freq;
+        char **names;
+    } parsing_t;
 
+    parsing_t *do_parsing(char **args);
+    int fill_parsing(char **args, parsing_t *parsing);
 
 #endif /* !PARSING_H_ */

@@ -26,6 +26,7 @@ int accept_client(socket_t *server, client_list_t *client_list)
         ntohs(server->address.sin_port));
         client_info = init_clients_info(fd_actual);
         list_add_client(client_list, client_info);
+        dprintf(fd_actual, "WELCOME\n");
     }
     return fd_actual;
 }

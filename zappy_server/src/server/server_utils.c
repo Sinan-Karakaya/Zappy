@@ -43,7 +43,7 @@ int calculate_fd_max(my_zappy_t *zappy)
     if (zappy->client_list->first == NULL)
         return zappy->server->sockfd;
     for (client_t *user = zappy->client_list->first;
-         user != NULL; user = user->next) {
+        user != NULL; user = user->next) {
         if (user->info->fd > fd_max)
             fd_max = user->info->fd;
     }
