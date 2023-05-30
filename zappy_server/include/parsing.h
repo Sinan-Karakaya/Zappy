@@ -19,7 +19,16 @@
         char **names;
     } parsing_t;
 
+
+    /// @brief Do the parsing of the arguments
+    /// @param args the arguments
+    /// @return a parsing_t struct with the arguments
     parsing_t *do_parsing(char **args);
+
+    /// @brief Fill the parsing struct
+    /// @param args the arguments
+    /// @param parsing  the parsing struct
+    /// @return 0 if suceed or 84 if error
     int fill_parsing(char **args, parsing_t *parsing);
 
 #endif /* !PARSING_H_ */
