@@ -18,6 +18,7 @@
 #include <imgui-SFML.h>
 
 #include "WindowManagerException.hpp"
+#include "NetworkManager/NetworkManager.hpp"
 
 namespace zp {
 
@@ -46,6 +47,8 @@ private:
 
     sf::RenderTexture m_gameTexture;
     sf::Sprite m_gameSprite;
+
+    NetworkManager m_networkManager;
 };
 
 } // namespace zp

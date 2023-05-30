@@ -13,14 +13,14 @@ add_executable(zappy_gui ${SOURCES})
 target_include_directories(zappy_gui PRIVATE src)
 
 # Dependencies
-find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
+find_package(SFML 2.5 COMPONENTS graphics window system network REQUIRED)
 
 include(FetchContent)
 
 FetchContent_Declare(
-        imgui
-        GIT_REPOSITORY https://github.com/ocornut/imgui.git
-        GIT_TAG 0ea3b87bd63ecbf359585b7c235839146e84dedb
+    imgui
+    GIT_REPOSITORY https://github.com/ocornut/imgui.git
+    GIT_TAG 0ea3b87bd63ecbf359585b7c235839146e84dedb
 )
 
 FetchContent_Declare(
@@ -47,7 +47,7 @@ FetchContent_MakeAvailable(spdlog)
 find_package(fmt REQUIRED)
 
 # Linking
-target_link_libraries(zappy_gui PRIVATE ${SFML_LIBRARIES} spdlog::spdlog fmt::fmt)
+target_link_libraries(zappy_gui PRIVATE ${SFML_LIBRARIES} sfml-network spdlog::spdlog fmt::fmt)
 target_link_libraries(zappy_gui PRIVATE ImGui-SFML::ImGui-SFML)
 
 # Copy assets
