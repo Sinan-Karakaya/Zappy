@@ -17,5 +17,6 @@ team_info_t *init_teams_info(char *name)
     info->name = strdup(name);
     uuid_generate_random(info->team_uuid);
     info->client_list = (uuid_list_t *)init_list();
+    info->nb_clients = 0;
     return info;
 }
