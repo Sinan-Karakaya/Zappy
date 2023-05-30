@@ -5,16 +5,20 @@
 ## main
 ##
 
-from time import sleep
+import sys
 from src.Server.Server import Server
 
-server = Server("127.0.0.1", 4249)
+server = Server(str(sys.argv[3]), int(sys.argv[1]))
 server.connect()
 
-server.socket.sendall("Troll\n".encode("ASCII"))
-sleep(1)
-server.socket.sendall("Inventory\n".encode("ASCII"))
 data = server.socket.recv(1024)
 print(data.decode("ASCII"), end="")
-sleep(1)
+server.socket.sendall((sys.argv[2] + "\n").encode("ASCII"))
+data = server.socket.recv(1024)
+print(data.decode("ASCII"), end="")
 
+while (data != "dead\n"):
+    msg = input() + "\n"
+    server.socket.sendall(msg.encode("ASCII"))
+    data = server.socket.recv(1024)
+    print(data.decode("ASCII"), end="")
