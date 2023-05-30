@@ -13,7 +13,7 @@
 
     typedef struct team_info_s {
         char *name;
-        char *description;
+        size_t nb_clients;
         uuid_t team_uuid;
         uuid_list_t *client_list;
     } team_info_t;
@@ -34,7 +34,7 @@
 void list_add_teams(team_list_t *teams_list, team_info_t *team_info);
 
 // Initializers
-team_info_t *init_teams_info(char *name, char *description);
+team_info_t *init_teams_info(char *name);
 
 // Getters
 team_t *get_team_by_uuid(team_list_t *teams_list, char *team_uuid);
