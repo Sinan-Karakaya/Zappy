@@ -8,17 +8,46 @@
 import sys
 from src.Server.Server import Server
 
-server = Server(str(sys.argv[3]), int(sys.argv[1]))
-server.connect()
+def checkParameters():
+    if (sys.argv[1] == "-help"):
+        print("USAGE: ./zappy_ai -p port -n name -h machine")
+        print("\tport\tis the port number")
+        print("\tname\tis the name of the team")
+        print("\tmachine\tis the name of the machine; localhost by default")
+        exit(0)
 
-data = server.socket.recv(1024)
-print(data.decode("ASCII"), end="")
-server.socket.sendall((sys.argv[2] + "\n").encode("ASCII"))
-data = server.socket.recv(1024)
-print(data.decode("ASCII"), end="")
+    if (len(sys.argv) < 7):
+        exit(84)
 
-while (data != "dead\n"):
-    msg = input() + "\n"
-    server.socket.sendall(msg.encode("ASCII"))
-    data = server.socket.recv(1024)
-    print(data.decode("ASCII"), end="")
+    for arg in sys.argv:
+        if (arg == "-p"):
+            port = sys.argv[sys.argv.index(arg) + 1]
+        if (arg == "-h"):
+            host = str(sys.argv[sys.argv.index(arg) + 1])
+        if (arg == "-n"):
+            name = str(sys.argv[sys.argv.index(arg) + 1])
+
+    if (len(port) == 0 or len(host) == 0 or len(name) == 0):
+        exit(84)
+    
+    return (port, host, name)
+
+def main():
+    args = checkParameters()
+
+    server = Server(args[1], int(args[0]))
+    server.connect()
+
+    server.printResponse()
+    server.socket.sendall((args[2] + "\n").encode("ASCII"))
+
+    while (True):
+        server.printResponse()
+        msg = input() + "\n"
+        if (msg == "exit\n"):
+            break
+        server.socket.sendall(msg.encode("ASCII"))
+
+    server.socket.close()
+
+main()

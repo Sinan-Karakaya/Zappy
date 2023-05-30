@@ -16,3 +16,7 @@ class Server():
     def connect(self):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.connect((self.ip, self.port))
+
+    def printResponse(self):
+        data = self.socket.recv(1024)
+        print(data.decode("ASCII"), end="")
