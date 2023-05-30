@@ -1,8 +1,8 @@
 #!/bin/sh
 
-if [[ $(black . --check) = 0 ]];
+if [[ ! $(black . --check -q) ]];
 then
-    echo "black check failed"
+    echo "build ko"
     exit 1
 else
     echo "build ok"
