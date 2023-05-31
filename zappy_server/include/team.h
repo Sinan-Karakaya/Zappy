@@ -70,4 +70,12 @@ team_info_t *get_team_info(team_list_t *teams_list, char *team_uuid);
 /// @return the team client list
 uuid_list_t *get_team_client_list(team_list_t *teams_list, char *team_uuid);
 
+// Deletors
+
+/// @brief destroy a team
+/// @param list the list of teams
+/// @param team the team to destroy
+/// @return 0 if success, 84 if error
+size_t destroy_team(team_list_t *list, team_t *team);
+
 #endif /* !TEAMS_H_ */

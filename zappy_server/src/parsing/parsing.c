@@ -21,10 +21,10 @@ static parsing_t *init_parsing(void)
     parsing->names = calloc(5, sizeof(char *));
     if (!parsing->names)
         return NULL;
-    parsing->names[1] = strdup("Team1");
-    parsing->names[2] = strdup("Team2");
-    parsing->names[3] = strdup("Team3");
-    parsing->names[4] = strdup("Team4");
+    parsing->names[0] = strdup("Team1");
+    parsing->names[1] = strdup("Team2");
+    parsing->names[2] = strdup("Team3");
+    parsing->names[3] = strdup("Team4");
     parsing->clients_nb = 2;
     parsing->freq = 100;
     return parsing;

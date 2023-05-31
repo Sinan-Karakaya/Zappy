@@ -6,6 +6,7 @@
 */
 
 #include "zappy_server.h"
+#include "free.h"
 #include <signal.h>
 #include <unistd.h>
 
@@ -42,5 +43,6 @@ my_zappy_t *init_zappy(parsing_t *parsing)
     if (init_teams(zappy, parsing) == 84)
         return NULL;
     zappy->client_list = (client_list_t *)init_list();
+    free_parsing(parsing);
     return zappy;
 }
