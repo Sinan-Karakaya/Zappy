@@ -9,7 +9,7 @@
 
 std::unique_ptr<std::vector<std::string>> zp::Utils::split(const std::string &s, char delim)
 {
-    std::unique_ptr<std::vector<std::string>> tokens;
+    std::unique_ptr<std::vector<std::string>> tokens = std::make_unique<std::vector<std::string>>();
     std::string token;
     std::istringstream tokenStream(s);
     while (std::getline(tokenStream, token, delim))
