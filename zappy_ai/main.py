@@ -1,9 +1,4 @@
-##
-## EPITECH PROJECT, 2023
-## zappy_ai
-## File description:
-## main
-##
+#!/usr/bin/env python3
 
 from src.Parameters.Parameters import Parameters
 from src.Server.Server import Server
@@ -20,9 +15,9 @@ def main():
 
     while True:
         server.printResponse()
-        msg = input() + "\n"
-        if msg == "exit\n":
+        if server.data == "dead\n":
             break
+        msg = input() + "\n"
         server.socket.sendall(msg.encode("ASCII"))
 
     server.socket.close()

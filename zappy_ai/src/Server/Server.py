@@ -19,5 +19,5 @@ class Server:
         self.socket.connect((self.ip, self.port))
 
     def printResponse(self):
-        data = self.socket.recv(1024)
-        print(data.decode("ASCII"), end="")
+        self.data = self.socket.recv(1024).decode("ASCII")
+        print(self.data, end="")
