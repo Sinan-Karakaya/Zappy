@@ -7,6 +7,15 @@
 
 #include "Utils.hpp"
 
+std::unique_ptr<std::vector<std::vector<std::string>>> zp::Utils::bigSplit(const std::string &s, char delim)
+{
+    auto commands = split(s, '\n');
+    auto tokens = std::make_unique<std::vector<std::vector<std::string>>>();
+    for (auto &e : *commands)
+        tokens->push_back(*split(e, delim));
+    return tokens;
+}
+
 std::unique_ptr<std::vector<std::string>> zp::Utils::split(const std::string &s, char delim)
 {
     std::unique_ptr<std::vector<std::string>> tokens = std::make_unique<std::vector<std::string>>();

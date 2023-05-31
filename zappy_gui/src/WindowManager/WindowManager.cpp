@@ -36,7 +36,7 @@ zp::WindowManager::~WindowManager()
 
 void zp::WindowManager::update()
 {
-    m_networkManager.update();
+    m_networkManager.update(m_map);
     handleEvents();
     drawImGui();
     render();

@@ -19,6 +19,7 @@
 
 #include "WindowManagerException.hpp"
 #include "NetworkManager/NetworkManager.hpp"
+#include "Map/Map.hpp"
 
 namespace zp {
 
@@ -50,6 +51,7 @@ private:
     sf::Sprite m_gameSprite;
 
     NetworkManager m_networkManager;
+    Map m_map;
 };
 
 } // namespace zp
