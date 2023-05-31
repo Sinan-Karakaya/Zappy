@@ -11,6 +11,8 @@
     #include <uuid/uuid.h>
     #include <unistd.h>
 
+    #define UUID_SIZE 37
+
 typedef struct my_uuid_s my_uuid_t;
 struct my_uuid_s {
     uuid_t uuid;

@@ -10,7 +10,7 @@
 
 team_info_t *init_teams_info(char *name)
 {
-    team_info_t *info = malloc(sizeof(team_info_t));
+    team_info_t *info = calloc(1, sizeof(team_info_t));
 
     if (info == NULL)
         return NULL;

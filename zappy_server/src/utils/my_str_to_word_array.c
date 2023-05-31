@@ -67,8 +67,8 @@ size_t i)
 
 char **my_str_to_word_array(char *str, char *separators)
 {
-    char **result = malloc(sizeof(char *) *
-    (count_separators(str, separators) + 2));
+    char **result = calloc((count_separators(str, separators) + 2),
+    sizeof(char *));
     size_t j = 0;
 
     if (!result || !str || !separators)

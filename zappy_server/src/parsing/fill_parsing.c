@@ -18,7 +18,7 @@ static char **add_to_names(char **names, char *new_name)
     if (!names || !new_name)
         return NULL;
     size = count_args(names);
-    result = malloc(sizeof(char *) * (size + 2));
+    result = calloc(size + 2, sizeof(char *));
     if (!result)
         return NULL;
     for (int i = 0; names[i]; i++) {
@@ -37,7 +37,7 @@ static int name_flag(char **args, parsing_t *parsing, int i)
         for (size_t i = 0; parsing->names[i]; i++)
             free(parsing->names[i]);
         free(parsing->names);
-        parsing->names = malloc(sizeof(char *) * 1);
+        parsing->names = calloc(1, sizeof(char *));
         if (!parsing->names)
             return 84;
         parsing->names[0] = NULL;

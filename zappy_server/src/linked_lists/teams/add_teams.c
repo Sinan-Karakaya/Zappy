@@ -17,7 +17,7 @@ static void list_add_at_back(team_list_t *team_list, team_info_t *team_info)
     tmp = team_list->first;
     while (tmp->next != NULL)
         tmp = tmp->next;
-    tmp->next = malloc(sizeof(team_t));
+    tmp->next = calloc(1, sizeof(team_t));
     if (tmp->next == NULL)
         return;
     tmp->next->info = team_info;
@@ -33,7 +33,7 @@ void list_add_teams(team_list_t *teams_list, team_info_t *team_info)
     if (team_info == NULL)
         return;
     if (teams_list->first == NULL) {
-        tmp = malloc(sizeof(team_t));
+        tmp = calloc(1, sizeof(team_t));
         if (tmp == NULL)
             return;
         tmp->info = team_info;

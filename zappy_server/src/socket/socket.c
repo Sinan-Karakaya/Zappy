@@ -38,7 +38,7 @@ static int init_adress(socket_t *my_socket, int port)
 
 socket_t *create_socket(int port)
 {
-    socket_t *my_socket = malloc(sizeof(socket_t));
+    socket_t *my_socket = calloc(1, sizeof(socket_t));
 
     if (!my_socket)
         return my_error(my_socket, "malloc failed");

@@ -31,7 +31,7 @@ int init_teams(my_zappy_t *zappy, parsing_t *parsing)
 
 my_zappy_t *init_zappy(parsing_t *parsing)
 {
-    my_zappy_t *zappy = malloc(sizeof(my_zappy_t));
+    my_zappy_t *zappy = calloc(1, sizeof(my_zappy_t));
 
     if (!parsing || !zappy)
         return NULL;

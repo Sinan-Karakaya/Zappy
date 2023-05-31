@@ -5,8 +5,8 @@
 ** zappy_server.h
 */
 
-#ifndef teams_H_
-    #define teams_H_
+#ifndef Zappy_Server_H_
+    #define Zappy_Server_H_
 
     #define _GNU_SOURCE
 
@@ -112,4 +112,4 @@
     // Connections
     int accept_client(socket_t *server, client_list_t *client_list);
 
-#endif /* !teams_H_ */
+#endif /* !Zappy_Server_H_ */
