@@ -17,7 +17,7 @@ int handle_commands(my_zappy_t *zappy, int client_fd, char **cmd)
 {
     if (zappy == NULL || cmd == NULL)
         return 0;
-    for (int i = 0; commands[i].command != NULL; i++) {
+    for (size_t i = 0; commands[i].command != NULL; i++) {
         if (strcmp(commands[i].command, cmd[0]) == 0)
             return commands[i].func(zappy, client_fd, cmd);
     }

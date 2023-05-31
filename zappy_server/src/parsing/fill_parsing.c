@@ -34,7 +34,7 @@ static int name_flag(char **args, parsing_t *parsing, int i)
     if (!args || !parsing)
         return 84;
     if (parsing->names) {
-        for (int i = 0; parsing->names[i]; i++)
+        for (size_t i = 0; parsing->names[i]; i++)
             free(parsing->names[i]);
         free(parsing->names);
         parsing->names = malloc(sizeof(char *) * 1);
@@ -53,7 +53,7 @@ int fill_parsing(char **args, parsing_t *parsing)
 {
     if (!parsing || !args)
         return 84;
-    for (int i = 1; args[i]; i++) {
+    for (size_t i = 1; args[i]; i++) {
         if (strcmp(args[i], "-p") == 0)
             parsing->port = atoi(args[i + 1]);
         if (strcmp(args[i], "-x") == 0)
