@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include <sstream>
 
 namespace zp
@@ -18,7 +19,7 @@ namespace zp
         Utils() = delete;
         ~Utils() = delete;
 
-        static const std::vector<std::string> &split(const std::string &s, char delim);
+        static std::unique_ptr<std::vector<std::string>> split(const std::string &s, char delim);
         static std::string trim(const std::string &s);
     };
 } // zp

@@ -31,18 +31,18 @@ void zp::NetworkManager::update()
 {
     try {
         auto tokens = receive();
-        if (tokens.empty())
+        if (tokens->empty())
             return;
-        if (m_commands.find(tokens[0]) != m_commands.end())
-            m_commands[tokens[0]](tokens);
+        if (m_commands.find((*tokens)[0]) != m_commands.end())
+            m_commands[(*tokens)[0]](*tokens);
         else
-            spdlog::warn("Unknown command: {}", tokens[0]);
+            spdlog::warn("Unknown command: {}", (*tokens)[0]);
     } catch (const std::exception &e) {
         (void)e;
     }
 }
 
-const std::vector<std::string> &zp::NetworkManager::receive()
+std::unique_ptr<std::vector<std::string>> zp::NetworkManager::receive()
 {
     char data[1024] = {0};
     std::size_t size = 1024;

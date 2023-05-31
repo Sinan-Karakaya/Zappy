@@ -7,16 +7,16 @@
 
 #include "Utils.hpp"
 
-const std::vector<std::string> &zp::Utils::split(const std::string &s, char delim)
+std::unique_ptr<std::vector<std::string>> zp::Utils::split(const std::string &s, char delim)
 {
-    std::vector<std::string> *tokens = new std::vector<std::string>;
+    std::unique_ptr<std::vector<std::string>> tokens;
     std::string token;
     std::istringstream tokenStream(s);
     while (std::getline(tokenStream, token, delim))
         tokens->push_back(token);
     for (auto &e : *tokens)
         e = trim(e);
-    return *tokens;
+    return tokens;
 }
 
 std::string zp::Utils::trim(const std::string &s)

@@ -31,7 +31,7 @@ public:
     void update();
 
 private:
-    const std::vector<std::string> &receive();
+    std::unique_ptr<std::vector<std::string>> receive();
     void welcome(const std::vector<std::string> &tokens);
     void getMapSize(const std::vector<std::string> &tokens);
     void getMapContent(const std::vector<std::string> &tokens);
