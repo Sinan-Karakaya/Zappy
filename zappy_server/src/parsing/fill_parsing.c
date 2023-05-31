@@ -31,6 +31,17 @@ static char **add_to_names(char **names, char *new_name)
 
 static int name_flag(char **args, parsing_t *parsing, int i)
 {
+    if (!args || !parsing)
+        return 84;
+    if (parsing->names) {
+        for (int i = 0; parsing->names[i]; i++)
+            free(parsing->names[i]);
+        free(parsing->names);
+        parsing->names = malloc(sizeof(char *) * 1);
+        if (!parsing->names)
+            return 84;
+        parsing->names[0] = NULL;
+    }
     while (args[i + 1] != NULL && args[i + 1][0] != '-') {
         parsing->names = add_to_names(parsing->names, args[i + 1]);
         i++;
