@@ -28,4 +28,5 @@ def main():
     server.socket.close()
 
 
-main()
+if __name__ == "__main__":
+    main()
