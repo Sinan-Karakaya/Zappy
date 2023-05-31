@@ -32,7 +32,6 @@
 
 // Adders
 
-
 /// @brief add a team to the list
 /// @param teams_list the list of teams
 /// @param team_info the info of the team

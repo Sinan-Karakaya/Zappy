@@ -25,7 +25,8 @@ int main(int ac, char **av)
 {
     parsing_t *parsing = NULL;
 
-    if (ac < 2)
+    if (((ac == 2 && strcmp(av[1], "-help") == 0)
+    || (ac == 2 && (strcmp(av[1], "-h") == 0))))
         return (print_usage());
     parsing = do_parsing(av);
     if (!parsing)

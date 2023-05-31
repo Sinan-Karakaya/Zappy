@@ -15,15 +15,19 @@ static parsing_t *init_parsing(void)
 
     if (!parsing)
         return NULL;
-    parsing->port = 0;
-    parsing->width = 0;
-    parsing->height = 0;
-    parsing->names = malloc(sizeof(char *) * 1);
+    parsing->port = 4242;
+    parsing->width = 10;
+    parsing->height = 10;
+    parsing->names = malloc(sizeof(char *) * 5);
     if (!parsing->names)
         return NULL;
-    parsing->names[0] = NULL;
-    parsing->clients_nb = 0;
-    parsing->freq = 0;
+    parsing->names[1] = strdup("Team1");
+    parsing->names[2] = strdup("Team2");
+    parsing->names[3] = strdup("Team3");
+    parsing->names[4] = strdup("Team4");
+    parsing->names[5] = NULL;
+    parsing->clients_nb = 2;
+    parsing->freq = 100;
     return parsing;
 }
 
@@ -33,7 +37,7 @@ static int check_parsing(parsing_t *parsing)
         return 84;
     if (parsing->port == 0 || parsing->width == 0 || parsing->height == 0
         || parsing->names == NULL || parsing->clients_nb == 0
-        || parsing->freq == 0)
+        || parsing->freq <= 0)
         return 84;
     return 0;
 }
