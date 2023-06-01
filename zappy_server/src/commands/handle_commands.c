@@ -8,10 +8,19 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-    commands_t commands[] = {
-        {"test", &test},
-        {NULL, NULL}
-    };
+commands_t commands[] = {
+    {"test", &test},
+    {"msz", &msz},
+    {"bct", &bct},
+    {"mct", &mct},
+    {"tna", &tna},
+    {"ppo", &ppo},
+    {"plv", &plv},
+    {"pin", &pin},
+    {"sgt", &sgt},
+    {"sst", &sst},
+    {NULL, NULL}
+};
 
 int handle_commands(my_zappy_t *zappy, int client_fd, char **cmd)
 {
