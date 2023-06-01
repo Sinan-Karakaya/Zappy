@@ -10,8 +10,7 @@
 
 int mct(my_zappy_t *zappy, int fd, char **args)
 {
-    (void)zappy;
-    (void)args;
-    (void)fd;
+    if (zappy == NULL || args == NULL)
+        return 0;
     return 0;
 }
