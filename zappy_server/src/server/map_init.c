@@ -7,7 +7,7 @@
 
 #include "map.h"
 
-static tiles_t *init_tiles(int x, int y)
+static tiles_t **init_tiles(size_t x, size_t y)
 {
     tiles_t **tile = calloc(x, sizeof(tiles_t *));
 

@@ -85,4 +85,11 @@ int sgt(my_zappy_t *zappy, int fd, char **args);
 /// @return
 int sst(my_zappy_t *zappy, int fd, char **args);
 
+/// @brief disconnect the client from the server
+/// @param zappy
+/// @param fd
+/// @param args
+/// @return
+int quit(my_zappy_t *zappy, int fd, char **args);
+
 #endif /* !COMMANDS_H_ */

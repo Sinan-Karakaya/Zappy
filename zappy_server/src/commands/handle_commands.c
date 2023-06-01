@@ -12,13 +12,14 @@ commands_t commands[] = {
     {"test", &test},
     {"msz", &msz}, // OK
     {"bct", &bct}, // OK
-    {"mct", &mct},
+    {"mct", &mct}, // OK
     {"tna", &tna},
     {"ppo", &ppo},
     {"plv", &plv},
     {"pin", &pin},
     {"sgt", &sgt},
     {"sst", &sst},
+    {"quit", &quit}, // KOK
     {NULL, NULL}
 };
 
