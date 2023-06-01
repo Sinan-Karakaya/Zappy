@@ -22,7 +22,8 @@ int tna(my_zappy_t *zappy, int fd, char **args)
     result = calloc(1, sizeof(char));
     while (tmp != NULL) {
         result = realloc(result, sizeof(char) * (strlen(result) + \
-            strlen(tmp->info->name) + 2));
+            strlen(tmp->info->name) + 6));
+        result = strcat(result, "tna ");
         result = strcat(result, tmp->info->name);
         result = strcat(result, "\n");
         tmp = tmp->next;
