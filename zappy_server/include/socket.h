@@ -25,7 +25,14 @@
         fd_set wset;
     } socket_t;
 
+    /// @brief create a socket and bind it to the port
+    /// @param port the port to bind the socket to
+    /// @return a socket_t struct with the socket fd and the port number
     socket_t *create_socket(int port);
+
+    /// @brief destroy a socket
+    /// @param my_socket the socket to destroy
+    /// @return 0 if success, 84 if error
     int destroy_socket(socket_t *my_socket);
 
 #endif /* !SOCKET_H_ */

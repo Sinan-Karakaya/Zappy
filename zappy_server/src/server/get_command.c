@@ -46,7 +46,7 @@ static char **add_to_command(char **command, char *buffer)
     if (strlen(buffer) == 0)
         return command;
     for (; command[size]; size++);
-    new_command = malloc(sizeof(char *) * (size + 2));
+    new_command = calloc(size + 2, sizeof(char *));
     if (!new_command)
         return NULL;
     for (size_t i = 0; command[i]; i++) {

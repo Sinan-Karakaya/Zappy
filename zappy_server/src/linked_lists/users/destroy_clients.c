@@ -36,7 +36,7 @@ static int destroy_user(client_list_t *list, client_t *user)
     return 0;
 }
 
-int destroy_user_in_list(client_list_t *list, int fd)
+int destroy_client_in_list(client_list_t *list, int fd)
 {
     client_t *tmp = NULL;
 

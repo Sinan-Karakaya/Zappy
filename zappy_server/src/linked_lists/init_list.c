@@ -9,7 +9,7 @@
 
 list_t *init_list(void)
 {
-    list_t *my_value = malloc(sizeof(list_t));
+    list_t *my_value = calloc(1, sizeof(list_t));
 
     if (!my_value)
         return NULL;

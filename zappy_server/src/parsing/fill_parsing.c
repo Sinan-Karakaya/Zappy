@@ -18,7 +18,7 @@ static char **add_to_names(char **names, char *new_name)
     if (!names || !new_name)
         return NULL;
     size = count_args(names);
-    result = malloc(sizeof(char *) * (size + 2));
+    result = calloc(size + 2, sizeof(char *));
     if (!result)
         return NULL;
     for (int i = 0; names[i]; i++) {
@@ -31,6 +31,17 @@ static char **add_to_names(char **names, char *new_name)
 
 static int name_flag(char **args, parsing_t *parsing, int i)
 {
+    if (!args || !parsing)
+        return 84;
+    if (parsing->names) {
+        for (size_t i = 0; parsing->names[i]; i++)
+            free(parsing->names[i]);
+        free(parsing->names);
+        parsing->names = calloc(1, sizeof(char *));
+        if (!parsing->names)
+            return 84;
+        parsing->names[0] = NULL;
+    }
     while (args[i + 1] != NULL && args[i + 1][0] != '-') {
         parsing->names = add_to_names(parsing->names, args[i + 1]);
         i++;
@@ -42,7 +53,7 @@ int fill_parsing(char **args, parsing_t *parsing)
 {
     if (!parsing || !args)
         return 84;
-    for (int i = 1; args[i]; i++) {
+    for (size_t i = 1; args[i]; i++) {
         if (strcmp(args[i], "-p") == 0)
             parsing->port = atoi(args[i + 1]);
         if (strcmp(args[i], "-x") == 0)

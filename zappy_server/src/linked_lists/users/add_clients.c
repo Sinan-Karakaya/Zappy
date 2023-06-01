@@ -17,7 +17,7 @@ static void list_add_at_back(client_list_t *list, client_info_t *info)
     tmp = list->first;
     while (tmp->next != NULL)
         tmp = tmp->next;
-    tmp->next = malloc(sizeof(client_t));
+    tmp->next = calloc(1, sizeof(client_t));
     if (tmp->next == NULL)
         return;
     tmp->next->info = info;
@@ -33,7 +33,7 @@ void list_add_client(client_list_t *list, client_info_t *info)
     if (info == NULL)
         return;
     if (list->first == NULL) {
-        tmp = malloc(sizeof(client_t));
+        tmp = calloc(1, sizeof(client_t));
         if (tmp == NULL)
             return;
         tmp->info = info;
@@ -55,7 +55,7 @@ static void list_add_at_back_uuid(uuid_list_t *list, uuid_t uuid)
     tmp = list->first;
     while (tmp->next != NULL)
         tmp = tmp->next;
-    tmp->next = malloc(sizeof(my_uuid_t));
+    tmp->next = calloc(1, sizeof(my_uuid_t));
     if (tmp->next == NULL)
         return;
     uuid_copy(tmp->next->uuid, uuid);
@@ -71,7 +71,7 @@ void list_add_uuid(uuid_list_t *list, uuid_t uuid)
     if (list == NULL)
         return;
     if (list->first == NULL) {
-        tmp = malloc(sizeof(my_uuid_t));
+        tmp = calloc(1, sizeof(my_uuid_t));
         if (tmp == NULL)
             return;
         uuid_copy(tmp->uuid, uuid);

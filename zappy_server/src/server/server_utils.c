@@ -7,7 +7,6 @@
 
 #include "zappy_server.h"
 #include <signal.h>
-#include <unistd.h>
 
 bool is_running(int sig)
 {

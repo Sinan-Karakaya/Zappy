@@ -11,7 +11,7 @@
 
 client_info_t *init_clients_info(int fd)
 {
-    client_info_t *info = malloc(sizeof(client_info_t));
+    client_info_t *info = calloc(1, sizeof(client_info_t));
 
     if (info == NULL)
         return NULL;

@@ -9,7 +9,7 @@ NAME	=	zappy_server
 
 SRC_DIR = 	src/
 
-SRC	= $(shell find src/ -name "*.c")
+SRC	=	$(shell find src/ -name "*.c")
 
 OBJ	=	$(SRC:.c=.o)
 

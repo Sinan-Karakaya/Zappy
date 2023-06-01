@@ -6,19 +6,10 @@
 */
 
 #include "zappy_server.h"
+#include "free.h"
 #include <ctype.h>
 #include <signal.h>
 #include <unistd.h>
-
-static int free_all(my_zappy_t *zappy)
-{
-    close(zappy->server->sockfd);
-    free(zappy->server);
-    free(zappy->client_list);
-    free(zappy->team_list);
-    free(zappy);
-    return 0;
-}
 
 static char *read_input(int fd)
 {
@@ -86,5 +77,5 @@ int create_server(parsing_t *parsing)
         read_cmd(zappy);
     }
     signal(SIGINT, SIG_DFL);
-    return free_all(zappy);
+    return free_zappy(zappy);
 }

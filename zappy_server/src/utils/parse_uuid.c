@@ -9,7 +9,7 @@
 
 char *uuid_to_char(uuid_t uuid)
 {
-    char *str = malloc(sizeof(char) * 37);
+    char *str = calloc(UUID_SIZE, sizeof(char));
 
     if (str == NULL)
         return NULL;
