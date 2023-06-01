@@ -10,11 +10,11 @@
 
 int msz(my_zappy_t *zappy, int fd, char **args)
 {
-    char *result;
+    char *result = NULL;
 
     if (zappy == NULL || args == NULL)
         return 0;
-    asprintf(result, "%s %d %d\n", "msz", zappy->map->x, zappy->map->y);
+    asprintf(&result, "%s %ld %ld\n", "msz", zappy->map->x, zappy->map->y);
     send_message(fd, result);
     return 0;
 }
