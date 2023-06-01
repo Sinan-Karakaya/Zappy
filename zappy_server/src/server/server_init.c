@@ -42,5 +42,10 @@ my_zappy_t *init_zappy(parsing_t *parsing)
     if (init_teams(zappy, parsing) == 84)
         return NULL;
     zappy->client_list = (client_list_t *)init_list();
+    if (!zappy->client_list)
+        return NULL;
+    zappy->map = init_map(parsing->width, parsing->height);
+    if (!zappy->map)
+        return NULL;
     return zappy;
 }

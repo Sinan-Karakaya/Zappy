@@ -20,6 +20,8 @@ client_info_t *init_clients_info(int fd)
     info->username = NULL;
     info->is_logged = false;
     uuid_generate_random(info->team_uuid);
+    for (size_t i = 0; i < LENGHT_INVENTORY; i++)
+        info->inventory[i] = 0;
     return info;
 }
 

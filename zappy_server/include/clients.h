@@ -14,12 +14,25 @@
     #include <string.h>
     #include <unistd.h>
 
+    #define LENGHT_INVENTORY 7
+
+enum ressources {
+    FOOD,
+    LINEMATE,
+    DERAUMERE,
+    SIBUR,
+    MENDIANE,
+    PHIRAS,
+    THYSTAME
+};
+
 typedef struct client_info_s {
     int fd;
     bool is_logged;
     uuid_t user_uuid;
     char *username;
     uuid_t team_uuid;
+    size_t inventory[LENGHT_INVENTORY];
 } client_info_t;
 
 typedef struct client_s client_t;
@@ -33,7 +46,6 @@ typedef struct client_list_s {
     client_t *first;
     client_t *last;
 } client_list_t;
-
 
 //  Adders
 void list_add_client(client_list_t *list, client_info_t *info);

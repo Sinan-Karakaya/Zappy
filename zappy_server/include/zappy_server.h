@@ -13,7 +13,7 @@
     #include "socket.h"
     #include "utils.h"
     #include "team.h"
-    #include "clients.h"
+    #include "map.h"
     #include "parsing.h"
 
     #include <stdio.h>
@@ -34,6 +34,7 @@
         socket_t *server;
         team_list_t *team_list;
         client_list_t *client_list;
+        map_t *map;
     } my_zappy_t;
 
     typedef struct fd_setters_s {
