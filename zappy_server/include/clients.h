@@ -26,13 +26,31 @@ enum ressources {
     THYSTAME
 };
 
+enum orientation {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST
+};
+
+typedef struct {
+    int x;
+    int y;
+    uuid_t uuid;
+    size_t inventory[LENGHT_INVENTORY];
+    enum orientation direction;
+    size_t lvl;
+    size_t action_time;
+    size_t death_timer;
+} player_t;
+
 typedef struct client_info_s {
     int fd;
     bool is_logged;
     uuid_t user_uuid;
     char *username;
     uuid_t team_uuid;
-    size_t inventory[LENGHT_INVENTORY];
+    player_t *player;
 } client_info_t;
 
 typedef struct client_s client_t;
