@@ -10,6 +10,9 @@
 
 commands_t commands[] = {
     {"test", &test},
+    /*
+        PROTOCOL GRAPHIC
+    */
     {"msz", &msz}, // OK
     {"bct", &bct}, // OK
     {"mct", &mct}, // OK
@@ -19,7 +22,21 @@ commands_t commands[] = {
     {"pin", &pin},
     {"sgt", &sgt},
     {"sst", &sst},
-    {"quit", &quit}, // KOK
+    /*
+        PROTOCOL AI
+    */
+    {"Forward", &forward},
+    {"Right", &right},
+    {"Left", &left},
+    {"Look", &look},
+    {"Inventory", &inventory},
+    {"Broadcast", &broadcast},
+    {"Connect_nbr", &connect_nbr},
+    {"Fork", &fork_cmd},
+    {"Eject", &eject},
+    {"Take", &take},
+    {"Set", &set},
+    {"Incantation", &incantation},
     {NULL, NULL}
 };
 

@@ -32,6 +32,3 @@
 *.app
 .vscode
 .idea
-
-# Binary
-zappy_server
