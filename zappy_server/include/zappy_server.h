@@ -25,6 +25,8 @@
     #include <uuid/uuid.h>
     #include <stdlib.h>
     #include <string.h>
+    #include <time.h>
+
 
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
