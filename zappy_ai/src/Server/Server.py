@@ -21,7 +21,7 @@ class Server:
     def printResponse(self):
         self.data = self.socket.recv(1024).decode("ASCII")
         print(self.data, end="")
-    
+
     def getResponse(self):
         self.data = self.socket.recv(1024).decode("ASCII")
         return self.data

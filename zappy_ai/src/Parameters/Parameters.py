@@ -30,7 +30,7 @@ class Parameters:
         """
         if len(sys.argv) != 7:
             self.displayHelp()
-            if sys.argv[1] == "-help":
+            if (len(sys.argv) == 2) and sys.argv[1] == "-help":
                 exit(0)
             exit(84)
 

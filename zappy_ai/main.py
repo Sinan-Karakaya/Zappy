@@ -3,10 +3,11 @@
 from src.Parameters.Parameters import Parameters
 from src.Server.Server import Server
 from src.Agent.Agent import Agent
+from src.Repetoile.Repetoile import Repetoile
 
 
 def main():
-    myAgent = Agent()
+    myAgent = Repetoile()
     args = Parameters()
 
     server = Server(args.host, int(args.port))
@@ -18,12 +19,10 @@ def main():
 
     myAgent.fillInventory(server)
 
-    # while True:
-    #     server.printResponse()
-    #     if server.data == "dead\n":
-    #         break
-    #     msg = input() + "\n"
-    #     server.socket.sendall(msg.encode("ASCII"))
+    # print(myAgent.getYtoGo(server, 15))
+    print(myAgent.getXandDirectionToGo(13))
+    # myAgent.run(server)
+    print("dead")
 
     server.socket.close()
 
