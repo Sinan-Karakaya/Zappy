@@ -11,7 +11,7 @@ static void set_id_client(client_list_t *client_list,
     client_info_t *client_info)
 {
     client_t *tmp = client_list->first;
-    int id_tmp = 0;
+    size_t id_tmp = 0;
 
     if (!client_list || !client_info)
         return;

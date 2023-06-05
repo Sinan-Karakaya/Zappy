@@ -21,6 +21,14 @@ client_info_t *get_client_info_by_uuid(client_list_t *list, char *uuid)
     return NULL;
 }
 
+client_info_t *get_client_info_by_id(client_list_t *list, int id)
+{
+    for (client_t *tmp = list->first; tmp != NULL; tmp = tmp->next)
+        if (tmp->info->player->id == (size_t)id)
+            return tmp->info;
+    return NULL;
+}
+
 client_t *get_client_by_uuid(client_list_t *list, char *uuid)
 {
     char *char_uuid = NULL;

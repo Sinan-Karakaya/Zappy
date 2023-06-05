@@ -27,6 +27,7 @@ enum ressources {
 };
 
 enum orientation {
+    NONE,
     NORTH,
     EAST,
     SOUTH,
@@ -102,6 +103,12 @@ client_info_t *init_clients_info(int fd);
 /// @param uuid the uuid of the client
 /// @return the client info
 client_info_t *get_client_info_by_uuid(client_list_t *list, char *uuid);
+
+/// @brief get a client info by his id player
+/// @param list
+/// @param id
+/// @return the client info
+client_info_t *get_client_info_by_id(client_list_t *list, int id);
 
 /// @brief get a client by his uuid
 /// @param list the list of clients
