@@ -15,16 +15,11 @@
         int (*func)(my_zappy_t *zappy, int fd, char **args);
     } commands_t;
 
+int set_team(my_zappy_t *zappy, int fd, char **args);
+
 /*
 PROTOCOLE GRAPHICS
 */
-
-/// @brief test function call when client is connected
-/// @param zappy
-/// @param fd
-/// @param args
-/// @return
-int test(my_zappy_t *zappy, int fd, char **args);
 
 /// @brief give the map size
 /// @param zappy

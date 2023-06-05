@@ -9,7 +9,6 @@
 #include "commands.h"
 
 commands_t commands[] = {
-    {"test", &test},
     /*
         PROTOCOL GRAPHIC
     */
@@ -40,10 +39,26 @@ commands_t commands[] = {
     {NULL, NULL}
 };
 
+static int print_debug(client_t *client, char **cmd)
+{
+    if (client == NULL || cmd == NULL)
+        return 84;
+    printf("Client %d: ", client->info->fd);
+    for (size_t i = 0; cmd[i] != NULL; i++)
+        printf("%s ", cmd[i]);
+    printf("\n");
+    return 0;
+}
+
 int handle_commands(my_zappy_t *zappy, int client_fd, char **cmd)
 {
-    if (zappy == NULL || cmd == NULL)
+    client_t *client = get_client_by_fd(zappy->client_list, client_fd);
+
+    if (zappy == NULL || cmd == NULL || client == NULL)
         return 0;
+    print_debug(client, cmd);
+    if (client->info->team_id == -1)
+        return set_team(zappy, client_fd, cmd);
     for (size_t i = 0; commands[i].command != NULL; i++) {
         if (strcmp(commands[i].command, cmd[0]) == 0)
             return commands[i].func(zappy, client_fd, cmd);

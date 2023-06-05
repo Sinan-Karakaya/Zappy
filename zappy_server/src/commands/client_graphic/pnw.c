@@ -18,7 +18,7 @@ int pnw(my_zappy_t *zappy, int fd)
     if (zappy == NULL)
         return 0;
     client = get_client_by_fd(zappy->client_list, fd);
-    team = get_team_by_uuid(zappy->team_list, (char *)client->info->team_uuid);
+    team = get_team_by_id(zappy->team_list, client->info->team_id);
     asprintf(&result, "pnw %ld %d %d %d %ld %s\n", client->info->player->id,
         client->info->player->x, client->info->player->y,
         client->info->player->direction, client->info->player->lvl,
