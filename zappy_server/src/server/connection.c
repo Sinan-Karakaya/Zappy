@@ -11,16 +11,16 @@ static void set_id_client(client_list_t *client_list,
     client_info_t *client_info)
 {
     client_t *tmp = client_list->first;
-    int my_id_tmp = 0;
+    size_t id_tmp = 0;
 
     if (!client_list || !client_info)
         return;
     while (tmp) {
-        if (tmp->info->player->id > my_id_tmp)
-            my_id_tmp = tmp->info->player->id;
+        if (tmp->info->player->id > id_tmp)
+            id_tmp = tmp->info->player->id;
         tmp = tmp->next;
     }
-    client_info->player->id = my_id_tmp + 1;
+    client_info->player->id = id_tmp + 1;
 }
 
 int accept_client(socket_t *server, client_list_t *client_list)

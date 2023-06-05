@@ -10,8 +10,7 @@
 #include <unistd.h>
 
 // mettre la pos en random sur la map
-// mettre la direction en random
-// faire le action_time + death_timer
+// faire le action_time + eat_timer
 static player_t *init_player(void)
 {
     player_t *new_player = calloc(1, sizeof(player_t));
@@ -21,7 +20,7 @@ static player_t *init_player(void)
     new_player->x = 0;
     new_player->y = 0;
     new_player->id = 0;
-    new_player->direction = NORTH;
+    new_player->direction = rand() % WEST + NORTH;
     new_player->lvl = 1;
     new_player->action_time = 0;
     new_player->eat_timer = 0;
