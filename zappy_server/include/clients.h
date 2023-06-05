@@ -8,7 +8,7 @@
 #ifndef CLIENTS_H_
     #define CLIENTS_H_
 
-    #include "my_uuid.h"
+    #include "my_id.h"
     #include <stdbool.h>
     #include <stdlib.h>
     #include <string.h>
@@ -57,8 +57,8 @@ typedef struct {
 
 typedef struct client_info_s {
     int fd;
-    uuid_t user_uuid;
-    uuid_t team_uuid;
+    int user_id;
+    int team_id;
     player_t *player;
 } client_info_t;
 
@@ -81,10 +81,10 @@ typedef struct client_list_s {
 /// @param info the info of the client
 void list_add_client(client_list_t *list, client_info_t *info);
 
-/// @brief add a uuid to the list
-/// @param list the list of uuid
-/// @param uuid the uuid to add
-void list_add_uuid(uuid_list_t *list, uuid_t uuid);
+/// @brief add a id to the list
+/// @param list the list of id
+/// @param id the id to add
+void list_add_id(id_list_t *list, int id);
 
 //  Initializers
 
@@ -95,17 +95,17 @@ client_info_t *init_clients_info(int fd);
 
 //  Getters
 
-/// @brief get a client info by his uuid
+/// @brief get a client info by his id
 /// @param list the list of clients
-/// @param uuid the uuid of the client
+/// @param id the id of the client
 /// @return the client info
-client_info_t *get_client_info_by_uuid(client_list_t *list, char *uuid);
+client_info_t *get_client_info_by_id(client_list_t *list, int id);
 
-/// @brief get a client by his uuid
+/// @brief get a client by his id
 /// @param list the list of clients
-/// @param uuid the uuid of the client
+/// @param id the id of the client
 /// @return the client
-client_t *get_client_by_uuid(client_list_t *list, char *uuid);
+client_t *get_client_by_id(client_list_t *list, int id);
 
 /// @brief get a client by his fd
 /// @param list the list of clients
@@ -120,9 +120,9 @@ client_t *get_client_by_fd(client_list_t *list, int fd);
 /// @return 0
 int destroy_client_in_list(client_list_t *list, int fd);
 
-/// @brief remove a uuid in the list
-/// @param list the list of uuid
-/// @param uuid the uuid to remove
-int remove_uuid_in_list(uuid_list_t *list, uuid_t uuid);
+/// @brief remove a id in the list
+/// @param list the list of id
+/// @param id the id to remove
+int remove_id_in_list(id_list_t *list, int id);
 
 #endif /* !CLIENTS_H_ */

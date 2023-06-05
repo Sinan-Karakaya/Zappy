@@ -8,30 +8,22 @@
 #include "zappy_server.h"
 #include "clients.h"
 
-client_info_t *get_client_info_by_uuid(client_list_t *list, char *uuid)
+client_info_t *get_client_info_by_id(client_list_t *list, int id)
 {
-    char *char_uuid = NULL;
-
     for (client_t *tmp = list->first; tmp != NULL; tmp = tmp->next) {
-        char_uuid = uuid_to_char(tmp->info->user_uuid);
-        if (strcmp(char_uuid, uuid) == 0) {
+        if (tmp->info->user_id == id) {
             return tmp->info;
         }
     }
     return NULL;
 }
 
-client_t *get_client_by_uuid(client_list_t *list, char *uuid)
+client_t *get_client_by_id(client_list_t *list, int id)
 {
-    char *char_uuid = NULL;
-
     for (client_t *tmp = list->first; tmp != NULL; tmp = tmp->next) {
-        char_uuid = uuid_to_char(tmp->info->user_uuid);
-        if (strcmp(char_uuid, uuid) == 0) {
-            free(char_uuid);
+        if (tmp->info->user_id == id) {
             return tmp;
         }
-        free(char_uuid);
     }
     return NULL;
 }

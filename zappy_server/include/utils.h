@@ -9,12 +9,16 @@
     #define UTILS_H_
 
     #include <stddef.h>
-    #include <uuid/uuid.h>
 
     typedef struct vector_s {
         int x;
         int y;
     } vector_t;
+
+    typedef struct list_s {
+        void *first;
+        void *last;
+    } list_t;
 
     // Utils
 
@@ -40,5 +44,9 @@
     /// @param command the char ** to free
     /// @return NULL
     char **free_command(char **command);
+
+    /// @brief init the list
+    /// @return the list
+    list_t *init_list(void);
 
 #endif /* !UTILS_H_ */

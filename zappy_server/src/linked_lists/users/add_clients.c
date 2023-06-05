@@ -46,40 +46,40 @@ void list_add_client(client_list_t *list, client_info_t *info)
     }
 }
 
-static void list_add_at_back_uuid(uuid_list_t *list, uuid_t uuid)
+static void list_add_at_back_id(id_list_t *list, int id)
 {
-    my_uuid_t *tmp = NULL;
+    my_id_t *tmp = NULL;
 
     if (list == NULL)
         return;
     tmp = list->first;
     while (tmp->next != NULL)
         tmp = tmp->next;
-    tmp->next = calloc(1, sizeof(my_uuid_t));
+    tmp->next = calloc(1, sizeof(my_id_t));
     if (tmp->next == NULL)
         return;
-    uuid_copy(tmp->next->uuid, uuid);
+    tmp->next->id = id;
     tmp->next->next = NULL;
     tmp->next->prev = tmp;
     list->last = tmp->next;
 }
 
-void list_add_uuid(uuid_list_t *list, uuid_t uuid)
+void list_add_id(id_list_t *list, int id)
 {
-    my_uuid_t *tmp = NULL;
+    my_id_t *tmp = NULL;
 
     if (list == NULL)
         return;
     if (list->first == NULL) {
-        tmp = calloc(1, sizeof(my_uuid_t));
+        tmp = calloc(1, sizeof(my_id_t));
         if (tmp == NULL)
             return;
-        uuid_copy(tmp->uuid, uuid);
+        tmp->id = id;
         tmp->next = NULL;
         tmp->prev = NULL;
         list->first = tmp;
         list->last = tmp;
     } else {
-        list_add_at_back_uuid(list, uuid);
+        list_add_at_back_id(list, id);
     }
 }

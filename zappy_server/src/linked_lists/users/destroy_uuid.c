@@ -2,13 +2,13 @@
 ** EPITECH PROJECT, 2023
 ** B-NWP-400-REN-4-1-myteams-axel.rohee
 ** File description:
-** destroy_uuid
+** destroy_id
 */
 
 #include "zappy_server.h"
 #include "clients.h"
 
-static void delete_uuid(uuid_list_t *list, my_uuid_t *tmp)
+static void delete_id(id_list_t *list, my_id_t *tmp)
 {
     if (list->first == tmp)
         list->first = tmp->next;
@@ -21,16 +21,16 @@ static void delete_uuid(uuid_list_t *list, my_uuid_t *tmp)
     free(tmp);
 }
 
-int remove_uuid_in_list(uuid_list_t *list, uuid_t uuid)
+int remove_id_in_list(id_list_t *list, int id)
 {
-    my_uuid_t *tmp = NULL;
+    my_id_t *tmp = NULL;
 
     if (!list)
         return 0;
     tmp = list->first;
     for (tmp = list->first; tmp; tmp = tmp->next) {
-        if (uuid_compare(tmp->uuid, uuid) == 0) {
-            delete_uuid(list, tmp);
+        if (tmp->id == id) {
+            delete_id(list, tmp);
             return 0;
         }
     }

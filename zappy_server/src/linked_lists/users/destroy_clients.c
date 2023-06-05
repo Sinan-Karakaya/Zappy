@@ -11,8 +11,6 @@ static int destroy_user_info(client_t *user)
 {
     if (!user || !user->info)
         return 0;
-    if (user->info->username)
-        free(user->info->username);
     if (user->info->fd)
         close(user->info->fd);
     free(user->info);

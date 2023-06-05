@@ -57,12 +57,21 @@ static vector_t real_coordinates(client_t *client, map_t *map)
     return coordinates;
 }
 
-int forward(my_zappy_t *zappy, int fd, char **args)
+int forward(my_zappy_t *zappy, int fd, NUSED char **args)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);
     vector_t coordinates = real_coordinates(client, zappy->map);
 
     if (!zappy || !client)
         return 84;
+    remove_id_in_list(
+    zappy->map->tiles[client->info->player->x][client->info->player->y].players,
+    client->info->player->id);
+    client->info->player->x = coordinates.x;
+    client->info->player->y = coordinates.y;
+    list_add_id(
+    zappy->map->tiles[client->info->player->x][client->info->player->y].players,
+    client->info->player->id);
+    send_message(fd, "ok\n");
     return 0;
 }

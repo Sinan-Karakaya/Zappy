@@ -28,12 +28,13 @@ typedef struct {
     size_t mendiane;
     size_t phiras;
     size_t thystame;
+    id_list_t *players;
     bool is_egg;
 } tiles_t;
 
 typedef struct {
-    size_t x;
-    size_t y;
+    ssize_t x;
+    ssize_t y;
     tiles_t **tiles;
     size_t *density[LENGTH_DENSITY];
 } map_t;

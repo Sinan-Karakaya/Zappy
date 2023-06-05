@@ -6,6 +6,7 @@
 */
 
 #include "map.h"
+#include "utils.h"
 
 static void fill_map_part1(tiles_t **map, size_t x, size_t y)
 {
@@ -60,6 +61,9 @@ static tiles_t **init_tiles(size_t x, size_t y)
         if (!tile[i])
             return NULL;
     }
+    for (size_t i = 0; i < x; i++)
+        for (size_t j = 0; j < y; j++)
+            tile[i][j].players = (id_list_t *)init_list();
     fill_map_part1(tile, x, y);
     fill_map_part2(tile, x, y);
     return tile;

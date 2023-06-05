@@ -17,13 +17,13 @@ int init_teams(my_zappy_t *zappy, parsing_t *parsing)
 
     if (!team_list || !parsing)
         return 84;
-    info = init_teams_info("GRAPHIC");
+    info = init_teams_info("GRAPHIC", 0);
     info->printable = false;
     if (info == NULL)
         return 84;
     list_add_teams(team_list, info);
     for (size_t i = 0; i < count_args(parsing->names); i++) {
-        info = init_teams_info(parsing->names[i]);
+        info = init_teams_info(parsing->names[i], i + 1);
         if (info == NULL)
             return 84;
         list_add_teams(team_list, info);
