@@ -23,6 +23,7 @@ class Agent:
         self.vision = []
         self.isDead = False
         self.moveStack = []
+        self.broadcastStack = []
 
     def askServer(self, server: Server, msg: str):
         """
@@ -40,6 +41,9 @@ class Agent:
         response = server.getResponse()
         if response == "dead\n":
             self.isDead = True
+        if 'message' in response:
+            self.broadcastStack.append(response)
+            response = server.getResponse()
         return response
 
     def fillInventory(self, server: Server):
@@ -95,7 +99,6 @@ class Agent:
             currentIndex -= currentOdd
             currentOdd += 2
             yToReturn += 1
-        print("yToReturn: ", yToReturn)
         return yToReturn
     
     def __getXandDirectionToGo(self, listIndex: int):
@@ -135,12 +138,9 @@ class Agent:
         
 
 
-    def fillMoveStack(self, server: Server, listIndex: int):
+    def fillMoveStack(self, listIndex: int):
         """
         Fill the moveStack of the agent to go to the index of the vision list.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @param listIndex: The index of the vision list to go to.
         @type listIndex: int
@@ -154,7 +154,8 @@ class Agent:
         xToGo, direction = self.__getXandDirectionToGo(listIndex)
         for i in range(0, yToGo):
             self.moveStack.append("Forward")
-        self.moveStack.append(direction)
+        if direction != None:
+            self.moveStack.append(direction)
         for i in range(0, xToGo):
             self.moveStack.append("Forward")
         
