@@ -18,6 +18,7 @@ int init_teams(my_zappy_t *zappy, parsing_t *parsing)
     if (!team_list || !parsing)
         return 84;
     info = init_teams_info("GRAPHIC");
+    info->printable = false;
     if (info == NULL)
         return 84;
     list_add_teams(team_list, info);
@@ -48,6 +49,7 @@ my_zappy_t *init_zappy(parsing_t *parsing)
     zappy->map = init_map(parsing->width, parsing->height);
     if (!zappy->map)
         return NULL;
+    zappy->frequency = parsing->freq;
     free_parsing(parsing);
     return zappy;
 }

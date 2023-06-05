@@ -18,5 +18,7 @@ team_info_t *init_teams_info(char *name)
     uuid_generate_random(info->team_uuid);
     info->client_list = (uuid_list_t *)init_list();
     info->nb_clients = 0;
+    info->printable = true;
+    info->slots_available = 3;
     return info;
 }

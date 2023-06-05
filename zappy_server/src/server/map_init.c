@@ -9,7 +9,7 @@
 
 static void fill_map_part1(tiles_t **map, size_t x, size_t y)
 {
-    size_t pos_x =0, pos_y = 0;
+    size_t pos_x = 0, pos_y = 0;
 
     for (size_t i = 0; i < x * y * FOOD_DENSITY; i++) {
         pos_x = rand() % x;
@@ -32,7 +32,7 @@ static void fill_map_part1(tiles_t **map, size_t x, size_t y)
 
 static void fill_map_part2(tiles_t **map, size_t x, size_t y)
 {
-    size_t pos_x =0, pos_y = 0;
+    size_t pos_x = 0, pos_y = 0;
 
     for (size_t i = 0; i < x * y * MENDIANE_DENSITY; i++) {
         pos_x = rand() % x;

@@ -36,6 +36,7 @@
         socket_t *server;
         team_list_t *team_list;
         client_list_t *client_list;
+        size_t frequency;
         map_t *map;
     } my_zappy_t;
 

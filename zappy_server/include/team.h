@@ -10,12 +10,15 @@
 
     #include "my_uuid.h"
     #include <string.h>
+    #include <stdbool.h>
 
     typedef struct team_info_s {
         char *name;
         size_t nb_clients;
         uuid_t team_uuid;
         uuid_list_t *client_list;
+        bool printable;
+        ssize_t slots_available;
     } team_info_t;
 
     typedef struct team_s team_t;
