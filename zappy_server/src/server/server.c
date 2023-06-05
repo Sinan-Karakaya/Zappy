@@ -73,7 +73,7 @@ int create_server(parsing_t *parsing)
         if (select(fd_max + 1, &zappy->server->rset, &zappy->server->wset,
         NULL, NULL) == -1)
             break;
-        if (accept_client(zappy->server, zappy->client_list) == 84)
+        if (accept_client(zappy) == 84)
             return 84;
         read_cmd(zappy);
     }

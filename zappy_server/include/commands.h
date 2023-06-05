@@ -89,6 +89,8 @@ int sgt(my_zappy_t *zappy, int fd, char **args);
 /// @return
 int sst(my_zappy_t *zappy, int fd, char **args);
 
+int pnw(my_zappy_t *zappy, int fd);
+
 /*
 PROTOCOLE IA
 */
