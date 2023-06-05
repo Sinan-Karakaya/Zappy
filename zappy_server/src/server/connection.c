@@ -7,6 +7,22 @@
 
 #include "zappy_server.h"
 
+static void set_id_client(client_list_t *client_list,
+    client_info_t *client_info)
+{
+    client_t *tmp = client_list->first;
+    int id_tmp = 0;
+
+    if (!client_list || !client_info)
+        return;
+    while (tmp) {
+        if (tmp->info->player->id > id_tmp)
+            id_tmp = tmp->info->player->id;
+        tmp = tmp->next;
+    }
+    client_info->player->id = id_tmp + 1;
+}
+
 int accept_client(socket_t *server, client_list_t *client_list)
 {
     int fd_actual = 0;
@@ -25,8 +41,8 @@ int accept_client(socket_t *server, client_list_t *client_list)
         dprintf(1, "Connection from %s:%d\n", inet_ntoa(address.sin_addr),
         ntohs(server->address.sin_port));
         client_info = init_clients_info(fd_actual);
+        set_id_client(client_list, client_info);
         list_add_client(client_list, client_info);
         dprintf(fd_actual, "WELCOME\n");
-    }
-    return fd_actual;
+    } return fd_actual;
 }

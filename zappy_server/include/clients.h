@@ -47,12 +47,12 @@ enum level {
 typedef struct {
     int x;
     int y;
-    uuid_t uuid;
     size_t inventory[LENGHT_INVENTORY];
     enum orientation direction;
     size_t lvl;
-    size_t action_time;
-    size_t death_timer;
+    double action_time;
+    size_t id;
+    double eat_timer;
 } player_t;
 
 typedef struct client_info_s {
