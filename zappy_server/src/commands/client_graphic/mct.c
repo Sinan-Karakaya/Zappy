@@ -13,9 +13,9 @@ static char **get_full_map(my_zappy_t *zappy)
     char **temp = calloc(zappy->map->x, sizeof(char *));
     char *tmp = NULL;
 
-    for (size_t i = 0; i < zappy->map->x; i++) {
+    for (ssize_t i = 0; i < zappy->map->x; i++) {
         temp[i] = calloc(zappy->map->y, sizeof(char));
-        for (size_t j = 0; j < zappy->map->y; j++) {
+        for (ssize_t j = 0; j < zappy->map->y; j++) {
             asprintf(&tmp, "bct %ld %ld %ld %ld %ld %ld %ld %ld %ld\n",
                 i, j, zappy->map->tiles[i][j].food,
                 zappy->map->tiles[i][j].linemate,
@@ -41,8 +41,8 @@ int mct(my_zappy_t *zappy, int fd, char **args)
         send_message(fd, "ko\n");
         return 0;
     } temp = get_full_map(zappy);
-    for (size_t i = 0; i < zappy->map->x; i++) {
-        for (size_t j = 0; j < zappy->map->y; j++) {
+    for (ssize_t i = 0; i < zappy->map->x; i++) {
+        for (ssize_t j = 0; j < zappy->map->y; j++) {
             result = realloc(result, strlen(result) + strlen(temp[i]) + 1);
             result = strcat(result, temp[i]);
         }

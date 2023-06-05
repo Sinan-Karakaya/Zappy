@@ -19,6 +19,7 @@ static player_t *init_player(void)
         return NULL;
     new_player->x = 0;
     new_player->y = 0;
+    new_player->id = 0;
     new_player->direction = rand() % WEST + NORTH;
     new_player->lvl = 1;
     new_player->action_time = 0;
@@ -37,20 +38,8 @@ client_info_t *init_clients_info(int fd)
     if (info == NULL)
         return NULL;
     info->fd = fd;
-    uuid_generate_random(info->user_uuid);
-    info->username = NULL;
-    info->is_logged = false;
-    uuid_generate_random(info->team_uuid);
+    info->user_id = fd;
+    info->team_id = -1;
     info->player = init_player();
     return info;
-}
-
-void copy_clients_info(client_t *this, client_t *other)
-{
-    if (!this || !other)
-        return;
-    uuid_copy(this->info->user_uuid, other->info->user_uuid);
-    this->info->username = other->info->username;
-    this->info->is_logged = true;
-    return;
 }
