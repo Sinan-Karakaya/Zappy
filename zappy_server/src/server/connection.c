@@ -5,7 +5,7 @@
 ** connection
 */
 
-#include "zappy_server.h"
+#include "commands.h"
 
 static void set_id_client(client_list_t *client_list,
     client_info_t *client_info)
@@ -23,26 +23,25 @@ static void set_id_client(client_list_t *client_list,
     client_info->player->id = id_tmp + 1;
 }
 
-int accept_client(socket_t *server, client_list_t *client_list)
+int accept_client(my_zappy_t *zappy)
 {
     int fd_actual = 0;
     struct sockaddr_in address;
     socklen_t addrlen = sizeof(address);
     client_info_t *client_info = NULL;
-
-    if (!server)
+    if (!zappy->server)
         return 84;
-    if (FD_ISSET(server->sockfd, &server->rset)) {
-        fd_actual = accept(server->sockfd,
+    if (FD_ISSET(zappy->server->sockfd, &zappy->server->rset)) {
+        fd_actual = accept(zappy->server->sockfd,
         (struct sockaddr *)&address, &addrlen);
         if (fd_actual == -1) {
             return 84;
         }
         dprintf(1, "Connection from %s:%d\n", inet_ntoa(address.sin_addr),
-        ntohs(server->address.sin_port));
+        ntohs(zappy->server->address.sin_port));
         client_info = init_clients_info(fd_actual);
-        set_id_client(client_list, client_info);
-        list_add_client(client_list, client_info);
+        set_id_client(zappy->client_list, client_info);
+        list_add_client(zappy->client_list, client_info);
         dprintf(fd_actual, "WELCOME\n");
     } return fd_actual;
 }

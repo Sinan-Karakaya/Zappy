@@ -108,6 +108,6 @@
     void sigint_handler(int sig);
 
     // Connections
-    int accept_client(socket_t *server, client_list_t *client_list);
+    int accept_client(my_zappy_t *zappy);
 
 #endif /* !Zappy_Server_H_ */
