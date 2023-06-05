@@ -14,10 +14,8 @@ int msz(my_zappy_t *zappy, int fd, char **args)
 
     if (zappy == NULL || args == NULL)
         return 0;
-    if (count_args(args) != 1) {
-        send_message(fd, "Too many args\n");
-        return 0;
-    }
+    if (count_args(args) != 1)
+        return send_message(fd, "ko\n");
     asprintf(&result, "%s %ld %ld\n", "msz", zappy->map->x, zappy->map->y);
     send_message(fd, result);
     return 0;

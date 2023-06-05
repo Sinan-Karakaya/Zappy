@@ -33,6 +33,17 @@ enum orientation {
     WEST
 };
 
+enum level {
+    LVL1,
+    LVL2,
+    LVL3,
+    LVL4,
+    LVL5,
+    LVL6,
+    LVL7,
+    LVL8
+};
+
 typedef struct {
     int x;
     int y;

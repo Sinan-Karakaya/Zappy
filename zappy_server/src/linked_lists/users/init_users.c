@@ -27,6 +27,7 @@ static player_t *init_player(void)
     new_player->death_timer = 0;
     for (size_t i = 0; i < LENGHT_INVENTORY; i++)
         new_player->inventory[i] = 0;
+    new_player->inventory[FOOD] = 10;
     return new_player;
 }
 
