@@ -38,7 +38,7 @@ int mct(my_zappy_t *zappy, int fd, char **args)
     if (zappy == NULL || args == NULL)
         return 0;
     if (count_args(args) != 1) {
-        send_message(fd, "Too many args\n");
+        send_message(fd, "ko\n");
         return 0;
     } temp = get_full_map(zappy);
     for (size_t i = 0; i < zappy->map->x; i++) {

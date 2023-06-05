@@ -28,6 +28,7 @@ typedef struct {
     size_t mendiane;
     size_t phiras;
     size_t thystame;
+    bool is_egg;
 } tiles_t;
 
 typedef struct {
