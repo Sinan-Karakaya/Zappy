@@ -18,7 +18,7 @@ commands_t commands[] = {
     {"mct", &mct}, // OK
     {"tna", &tna}, // OK
     {"ppo", &ppo}, // OK
-    {"plv", &plv},
+    {"plv", &plv}, // OK
     {"pin", &pin},
     {"sgt", &sgt},
     {"sst", &sst},
