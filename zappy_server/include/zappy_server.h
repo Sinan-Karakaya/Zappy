@@ -31,6 +31,10 @@
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
 
+    #define UNKNOWN_COMMAND "suc\n"
+    #define UNKNOWN_PARAMETER "sbp\n"
+    #define DEATH "dead\n"
+
     typedef struct my_zappy_s {
         socket_t *server;
         team_list_t *team_list;

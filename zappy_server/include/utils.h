@@ -11,6 +11,11 @@
     #include <stddef.h>
     #include <uuid/uuid.h>
 
+    typedef struct vector_s {
+        int x;
+        int y;
+    } vector_t;
+
     // Utils
 
     /// @brief count the number of args
@@ -23,12 +28,6 @@
     /// @param sep the list of separator
     /// @return the string separated
     char **my_str_to_word_array(char *str, char *sep);
-
-
-    /// @brief convert an uuid to a char *
-    /// @param uuid the uuid to convert
-    /// @return a char * of the uuid
-    char *uuid_to_char(uuid_t uuid);
 
 
     /// @brief replace the '\r' and the '\n' by \0
