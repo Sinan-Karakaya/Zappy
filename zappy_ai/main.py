@@ -7,8 +7,8 @@ from src.Repetoile.Repetoile import Repetoile
 
 
 def main():
-    myAgent = Repetoile()
     args = Parameters()
+    myAgent = Repetoile(args.name)
 
     server = Server(args.host, int(args.port))
     server.connect()

@@ -37,11 +37,12 @@ class Agent:
 
         @return: The response from the server.
         """
+        print("Sending: " + msg)
         server.socket.sendall((msg + "\n").encode("ASCII"))
         response = server.getResponse()
         if response == "dead\n":
             self.isDead = True
-        if 'message' in response:
+        if "message" in response:
             self.broadcastStack.append(response)
             response = server.getResponse()
         return response
@@ -64,8 +65,8 @@ class Agent:
                 response_tab[i] = response_tab[i].split(" ")
                 self.inventory[response_tab[i][1]] = int(response_tab[i][2])
         except:
+            print("Error while parsing inventory")
             print(response)
-            exit(84)
 
     def fillVisions(self, server: Server):
         """
@@ -86,7 +87,6 @@ class Agent:
             currentVision.append(response_tab[i][1:])
         self.vision = currentVision
 
-
     def __getYtoGo(self, listIndex: int):
         """
         return the number of time to forward to be on the same row as listIndex
@@ -104,7 +104,7 @@ class Agent:
             currentOdd += 2
             yToReturn += 1
         return yToReturn
-    
+
     def __getXandDirectionToGo(self, listIndex: int):
         """
         return the number of time to forward to be on the same column as listIndex
@@ -124,12 +124,12 @@ class Agent:
             currentOdd += 2
             caseCenter += currentOdd
 
-        if (listIndex == caseCenter):
+        if listIndex == caseCenter:
             return (0, None)
-        
+
         direction = None
         xToGo = caseCenter - listIndex
-        if (xToGo < 0):
+        if xToGo < 0:
             xToGo = -xToGo
             direction = "Right"
             return (xToGo, direction)
@@ -137,10 +137,6 @@ class Agent:
         xToGo = xToGo
         direction = "Left"
         return (xToGo, direction)
-
-        
-        
-
 
     def fillMoveStack(self, listIndex: int):
         """
@@ -162,8 +158,6 @@ class Agent:
             self.moveStack.append(direction)
         for i in range(0, xToGo):
             self.moveStack.append("Forward")
-        
-        
 
     def live(self, server: Server):
         ...
