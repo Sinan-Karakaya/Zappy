@@ -10,7 +10,10 @@
 
 int pfk(my_zappy_t *zappy, int fd)
 {
-    (void)zappy;
-    (void)fd;
+    char *result = NULL;
+
+    if (zappy == NULL)
+        return 0;
+    asprintf(&result, "pfk %d\n", fd);
     return 0;
 }
