@@ -15,19 +15,19 @@ static void fill_map_part1(tiles_t **map, size_t x, size_t y)
     for (size_t i = 0; i < x * y * FOOD_DENSITY; i++) {
         pos_x = rand() % x;
         pos_y = rand() % y;
-        map[pos_x][pos_y].food++;
+        map[pos_x][pos_y].inventory[FOOD]++;
     } for (size_t i = 0; i < x * y * LINEMATE_DENSITY; i++) {
         pos_x = rand() % x;
         pos_y = rand() % y;
-        map[pos_x][pos_y].linemate++;
+        map[pos_x][pos_y].inventory[LINEMATE]++;
     } for (size_t i = 0; i < x * y * DERAUMERE_DENSITY; i++) {
         pos_x = rand() % x;
         pos_y = rand() % y;
-        map[pos_x][pos_y].deraumere++;
+        map[pos_x][pos_y].inventory[DERAUMERE]++;
     } for (size_t i = 0; i < x * y * SIBUR_DENSITY; i++) {
         pos_x = rand() % x;
         pos_y = rand() % y;
-        map[pos_x][pos_y].sibur++;
+        map[pos_x][pos_y].inventory[SIBUR]++;
     }
 }
 
@@ -38,15 +38,15 @@ static void fill_map_part2(tiles_t **map, size_t x, size_t y)
     for (size_t i = 0; i < x * y * MENDIANE_DENSITY; i++) {
         pos_x = rand() % x;
         pos_y = rand() % y;
-        map[pos_x][pos_y].mendiane++;
+        map[pos_x][pos_y].inventory[MENDIANE]++;
     } for (size_t i = 0; i < x * y * PHIRAS_DENSITY; i++) {
         pos_x = rand() % x;
         pos_y = rand() % y;
-        map[pos_x][pos_y].phiras++;
+        map[pos_x][pos_y].inventory[PHIRAS]++;
     } for (size_t i = 0; i < x * y * THYSTAME_DENSITY; i++) {
         pos_x = rand() % x;
         pos_y = rand() % y;
-        map[pos_x][pos_y].thystame++;
+        map[pos_x][pos_y].inventory[THYSTAME]++;
     }
 }
 

@@ -17,13 +17,13 @@ static char **get_full_map(my_zappy_t *zappy)
         temp[i] = calloc(zappy->map->y, sizeof(char));
         for (ssize_t j = 0; j < zappy->map->y; j++) {
             asprintf(&tmp, "bct %ld %ld %ld %ld %ld %ld %ld %ld %ld\n",
-                i, j, zappy->map->tiles[i][j].food,
-                zappy->map->tiles[i][j].linemate,
-                zappy->map->tiles[i][j].deraumere,
-                zappy->map->tiles[i][j].sibur,
-                zappy->map->tiles[i][j].mendiane,
-                zappy->map->tiles[i][j].phiras,
-                zappy->map->tiles[i][j].thystame);
+                i, j, zappy->map->tiles[i][j].inventory[FOOD],
+                zappy->map->tiles[i][j].inventory[LINEMATE],
+                zappy->map->tiles[i][j].inventory[DERAUMERE],
+                zappy->map->tiles[i][j].inventory[SIBUR],
+                zappy->map->tiles[i][j].inventory[MENDIANE],
+                zappy->map->tiles[i][j].inventory[PHIRAS],
+                zappy->map->tiles[i][j].inventory[THYSTAME]);
             temp[i] = strdup(tmp);
         }
     }

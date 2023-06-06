@@ -21,13 +21,7 @@
     #define THYSTAME_DENSITY 0.05
 
 typedef struct {
-    size_t food;
-    size_t linemate;
-    size_t deraumere;
-    size_t sibur;
-    size_t mendiane;
-    size_t phiras;
-    size_t thystame;
+    size_t inventory[LENGHT_INVENTORY];
     id_list_t *players;
     bool is_egg;
 } tiles_t;
