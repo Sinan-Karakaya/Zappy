@@ -30,7 +30,7 @@ jobs:
                   ./build.sh
 
             - name: Install dependencies
-              run: sudo apt-get update && sudo apt-get install -y cmake libsfml-dev
+              run: sudo apt-get update && sudo apt-get install -y cmake libsfml-dev libfmt-dev
 
             - name: Build Zappy_GUI
               run: cmake -S $GUI_DIR -B $GUI_DIR/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE && cmake --build $GUI_DIR/build
