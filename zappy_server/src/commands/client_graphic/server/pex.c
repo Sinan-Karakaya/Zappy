@@ -10,7 +10,12 @@
 
 int pex(my_zappy_t *zappy, int fd)
 {
-    (void)zappy;
-    (void)fd;
+    client_t *client = NULL;
+    if (zappy == NULL)
+        return 84;
+    client = get_client_by_fd(zappy->client_list, fd);
+    if (client == NULL)
+        return 84;
+    dprintf(fd, "pex %d\n", client->info->user_id);
     return 0;
 }

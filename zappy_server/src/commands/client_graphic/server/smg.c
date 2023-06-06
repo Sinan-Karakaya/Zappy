@@ -10,7 +10,7 @@
 
 int smg(my_zappy_t *zappy, int fd)
 {
-    (void)zappy;
-    (void)fd;
+    if (zappy == NULL)
+        return 84;
     return 0;
 }
