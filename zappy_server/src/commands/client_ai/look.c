@@ -8,21 +8,6 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-static char *get_elements_on_tile(map_t *map, size_t x, size_t y)
-{
-    char *result = "";
-
-    for (my_id_t *i = map->tiles[y][x].players->first; i; i = i->next)
-        asprintf(&result, "%splayer ", result);
-    if (map->tiles[y][x].is_egg)
-        asprintf(&result, "%segg ", result);
-    for (size_t i = 0; i < LENGHT_INVENTORY; i++) {
-        for (size_t j = 0; j < map->tiles[y][x].inventory[i]; j++)
-            asprintf(&result, "%s%s ", result, get_item_name(i));
-    }
-    return result;
-}
-
 static int look_right(client_t *client, map_t *map)
 {
     char *result = "[";

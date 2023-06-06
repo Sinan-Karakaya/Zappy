@@ -67,4 +67,11 @@
     /// @return the coordinates
     vector_t real_coordinates(client_t *client, map_t *map);
 
+    /// @brief get the elements on a tile
+    /// @param map the map
+    /// @param x the x
+    /// @param y the y
+    /// @return the elements on the tile
+    char *get_elements_on_tile(map_t *map, size_t x, size_t y);
+
 #endif /* !UTILS_H_ */
