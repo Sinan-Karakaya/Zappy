@@ -26,6 +26,7 @@ int init_teams(my_zappy_t *zappy, parsing_t *parsing)
         info = init_teams_info(parsing->names[i], i + 1);
         if (info == NULL)
             return 84;
+        info->slots_available = parsing->clients_nb;
         list_add_teams(team_list, info);
     }
     return 0;

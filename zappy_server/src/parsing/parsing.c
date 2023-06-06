@@ -25,7 +25,7 @@ static parsing_t *init_parsing(void)
     parsing->names[1] = strdup("Team2");
     parsing->names[2] = strdup("Team3");
     parsing->names[3] = strdup("Team4");
-    parsing->clients_nb = 2;
+    parsing->clients_nb = 3;
     parsing->freq = 100;
     return parsing;
 }
