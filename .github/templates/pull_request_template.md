@@ -13,7 +13,11 @@
 * **What is the new behavior (if this is a feature change)?**
 
 
+<<<<<<< HEAD
 * **Does this PR introduce a breaking change?** (What changes might users need to make in their application due to this PR?)
+=======
+* **Does this PR introduce a breaking change?** (What changes might clients need to make in their application due to this PR?)
+>>>>>>> 9864c88 (Feat (Server) : Adding server init, missing the parsing)
 
 
 * **Other information**:
