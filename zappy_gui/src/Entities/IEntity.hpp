@@ -9,8 +9,10 @@
 
 #include <string>
 #include <array>
+#include <exception>
 
 #include <SFML/Graphics.hpp>
+#include <spdlog/spdlog.h>
 
 namespace zp
 {
@@ -18,10 +20,10 @@ namespace zp
 enum Direction
 {
     NONE = 0,
-    LEFT = 1,
-    UP = 2,
-    RIGHT = 3,
-    DOWN = 4
+    NORTH = 1,
+    EAST = 2,
+    SOUTH = 3,
+    WEST = 4
 };
 
 class IEntity
@@ -32,10 +34,12 @@ public:
     virtual void draw(sf::RenderTexture &window) = 0;
     virtual void setTilePosition(int x, int y) = 0;
     virtual void setDirection(Direction dir) = 0;
-//    virtual void writeToChat(Chat &chat) = 0;
+    virtual int getId() const = 0;
 
 protected:
+    int m_id = -1;
     std::string m_teamName;
+    sf::Texture m_baseTexture;
     std::array<sf::Texture, 4> m_textures;
     sf::Sprite m_sprite;
     sf::Vector2i m_position;

@@ -18,6 +18,7 @@
 
 #include "Utils/Utils.hpp"
 #include "Map/Map.hpp"
+#include "Entities/Alien.hpp"
 
 namespace zp
 {
@@ -32,13 +33,17 @@ public:
     void update(std::unique_ptr<Map> &map);
 
 private:
+    void updateMap(std::unique_ptr<Map> &map);
+    void updatePlayers(std::unique_ptr<Map> &map);
+    void updateRocks(std::unique_ptr<Map> &map);
+
     std::unique_ptr<std::vector<std::vector<std::string>>> receive();
     void welcome(const std::vector<std::string> &tokens, Map &map);
     void getMapSize(const std::vector<std::string> &tokens, Map &map);
     void getMapContent(const std::vector<std::string> &tokens, Map &map);
     void getNamesOfTeam(const std::vector<std::string> &tokens, Map &map);
-    void getPlayers(const std::vector<std::string> &tokens, Map &map);
-    void getPlayer(int id);
+    void getNewPlayer(const std::vector<std::string> &tokens, Map &map);
+    void getPlayerPos(const std::vector<std::string> &tokens, Map &map);
     void timeUnitRequest(const std::vector<std::string> &tokens, Map &map);
     void timeUnitModification(const std::vector<std::string> &tokens, Map &map);
 

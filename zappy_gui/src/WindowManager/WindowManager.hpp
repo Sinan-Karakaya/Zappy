@@ -33,7 +33,7 @@ public:
     WindowManager(const std::string &title, const sf::Vector2u &size);
     ~WindowManager();
 
-    void update();
+    void update(std::unique_ptr<Map> &map);
     bool isOpen();
 
 private:
@@ -52,6 +52,9 @@ private:
 
     sf::RenderTexture m_gameTexture;
     sf::Sprite m_gameSprite;
+    sf::Texture m_backgroundTexture;
+    sf::Sprite m_backgroundSprite;
+    sf::View m_gameView;
 };
 
 } // namespace zp

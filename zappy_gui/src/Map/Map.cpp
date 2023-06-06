@@ -10,21 +10,28 @@
 zp::Map::Map(int x, int y) : m_size(x, y)
 {
     m_tiles.reserve(x * y);
+    if (!m_tileTexture.loadFromFile(TILE_PATH)) {
+        spdlog::error("Could not load texture");
+        throw std::runtime_error("Could not load texture");
+    }
+    m_tileSprite.setTexture(m_tileTexture);
+    m_tileSprite.setTextureRect(sf::IntRect(0, 0, 128, 128));
+    m_tileSprite.setScale(0.5, 0.5);
 }
 
 void zp::Map::drawMap(sf::RenderTexture &window)
 {
     for (int i = 0; i < m_size.x; i++) {
         for (int j = 0; j < m_size.y; j++) {
-            m_tileSprite.setPosition(i * 64, j * 64);
+            m_tileSprite.setPosition((i - j) * TILE_WIDTH_HALF, (i + j) * TILE_HEIGHT_HALF);
             window.draw(m_tileSprite);
         }
     }
     for (auto &rock : m_rocks) {
-        rock.draw(window);
+        rock->draw(window);
     }
     for (auto &alien : m_aliens) {
-        alien.draw(window);
+        alien->draw(window);
     }
 }
 
@@ -43,4 +50,24 @@ void zp::Map::setSize(int x, int y)
 std::shared_ptr<zp::Tile> zp::Map::getTile(int x, int y)
 {
     return m_tiles[y * m_size.y + x];
+}
+
+void zp::Map::addAlien(std::shared_ptr<zp::IEntity> alien)
+{
+    m_aliens.push_back(alien);
+}
+
+void zp::Map::addRock(std::shared_ptr<zp::IEntity> rock)
+{
+    m_rocks.push_back(rock);
+}
+
+std::vector<std::shared_ptr<zp::IEntity>> &zp::Map::getAliens()
+{
+    return m_aliens;
+}
+
+std::vector<std::shared_ptr<zp::IEntity>> &zp::Map::getRocks()
+{
+    return m_rocks;
 }

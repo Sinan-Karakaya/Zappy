@@ -7,21 +7,27 @@
 
 #include "Rock.hpp"
 
-zp::Rock::Rock(sf::Vector2i pos, sf::Vector2i tilePos, zp::Direction dir, const std::string &teamName)
+zp::Rock::Rock(sf::Vector2i tilePos, zp::Direction dir, const std::string &teamName)
 {
     (void)teamName;
     (void)dir;
-    m_position = pos;
     m_tilePosition = tilePos;
-    m_direction = LEFT;
+    m_position.x = m_tilePosition.x * 32 * 2 + 32;
+    m_position.y = m_tilePosition.y * 32 * 2 + 32;
+    m_direction = EAST;
     m_teamName = "rock";
-    // @TODO: Load textures depending on directions
+
+    if (!m_baseTexture.loadFromFile(TILE_PATH)) {
+        spdlog::error("Cannot load texture");
+        throw std::runtime_error("Cannot load texture");
+    }
+    m_sprite.setTexture(m_baseTexture);
+    m_sprite.setTextureRect(sf::IntRect(128, 0, 128, 128));
 }
 
 void zp::Rock::draw(sf::RenderTexture &window)
 {
-    (void)window;
-    // @TODO: Draw sprite
+    window.draw(m_sprite);
 }
 
 void zp::Rock::setTilePosition(int x, int y)
@@ -34,6 +40,5 @@ void zp::Rock::setTilePosition(int x, int y)
 void zp::Rock::setDirection(zp::Direction dir)
 {
     m_direction = dir;
-    return;
     // @TODO: Change sprite using texture array
 }

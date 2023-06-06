@@ -20,6 +20,11 @@ zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &s
         throw zp::WindowManagerException("Failed to initialize ImGui");
     spdlog::info("Initializing style");
     setStyle();
+    if (!m_backgroundTexture.loadFromFile(BACKGROUND_PATH))
+        throw zp::WindowManagerException("Failed to load background texture");
+    m_backgroundSprite.setTexture(m_backgroundTexture);
+    m_gameView.setSize(size.x, size.y);
+    m_gameTexture.setView(m_gameView);
 }
 
 zp::WindowManager::~WindowManager()
@@ -28,9 +33,12 @@ zp::WindowManager::~WindowManager()
     ImGui::SFML::Shutdown();
 }
 
-void zp::WindowManager::update()
+void zp::WindowManager::update(std::unique_ptr<Map> &map)
 {
     handleEvents();
+    m_gameTexture.clear();
+    m_gameTexture.draw(m_backgroundSprite);
+    map->drawMap(m_gameTexture);
     drawImGui();
     render();
 }
@@ -42,6 +50,16 @@ void zp::WindowManager::handleEvents()
         ImGui::SFML::ProcessEvent(event);
         if (event.type == sf::Event::Closed)
             m_window.close();
+        if (event.type == sf::Event::KeyPressed) {
+            if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Q)
+                m_gameView.move(-10, 0);
+            if (event.key.code == sf::Keyboard::Right || event.key.code == sf::Keyboard::D)
+                m_gameView.move(10, 0);
+            if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Z)
+                m_gameView.move(0, -10);
+            if (event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S)
+                m_gameView.move(0, 10);
+        }
     }
 }
 
@@ -64,12 +82,6 @@ void zp::WindowManager::drawChat()
 
 void zp::WindowManager::drawGame()
 {
-    sf::Texture texture;
-    texture.loadFromFile(BACKGROUND_PATH);
-    sf::Sprite bgSprite(texture);
-
-    m_gameTexture.clear();
-    m_gameTexture.draw(bgSprite);
     m_gameSprite.setTexture(m_gameTexture.getTexture());
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
