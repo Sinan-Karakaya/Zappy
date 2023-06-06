@@ -20,6 +20,8 @@ zp::App::App(const std::string &port, const std::string &ip)
         spdlog::info("Window created");
         m_map = std::make_unique<Map>();
         spdlog::info("Map created");
+        m_chat = std::make_unique<Chat>();
+        spdlog::info("Chat created");
     } catch (const WindowManagerException &e) {
         throw e;
     } catch (const std::runtime_error &e) {
