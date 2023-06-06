@@ -48,7 +48,6 @@ private:
 
 private:
     sf::RenderWindow m_window;
-    sf::RenderTexture m_renderTexture;
     sf::Clock m_deltaClock;
 
     sf::RenderTexture m_gameTexture;

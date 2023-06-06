@@ -7,17 +7,19 @@
 
 #include "App.hpp"
 
-zp::App::App()
+zp::App::App(const std::string &port, const std::string &ip)
 {
     spdlog::info("Initializing application");
     try {
+        spdlog::info("Creating network manager");
         m_networkManager = std::make_unique<NetworkManager>();
-        std::cout << "1" << std::endl;
-        m_networkManager->connect();
-        std::cout << "2" << std::endl;
+        spdlog::info("Connecting to {}:{}", ip, port);
+        m_networkManager->connect(port, ip);
+        spdlog::info("Connected to {}:{}", ip, port);
         m_windowManager = std::make_unique<WindowManager>("Zappy", sf::Vector2u(1920, 1080));
-        std::cout << "3" << std::endl;
+        spdlog::info("Window created");
         m_map = std::make_unique<Map>();
+        spdlog::info("Map created");
     } catch (const WindowManagerException &e) {
         throw e;
     } catch (const std::runtime_error &e) {

@@ -28,7 +28,7 @@ public:
     NetworkManager();
     ~NetworkManager();
 
-    void connect(const std::string &ip = "127.0.0.1", const std::string &port = "4242");
+    void connect(const std::string &port, const std::string &ip = "127.0.0.1");
     void update(std::unique_ptr<Map> &map);
 
 private:
@@ -44,6 +44,8 @@ private:
 
 private:
     sf::TcpSocket m_socket;
+    std::string m_port;
+    std::string m_ip;
 
     std::unordered_map<std::string, std::function<void(const std::vector<std::string> &tokens, Map &map)>> m_commands;
 };

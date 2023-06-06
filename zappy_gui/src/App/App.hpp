@@ -23,7 +23,7 @@ namespace zp
 class App
 {
 public:
-    App();
+    App(const std::string &port, const std::string &ip = "127.0.0.1");
     ~App() = default;
 
     void run();

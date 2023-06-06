@@ -29,6 +29,8 @@ void zp::NetworkManager::connect(const std::string &ip, const std::string &port)
         throw std::runtime_error("Error: Cant connect to remote server");
 
     m_socket.setBlocking(false);
+    m_ip = ip;
+    m_port = port;
     spdlog::info("Connected to remote server");
 }
 
