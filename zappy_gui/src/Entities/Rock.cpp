@@ -9,6 +9,8 @@
 
 zp::Rock::Rock(sf::Vector2i pos, sf::Vector2i tilePos, zp::Direction dir, const std::string &teamName)
 {
+    (void)teamName;
+    (void)dir;
     m_position = pos;
     m_tilePosition = tilePos;
     m_direction = LEFT;
@@ -31,6 +33,7 @@ void zp::Rock::setTilePosition(int x, int y)
 
 void zp::Rock::setDirection(zp::Direction dir)
 {
+    m_direction = dir;
     return;
     // @TODO: Change sprite using texture array
 }
