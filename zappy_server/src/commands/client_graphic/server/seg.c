@@ -19,5 +19,6 @@ int seg(my_zappy_t *zappy, int fd)
     client = get_client_by_fd(zappy->client_list, fd);
     team = get_team_by_id(zappy->team_list, client->info->team_id);
     asprintf(&result, "seg %s\n", team->info->name);
+    send_message(fd, result);
     return 0;
 }

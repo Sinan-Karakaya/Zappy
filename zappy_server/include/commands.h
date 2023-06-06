@@ -91,7 +91,7 @@ int pic(my_zappy_t *zappy, int fd);
 int pie(my_zappy_t *zappy, int fd);
 int pfk(my_zappy_t *zappy, int fd);
 int pdr(my_zappy_t *zappy, int fd, enum ressources ressource);
-int pgt(my_zappy_t *zappy, int fd);
+int pgt(my_zappy_t *zappy, int fd, enum ressources ressource);
 int pdi(my_zappy_t *zappy, int fd);
 int enw(my_zappy_t *zappy, int fd);
 int ebo(my_zappy_t *zappy, int fd);
