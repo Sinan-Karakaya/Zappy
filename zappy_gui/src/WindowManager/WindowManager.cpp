@@ -65,7 +65,7 @@ void zp::WindowManager::drawChat()
 void zp::WindowManager::drawGame()
 {
     sf::Texture texture;
-    texture.loadFromFile("assets/sprites/background.png");
+    texture.loadFromFile(BACKGROUND_PATH);
     sf::Sprite bgSprite(texture);
 
     m_gameTexture.clear();
@@ -105,7 +105,7 @@ void zp::WindowManager::setStyle()
     ImGuiIO& io = ImGui::GetIO(); (void)io;
     io.IniFilename = "assets/imgui.ini";
     io.Fonts->Clear();
-    io.Fonts->AddFontFromFileTTF("assets/fonts/Roboto-Medium.ttf", 16.0f);
+    io.Fonts->AddFontFromFileTTF(FONT_PATH, FONT_SIZE);
     if (!ImGui::SFML::UpdateFontTexture())
         throw zp::WindowManagerException("Failed to update font texture");
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls

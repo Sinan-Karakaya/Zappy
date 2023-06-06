@@ -21,6 +21,10 @@
 #include "NetworkManager/NetworkManager.hpp"
 #include "Map/Map.hpp"
 
+#define BACKGROUND_PATH "assets/sprites/background.png"
+#define FONT_PATH "assets/fonts/Roboto-Medium.ttf"
+#define FONT_SIZE 16.0f
+
 namespace zp {
 
 class WindowManager
