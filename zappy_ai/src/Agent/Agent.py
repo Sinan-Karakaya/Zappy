@@ -38,7 +38,7 @@ class Agent:
 
         @return: The response from the server.
         """
-        print("Sending: " + msg , end=" ")
+        print("Sending: " + msg, end=" ")
         server.socket.sendall((msg + "\n").encode("ASCII"))
         response = server.getResponse()
         if response == "dead\n":

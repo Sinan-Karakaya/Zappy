@@ -35,7 +35,6 @@ class Repetoile(Agent):
                 if minDistance == -1 or distance < minDistance:
                     indexObject = index
                     minDistance = distance
-                
 
         if indexObject == 0:
             print(self.askServer(server, "Take " + object))
@@ -109,7 +108,6 @@ class Repetoile(Agent):
         self.fillInventory(server)
         print(self.inventory)
 
-
     def birth(self, server: Server):
         """
         Call when the agent is born.
@@ -124,4 +122,3 @@ class Repetoile(Agent):
             self.askServer(server, "Broadcast " + self.teamName + " I'm born !"),
         )
         self.state = "Searching food"
-
