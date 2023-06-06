@@ -10,7 +10,14 @@
 
 int seg(my_zappy_t *zappy, int fd)
 {
-    (void)zappy;
-    (void)fd;
+    char *result = NULL;
+    client_t *client = NULL;
+    team_t *team = NULL;
+
+    if (zappy == NULL)
+        return 0;
+    client = get_client_by_fd(zappy->client_list, fd);
+    team = get_team_by_id(zappy->team_list, client->info->team_id);
+    asprintf(&result, "seg %s\n", team->info->name);
     return 0;
 }

@@ -11,7 +11,6 @@
 int pbc(my_zappy_t *zappy, int fd, char *message)
 {
     char *result = NULL;
-    client_t *client = NULL;
 
     if (zappy == NULL)
         return 0;

@@ -97,7 +97,7 @@ int enw(my_zappy_t *zappy, int fd);
 int ebo(my_zappy_t *zappy, int fd);
 int edi(my_zappy_t *zappy, int fd);
 int seg(my_zappy_t *zappy, int fd);
-int smg(my_zappy_t *zappy, int fd);
+int smg(my_zappy_t *zappy, int fd, char *message);
 int suc(my_zappy_t *zappy, int fd);
 int sbp(my_zappy_t *zappy, int fd);
 
