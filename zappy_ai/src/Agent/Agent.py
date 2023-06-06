@@ -25,6 +25,13 @@ class Agent:
         self.level = 1
         self.moveStack = []
         self.broadcastStack = []
+        self.__levelRequirements = [{"player": 1, "linemate": 1},
+                                  {"player": 2, "linemate": 1, "deraumere": 1, "sibur": 1},
+                                  {"player": 2, "linemate": 2, "sibur": 1, "phiras": 2},
+                                  {"player": 4, "linemate": 1, "deraumere": 1, "sibur": 2, "phiras": 1},
+                                  {"player": 4, "linemate": 1, "deraumere": 2, "sibur": 1, "mendiane": 3},
+                                  {"player": 6, "linemate": 1, "deraumere": 2, "sibur": 3, "phiras": 1},
+                                  {"player": 6, "linemate": 2, "deraumere": 2, "sibur": 2, "mendiane": 2, "phiras": 2, "thystame": 1}]
 
     def askServer(self, server: Server, msg: str):
         """
@@ -48,7 +55,7 @@ class Agent:
             response = server.getResponse()
         if "Elevation underway" in response:
             response = server.getResponse()
-        print("| Receive: " + response)
+        print("| Receive: " + response, end="")
         return response
 
     def fillInventory(self, server: Server):
@@ -176,8 +183,27 @@ class Agent:
         xToGo, direction = self.__getXandDirectionToGo(listIndex)
         return yToGo + xToGo
 
+    def __verifyVision(self, server: Server, needed: dict):
+        """
+        Verify if the vision of the agent contains the needed resources.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+
+        @param needed: The resources needed.
+        @type needed: dict
+
+        @return: bool
+        """
+        for key in needed:
+            if key not in self.vision[0]:
+                return False
+            if self.vision[0].count(key) < needed[key]:
+                return False
+        return True
+
     def canElevate(self, server: Server):
-        if self.level == 1 and "linemate" in self.vision[0]:
+        if self.__verifyVision(server, self.elevationRequirements[self.level]):
             return True
         return False
 

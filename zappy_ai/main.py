@@ -18,7 +18,9 @@ def main():
     server.socket.sendall((args.name + "\n").encode("ASCII"))
     server.printResponse()
 
-    myAgent.run(server)
+    myAgent.fillVisions(server)
+    print("Verify vision", myAgent.verifyVision(server, {"food": 3, "linemate": 1}))
+    ##myAgent.run(server)
 
     server.socket.close()
 
