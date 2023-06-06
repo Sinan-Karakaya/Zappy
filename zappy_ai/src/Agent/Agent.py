@@ -163,6 +163,19 @@ class Agent:
         for i in range(0, xToGo):
             self.moveStack.append("Forward")
 
+    def distanceTo(self, listIndex: int):
+        """
+        Returns the distance to the index of the vision list.
+
+        @param listIndex: The index of the vision list to go to.
+        @type listIndex: int
+
+        @return: int
+        """
+        yToGo = self.__getYtoGo(listIndex)
+        xToGo, direction = self.__getXandDirectionToGo(listIndex)
+        return yToGo + xToGo
+
     def canElevate(self, server: Server):
         if self.level == 1 and "linemate" in self.vision[0]:
             return True

@@ -26,12 +26,16 @@ class Repetoile(Agent):
         @return: None
         """
         indexObject = -1
+        minDistance = -1
 
         self.fillVisions(server)
         for tile, index in zip(self.vision, range(0, len(self.vision))):
             if object in tile:
-                indexObject = index
-                break
+                distance = self.distanceTo(index)
+                if minDistance == -1 or distance < minDistance:
+                    indexObject = index
+                    minDistance = distance
+                
 
         if indexObject == 0:
             print(self.askServer(server, "Take " + object))
@@ -81,26 +85,27 @@ class Repetoile(Agent):
 
         @return: None
         """
-        if self.inventory["food"] <= 10:
-            self.state = "Searching food"
-        else:
-            self.state = "Broadcasting like a fool"
+        # if self.inventory["food"] <= 10:
+        #     self.state = "Searching food"
+        # else:
+        #     self.state = "Broadcasting like a fool"
 
-        if self.state == "Searching food":
-            self.searchObject(server, "food")
+        # if self.state == "Searching food":
+        #     self.searchObject(server, "food")
 
-        if self.state == "Broadcasting like a fool":
-            self.repeat(server)
-            self.state = "Searching rock"
+        # if self.state == "Broadcasting like a fool":
+        #     self.repeat(server)
+        #     self.state = "Searching rock"
 
-        if self.state == "Searching rock":
-            self.searchObject(server, "linemate")
-            if (self.inventory["linemate"] > 0):
-                self.askServer(server, "Set linemate")
-                self.askServer(server, "Look")
-                print(self.vision)
-                self.askServer(server, "Incantation")
+        # if self.state == "Searching rock":
+        #     self.searchObject(server, "linemate")
+        #     if (self.inventory["linemate"] > 0):
+        #         self.askServer(server, "Set linemate")
+        #         self.fillVisions(server)
+        #         print(self.vision)
+        #         self.askServer(server, "Incantation")
 
+        self.searchObject(server, "food")
         self.fillInventory(server)
         print(self.inventory)
 
