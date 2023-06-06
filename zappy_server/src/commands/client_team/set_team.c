@@ -6,14 +6,14 @@
 */
 
 #include "zappy_server.h"
+#include "commands.h"
 
-//msz 10 10
-//sgt 100
-//bct all map
-//tna all team
 static int send_message_graphic(NUSED my_zappy_t *zappy, client_t *client)
 {
-    send_message(client->info->fd, "Not Available Yet :(\n");
+    msz(zappy, client->info->fd, (char *[]){"msz", NULL});
+    sgt(zappy, client->info->fd, (char *[]){"sgt", NULL});
+    mct(zappy, client->info->fd, (char *[]){"mct", NULL});
+    tna(zappy, client->info->fd, (char *[]){"tna", NULL});
     return 0;
 }
 

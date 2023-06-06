@@ -16,7 +16,7 @@ int sgt(my_zappy_t *zappy, int fd, char **args)
         return 84;
     if (count_args(args) != 1)
         return 84;
-    asprintf(&result, "sgt %d\n", zappy->frequency);
+    asprintf(&result, "sgt %ld\n", zappy->frequency);
     send_message(fd, result);
     return 0;
 }
