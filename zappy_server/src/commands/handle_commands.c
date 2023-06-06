@@ -20,7 +20,7 @@ commands_t commands[] = {
     {"plv", &plv}, // OK
     {"pin", &pin}, // OK
     {"sgt", &sgt}, // OK
-    {"sst", &sst},
+    {"sst", &sst}, // OK
     /*
         PROTOCOL AI
     */

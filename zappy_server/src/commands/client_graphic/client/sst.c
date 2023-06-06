@@ -10,8 +10,13 @@
 
 int sst(my_zappy_t *zappy, int fd, char **args)
 {
-    (void)zappy;
-    (void)args;
-    (void)fd;
+    char *result = NULL;
+
+    if (zappy == NULL || args == NULL)
+        return 84;
+    if (count_args(args) != 2)
+        return send_message(fd, "ko\n");
+    zappy->frequency = atoi(args[1]);
+    asprintf(&result, "sgt %d\n", zappy->frequency);
     return 0;
 }
