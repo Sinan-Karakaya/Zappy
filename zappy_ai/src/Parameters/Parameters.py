@@ -13,7 +13,6 @@ class Parameters:
         self.port = ""
         self.host = ""
         self.name = ""
-        self.checkParameters()
 
     def displayHelp(self):
         """
@@ -30,8 +29,6 @@ class Parameters:
         """
         if len(sys.argv) != 7:
             self.displayHelp()
-            if (len(sys.argv) == 2) and sys.argv[1] == "-help":
-                exit(0)
             exit(84)
 
         for arg in sys.argv:

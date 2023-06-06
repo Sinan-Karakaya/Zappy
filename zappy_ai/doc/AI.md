@@ -1,6 +1,6 @@
 # Markdown Documentation AI
 
-![ZAPPY !](../Zappy.webp "Zappy")
+![ZAPPY !](Zappy.webp "Zappy")
 
 AI :robot: will be the the population of **Trantor**, called **Trantorians**
 
@@ -20,21 +20,21 @@ The AI :robot: of this project will be compose of one in multiple choices of **[
 
 All the AI, no matter what Agent they have, will share these features/commands, here is a list of them:
 
-| Action                       | Command          | Time Limit | Response                                       |
-| ---------------------------- | ---------------- | ---------- | ---------------------------------------------- |
-| Move up one tile             | Forward          | 7/*f*      | ok                                             |
-| Turn 90° right               | Right            | 7/*f*      | ok                                             |
-| Turn 90° left                | Left             | 7/*f*      | ok                                             |
-| Look around                  | Look             | 7/*f*      | [tile1, tile2, ...]                            |
-| Inventory                    | Inventory        | 1/*f*      | [linemate *n*, sibur *n*, ...]                 |
-| Broadcast text               | Broadcast *text* | 7/*f*      | ok                                             |
-| Number of team unused slots  | Connect_nbr      | -          | value                                          |
-| Fork a player                | Fork             | 42/*f*     | ok                                             |
-| Eject players from this tile | Eject            | 7/*f*      | ok/ko                                          |
-| Death of a player            | -                | -          | dead                                           |
-| Take object                  | Take *object*    | 7/*f*      | ok/ko                                          |
-| Set object down              | Set *object*     | 7/*f*      | ok/ko                                          |
-| Start incantation            | Incantation      | 300/*f*    | Elevation underway </br> Current level: k / ko |
+| Action                       | Command              | Time Limit | Response                                       |
+| ---------------------------- | -------------------- | ---------- | ---------------------------------------------- |
+| Move up one tile             | **Forward**          | 7/*f*      | ok                                             |
+| Turn 90° right               | **Right**            | 7/*f*      | ok                                             |
+| Turn 90° left                | **Left**             | 7/*f*      | ok                                             |
+| Look around                  | **Look**             | 7/*f*      | [tile1, tile2, ...]                            |
+| Inventory                    | **Inventory**        | 1/*f*      | [linemate *n*, sibur *n*, ...]                 |
+| Broadcast text               | **Broadcast *text*** | 7/*f*      | ok                                             |
+| Number of team unused slots  | **Connect_nbr**      | -          | value                                          |
+| Fork a player                | **Fork**             | 42/*f*     | ok                                             |
+| Eject players from this tile | **Eject**            | 7/*f*      | ok/ko                                          |
+| Death of a player            | -                    | -          | dead                                           |
+| Take object                  | **Take *object***    | 7/*f*      | ok/ko                                          |
+| Set object down              | **Set *object***     | 7/*f*      | ok/ko                                          |
+| Start incantation            | **Incantation**      | 300/*f*    | Elevation underway </br> Current level: k / ko |
 
 </br>
 
