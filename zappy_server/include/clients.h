@@ -92,7 +92,7 @@ void list_add_id(id_list_t *list, int id);
 /// @brief init a client info
 /// @param fd the fd of the client
 /// @return the client info
-client_info_t *init_clients_info(int fd);
+client_info_t *init_clients_info(int fd, int width, int height);
 
 //  Getters
 

@@ -8,9 +8,13 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int smg(my_zappy_t *zappy, int fd)
+int smg(my_zappy_t *zappy, int fd, char *message)
 {
-    (void)zappy;
-    (void)fd;
+    char *result = NULL;
+
+    if (zappy == NULL)
+        return 84;
+    asprintf(&result, "smg %s\n", message);
+    send_message(fd, result);
     return 0;
 }

@@ -84,21 +84,104 @@ int sgt(my_zappy_t *zappy, int fd, char **args);
 /// @return
 int sst(my_zappy_t *zappy, int fd, char **args);
 
+/// @brief give some informations about the player
+/// @param zappy
+/// @param fd
+/// @return
 int pnw(my_zappy_t *zappy, int fd);
+
+/// @brief function call when a player use expulsion
+/// @param zappy
+/// @param fd
+/// @return
 int pex(my_zappy_t *zappy, int fd);
-int pbc(my_zappy_t *zappy, int fd);
+
+/// @brief function call when a player use broadcast
+/// @param zappy
+/// @param fd
+/// @param message
+/// @return
+int pbc(my_zappy_t *zappy, int fd, char *message);
+
+/// @brief function call when a player start an incantation
+/// @param zappy
+/// @param fd
+/// @return
 int pic(my_zappy_t *zappy, int fd);
+
+/// @brief function call when an incantation is finish
+/// @param zappy
+/// @param fd
+/// @return
 int pie(my_zappy_t *zappy, int fd);
+
+/// @brief egg laying by the player
+/// @param zappy
+/// @param fd
+/// @return
 int pfk(my_zappy_t *zappy, int fd);
-int pdr(my_zappy_t *zappy, int fd);
-int pgt(my_zappy_t *zappy, int fd);
+
+/// @brief when player drop ressources
+/// @param zappy
+/// @param fd
+/// @param ressource
+/// @return
+int pdr(my_zappy_t *zappy, int fd, enum ressources ressource);
+
+/// @brief when player take ressources
+/// @param zappy
+/// @param fd
+/// @param
+/// @return
+int pgt(my_zappy_t *zappy, int fd, enum ressources ressource);
+
+/// @brief when player die
+/// @param zappy
+/// @param fd
+/// @return
 int pdi(my_zappy_t *zappy, int fd);
+
+/// @brief an egg was laid by a player
+/// @param zappy
+/// @param fd
+/// @return
 int enw(my_zappy_t *zappy, int fd);
+
+/// @brief player connection for an egg
+/// @param zappy
+/// @param fd
+/// @return
 int ebo(my_zappy_t *zappy, int fd);
+
+/// @brief death of an egg
+/// @param zappy
+/// @param fd
+/// @return
 int edi(my_zappy_t *zappy, int fd);
+
+/// @brief end of an egg
+/// @param zappy
+/// @param fd
+/// @return
 int seg(my_zappy_t *zappy, int fd);
-int smg(my_zappy_t *zappy, int fd);
+
+/// @brief send message from the server
+/// @param zappy
+/// @param fd
+/// @param message
+/// @return
+int smg(my_zappy_t *zappy, int fd, char *message);
+
+/// @brief unknown command
+/// @param zappy
+/// @param fd
+/// @return
 int suc(my_zappy_t *zappy, int fd);
+
+/// @brief command parameter
+/// @param zappy
+/// @param fd
+/// @return
 int sbp(my_zappy_t *zappy, int fd);
 
 /*

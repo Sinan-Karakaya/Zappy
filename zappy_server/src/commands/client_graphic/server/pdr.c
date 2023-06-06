@@ -8,9 +8,13 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int pdr(my_zappy_t *zappy, int fd)
+int pdr(my_zappy_t *zappy, int fd, enum ressources ressource)
 {
-    (void)zappy;
-    (void)fd;
+    char *result = NULL;
+
+    if (zappy == NULL)
+        return 0;
+    asprintf(&result, "pdr %d %d\n", fd, ressource);
+    send_message(fd, result);
     return 0;
 }

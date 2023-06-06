@@ -8,9 +8,13 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int pbc(my_zappy_t *zappy, int fd)
+int pbc(my_zappy_t *zappy, int fd, char *message)
 {
-    (void)zappy;
-    (void)fd;
+    char *result = NULL;
+
+    if (zappy == NULL)
+        return 0;
+    asprintf(&result, "pbc %d %s\n", fd, message);
+    send_message(fd, result);
     return 0;
 }
