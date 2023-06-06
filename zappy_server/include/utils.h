@@ -59,7 +59,7 @@
     /// @brief get item name
     /// @param item the item
     /// @return the item name
-    char *get_item_name(size_t item);
+    const char *get_item_name(size_t item);
 
     /// @brief get coordinates
     /// @param client the client

@@ -7,7 +7,7 @@
 
 #include "stdlib.h"
 
-char *get_item_name(size_t item)
+const char *get_item_name(size_t item)
 {
     switch (item) {
         case 0:
