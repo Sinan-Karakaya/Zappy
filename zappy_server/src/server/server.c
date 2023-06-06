@@ -66,13 +66,14 @@ int create_server(parsing_t *parsing)
     if (!zappy)
         return 84;
     signal(SIGINT, sigint_handler);
+    srand(time(NULL));
     while (is_running(0)) {
         set_fds(zappy->server, zappy->client_list);
         fd_max = calculate_fd_max(zappy);
         if (select(fd_max + 1, &zappy->server->rset, &zappy->server->wset,
         NULL, NULL) == -1)
             break;
-        if (accept_client(zappy->server, zappy->client_list) == 84)
+        if (accept_client(zappy) == 84)
             return 84;
         read_cmd(zappy);
     }

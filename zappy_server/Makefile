@@ -15,9 +15,9 @@ OBJ	=	$(SRC:.c=.o)
 
 LIBFLAGS	=	-L lib/my/ -lmy -I include/
 
-LD_FLAGS += -luuid -lm
+LD_FLAGS	=	-lm
 
-CFLAGS += -Wextra -W -Wall -I include/ -g
+CFLAGS += -Wextra -W -Wall -I include/
 
 all: $(NAME)
 

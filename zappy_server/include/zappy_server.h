@@ -13,7 +13,7 @@
     #include "socket.h"
     #include "utils.h"
     #include "team.h"
-    #include "clients.h"
+    #include "map.h"
     #include "parsing.h"
 
     #include <stdio.h>
@@ -22,18 +22,26 @@
     #include <unistd.h>
     #include <arpa/inet.h>
     #include <stdbool.h>
-    #include <uuid/uuid.h>
     #include <stdlib.h>
     #include <string.h>
+    #include <time.h>
+
+    #define NUSED __attribute__((unused))
 
     #define MAX_NAME_LENGTH 32
     #define MAX_DESCRIPTION_LENGTH 255
     #define MAX_BODY_LENGTH 512
 
+    #define UNKNOWN_COMMAND "suc\n"
+    #define UNKNOWN_PARAMETER "sbp\n"
+    #define DEATH "dead\n"
+
     typedef struct my_zappy_s {
         socket_t *server;
         team_list_t *team_list;
         client_list_t *client_list;
+        size_t frequency;
+        map_t *map;
     } my_zappy_t;
 
     typedef struct fd_setters_s {
@@ -42,22 +50,12 @@
         int max_fd;
     } fd_setters_t;
 
-    typedef struct list_s {
-        void *first;
-        void *last;
-    } list_t;
-
     /// @brief init the zappy server
     /// @param parsing the parsing struct
     /// @return the zappy struct
     my_zappy_t *init_zappy(parsing_t *parsing);
 
-    /// @brief init the list
-    /// @return the list
-    list_t *init_list(void);
-
     // Server
-
 
     /// @brief create and run the server
     /// @param parsing the parsing struct
@@ -110,6 +108,6 @@
     void sigint_handler(int sig);
 
     // Connections
-    int accept_client(socket_t *server, client_list_t *client_list);
+    int accept_client(my_zappy_t *zappy);
 
 #endif /* !Zappy_Server_H_ */

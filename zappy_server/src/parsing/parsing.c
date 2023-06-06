@@ -25,7 +25,7 @@ static parsing_t *init_parsing(void)
     parsing->names[1] = strdup("Team2");
     parsing->names[2] = strdup("Team3");
     parsing->names[3] = strdup("Team4");
-    parsing->clients_nb = 2;
+    parsing->clients_nb = 3;
     parsing->freq = 100;
     return parsing;
 }
@@ -34,9 +34,10 @@ static int check_parsing(parsing_t *parsing)
 {
     if (!parsing)
         return 84;
-    if (parsing->port == 0 || parsing->width == 0 || parsing->height == 0
-        || parsing->names == NULL || parsing->clients_nb == 0
-        || parsing->freq <= 0)
+    if (parsing->port == 0 || parsing->width < 10 || parsing->width > 30
+    || parsing->height < 10 || parsing->height > 30
+    || parsing->names == NULL || parsing->clients_nb == 0
+    || parsing->freq < 2 || parsing->freq > 10000)
         return 84;
     return 0;
 }

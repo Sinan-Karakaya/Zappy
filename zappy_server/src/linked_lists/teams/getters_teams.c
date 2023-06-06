@@ -8,32 +8,23 @@
 #include "team.h"
 #include "zappy_server.h"
 
-team_info_t *get_team_info(team_list_t *teams_list, char *team_uuid)
+team_info_t *get_team_info(team_list_t *teams_list, int team_id)
 {
-    char *uuid = NULL;
 
     for (team_t *tmp = teams_list->first; tmp != NULL; tmp = tmp->next) {
-        uuid = uuid_to_char(tmp->info->team_uuid);
-        if (strcmp(uuid, team_uuid) == 0) {
-            free(uuid);
+        if (tmp->info->team_id == team_id) {
             return tmp->info;
         }
-        free(uuid);
     }
     return NULL;
 }
 
-team_t *get_team_by_uuid(team_list_t *teams_list, char *team_uuid)
+team_t *get_team_by_id(team_list_t *teams_list, int team_id)
 {
-    char *uuid = NULL;
-
     for (team_t *tmp = teams_list->first; tmp != NULL; tmp = tmp->next) {
-        uuid = uuid_to_char(tmp->info->team_uuid);
-        if (strcmp(uuid, team_uuid) == 0) {
-            free(uuid);
+        if (tmp->info->team_id == team_id) {
             return tmp;
         }
-        free(uuid);
     }
     return NULL;
 }
@@ -47,17 +38,12 @@ team_t *get_team_by_name(team_list_t *teams_list, char *name)
     return NULL;
 }
 
-uuid_list_t *get_team_client_list(team_list_t *teams_list, char *team_uuid)
+id_list_t *get_team_client_list(team_list_t *teams_list, int team_id)
 {
-    char *uuid = NULL;
-
     for (team_t *tmp = teams_list->first; tmp != NULL; tmp = tmp->next) {
-        uuid = uuid_to_char(tmp->info->team_uuid);
-        if (strcmp(uuid, team_uuid) == 0) {
-            free(uuid);
+        if (tmp->info->team_id == team_id) {
             return tmp->info->client_list;
         }
-        free(uuid);
     }
     return NULL;
 }
