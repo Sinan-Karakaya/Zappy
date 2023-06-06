@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+##
+## EPITECH PROJECT, 2023
+## Zappy
+## File description:
+## main
+##
 
 from src.Parameters.Parameters import Parameters
 from src.Server.Server import Server
