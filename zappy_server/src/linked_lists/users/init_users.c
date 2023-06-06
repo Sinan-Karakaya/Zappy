@@ -17,8 +17,8 @@ static player_t *init_player(void)
 
     if (new_player == NULL)
         return NULL;
-    new_player->x = 0;
-    new_player->y = 0;
+    new_player->x = rand() % 10;
+    new_player->y = rand() % 10;
     new_player->id = 0;
     new_player->direction = rand() % WEST + NORTH;
     new_player->lvl = 1;
