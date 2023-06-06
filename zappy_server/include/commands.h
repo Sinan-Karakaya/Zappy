@@ -86,7 +86,7 @@ int sst(my_zappy_t *zappy, int fd, char **args);
 
 int pnw(my_zappy_t *zappy, int fd);
 int pex(my_zappy_t *zappy, int fd);
-int pbc(my_zappy_t *zappy, int fd);
+int pbc(my_zappy_t *zappy, int fd, char *message);
 int pic(my_zappy_t *zappy, int fd);
 int pie(my_zappy_t *zappy, int fd);
 int pfk(my_zappy_t *zappy, int fd);
