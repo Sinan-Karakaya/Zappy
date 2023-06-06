@@ -12,5 +12,6 @@ int sbp(my_zappy_t *zappy, int fd)
 {
     (void)zappy;
     (void)fd;
+    send_message(fd, "sbp\n");
     return 0;
 }

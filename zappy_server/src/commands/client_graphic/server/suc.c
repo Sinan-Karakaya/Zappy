@@ -12,5 +12,6 @@ int suc(my_zappy_t *zappy, int fd)
 {
     (void)zappy;
     (void)fd;
+    send_message(fd, "suc\n");
     return 0;
 }
