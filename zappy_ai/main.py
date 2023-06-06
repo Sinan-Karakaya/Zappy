@@ -17,30 +17,7 @@ def main():
     server.socket.sendall((args.name + "\n").encode("ASCII"))
     server.printResponse()
 
-
-    indexBouffe = 0
-
-    while not myAgent.isDead:
-
-        myAgent.fillVisions(server)
-        for case, index in zip(myAgent.vision, range(0, len(myAgent.vision))):
-            if 'food' in case:
-                indexBouffe = index
-                break
-        print(myAgent.vision)
-        
-        if indexBouffe == 0:
-            print(myAgent.askServer(server, "Take food"))
-        else:
-            myAgent.fillMoveStack(indexBouffe)
-            print(myAgent.moveStack)
-            while len(myAgent.moveStack) > 0:
-                print(myAgent.askServer(server, myAgent.moveStack.pop()))
-            print(myAgent.askServer(server, "Take food"))
-        print(myAgent.askServer(server, "Inventory"))
-    
-    
-    print("dead")
+    myAgent.run(server)
 
     server.socket.close()
 

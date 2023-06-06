@@ -59,9 +59,13 @@ class Agent:
         response = response.replace("[", "").replace("]", "").replace("\n", "")
         response_tab = response.split(",")
 
-        for i in range(0, len(response_tab)):
-            response_tab[i] = response_tab[i].split(" ")
-            self.inventory[response_tab[i][1]] = int(response_tab[i][2])
+        try:
+            for i in range(0, len(response_tab)):
+                response_tab[i] = response_tab[i].split(" ")
+                self.inventory[response_tab[i][1]] = int(response_tab[i][2])
+        except:
+            print(response)
+            exit(84)
 
     def fillVisions(self, server: Server):
         """
@@ -164,6 +168,10 @@ class Agent:
     def live(self, server: Server):
         ...
 
+    def birth(self, server: Server):
+        ...
+
     def run(self, server: Server):
+        self.birth(server)
         while not self.isDead:
             self.live(server)
