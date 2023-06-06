@@ -8,7 +8,6 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-// pnw #n X Y O L N\n
 int pnw(my_zappy_t *zappy, int fd)
 {
     char *result = NULL;
