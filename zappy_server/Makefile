@@ -1,9 +1,36 @@
 ##
 ## EPITECH PROJECT, 2023
-## Zappy [WSL: Ubuntu-22.04]
-## File description:
 ## Makefile
+## File description:
+## Makefile for zappy_server
 ##
 
-all:
-	echo "build ok"
+NAME	=	zappy_server
+
+SRC_DIR = 	src/
+
+SRC	=	$(shell find src/ -name "*.c")
+
+OBJ	=	$(SRC:.c=.o)
+
+LIBFLAGS	=	-L lib/my/ -lmy -I include/
+
+LD_FLAGS	=	-lm
+
+CFLAGS += -Wextra -W -Wall -I include/
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	@gcc  -o $(NAME) $(OBJ) $(CFLAGS) $(LD_FLAGS)
+
+clean:
+	@rm -f $(OBJ)
+
+fclean:	clean
+	@rm -f $(NAME)
+
+re:	fclean all
+
+debug :	CFLAGS += -g
+debug : re
