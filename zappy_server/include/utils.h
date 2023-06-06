@@ -9,6 +9,8 @@
     #define UTILS_H_
 
     #include <stddef.h>
+    #include "clients.h"
+    #include "map.h"
 
     typedef struct vector_s {
         int x;
@@ -19,6 +21,11 @@
         void *first;
         void *last;
     } list_t;
+
+    typedef struct key_value_s {
+        char *key;
+        int value;
+    } key_value_t;
 
     // Utils
 
@@ -48,5 +55,23 @@
     /// @brief init the list
     /// @return the list
     list_t *init_list(void);
+
+    /// @brief get item name
+    /// @param item the item
+    /// @return the item name
+    char *get_item_name(size_t item);
+
+    /// @brief get coordinates
+    /// @param client the client
+    /// @param map the map
+    /// @return the coordinates
+    vector_t real_coordinates(client_t *client, map_t *map);
+
+    /// @brief get the elements on a tile
+    /// @param map the map
+    /// @param x the x
+    /// @param y the y
+    /// @return the elements on the tile
+    char *get_elements_on_tile(map_t *map, size_t x, size_t y);
 
 #endif /* !UTILS_H_ */
