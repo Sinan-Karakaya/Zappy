@@ -20,12 +20,6 @@ zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &s
         throw zp::WindowManagerException("Failed to initialize ImGui");
     spdlog::info("Initializing style");
     setStyle();
-
-    try {
-        m_networkManager.connect();
-    } catch (const std::exception &e) {
-        throw zp::WindowManagerException(e.what());
-    }
 }
 
 zp::WindowManager::~WindowManager()
@@ -36,7 +30,6 @@ zp::WindowManager::~WindowManager()
 
 void zp::WindowManager::update()
 {
-    m_networkManager.update(m_map);
     handleEvents();
     drawImGui();
     render();

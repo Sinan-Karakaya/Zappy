@@ -26,10 +26,10 @@ class NetworkManager
 {
 public:
     NetworkManager();
-    ~NetworkManager() = default;
+    ~NetworkManager();
 
     void connect(const std::string &ip = "127.0.0.1", const std::string &port = "4242");
-    void update(Map &map);
+    void update(std::unique_ptr<Map> &map);
 
 private:
     std::unique_ptr<std::vector<std::vector<std::string>>> receive();

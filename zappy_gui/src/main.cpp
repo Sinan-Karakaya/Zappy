@@ -18,6 +18,9 @@ int main(int ac, char **av)
     } catch (const zp::WindowManagerException &e) {
         spdlog::error(e.what());
         return 84;
+    } catch (const std::exception &e) {
+        spdlog::error(e.what());
+        return 84;
     }
 
     return 0;

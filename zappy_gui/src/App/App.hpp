@@ -14,6 +14,8 @@
 
 #include "WindowManager/WindowManager.hpp"
 #include "WindowManager/WindowManagerException.hpp"
+#include "NetworkManager/NetworkManager.hpp"
+#include "Map/Map.hpp"
 
 namespace zp
 {
@@ -28,6 +30,8 @@ public:
 
 private:
     std::unique_ptr<WindowManager> m_windowManager;
+    std::unique_ptr<NetworkManager> m_networkManager;
+    std::unique_ptr<Map> m_map;
 };
 
 } // zp

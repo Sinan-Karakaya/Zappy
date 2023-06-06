@@ -18,6 +18,11 @@ zp::NetworkManager::NetworkManager()
     m_commands["sst"] = std::bind(&NetworkManager::timeUnitModification, this, std::placeholders::_1, std::placeholders::_2);
 }
 
+zp::NetworkManager::~NetworkManager()
+{
+    m_socket.disconnect();
+}
+
 void zp::NetworkManager::connect(const std::string &ip, const std::string &port)
 {
     if (m_socket.connect(sf::IpAddress(ip), std::stoi(port)) != sf::Socket::Done)
@@ -27,7 +32,7 @@ void zp::NetworkManager::connect(const std::string &ip, const std::string &port)
     spdlog::info("Connected to remote server");
 }
 
-void zp::NetworkManager::update(Map &map)
+void zp::NetworkManager::update(std::unique_ptr<Map> &map)
 {
     try {
         auto commands = receive();
@@ -35,7 +40,7 @@ void zp::NetworkManager::update(Map &map)
             return;
         for (auto &tokens : *commands) {
             if (m_commands.find(tokens[0]) != m_commands.end())
-                m_commands[tokens[0]](tokens, map);
+                m_commands[tokens[0]](tokens, *map);
             else
                 spdlog::warn("Unknown command: {}", tokens[0]);
         }

@@ -49,9 +49,6 @@ private:
 
     sf::RenderTexture m_gameTexture;
     sf::Sprite m_gameSprite;
-
-    NetworkManager m_networkManager;
-    Map m_map;
 };
 
 } // namespace zp
