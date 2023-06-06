@@ -203,7 +203,7 @@ class Agent:
         return True
 
     def canElevate(self, server: Server):
-        if self.__verifyVision(server, self.elevationRequirements[self.level]):
+        if self.__verifyVision(server, self.__levelRequirements[self.level]):
             return True
         return False
 

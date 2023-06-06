@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+##
+## EPITECH PROJECT, 2023
+## Zappy
+## File description:
+## main
+##
 
 ##
 ## EPITECH PROJECT, 2023
