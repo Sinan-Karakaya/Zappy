@@ -85,6 +85,21 @@ int sgt(my_zappy_t *zappy, int fd, char **args);
 int sst(my_zappy_t *zappy, int fd, char **args);
 
 int pnw(my_zappy_t *zappy, int fd);
+int pex(my_zappy_t *zappy, int fd);
+int pbc(my_zappy_t *zappy, int fd);
+int pic(my_zappy_t *zappy, int fd);
+int pie(my_zappy_t *zappy, int fd);
+int pfk(my_zappy_t *zappy, int fd);
+int pdr(my_zappy_t *zappy, int fd);
+int pgt(my_zappy_t *zappy, int fd);
+int pdi(my_zappy_t *zappy, int fd);
+int enw(my_zappy_t *zappy, int fd);
+int ebo(my_zappy_t *zappy, int fd);
+int edi(my_zappy_t *zappy, int fd);
+int seg(my_zappy_t *zappy, int fd);
+int smg(my_zappy_t *zappy, int fd);
+int suc(my_zappy_t *zappy, int fd);
+int sbp(my_zappy_t *zappy, int fd);
 
 /*
 PROTOCOLE IA

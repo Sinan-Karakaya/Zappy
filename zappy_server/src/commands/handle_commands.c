@@ -19,7 +19,7 @@ commands_t commands[] = {
     {"ppo", &ppo}, // OK
     {"plv", &plv}, // OK
     {"pin", &pin}, // OK
-    {"sgt", &sgt},
+    {"sgt", &sgt}, // OK
     {"sst", &sst},
     /*
         PROTOCOL AI
