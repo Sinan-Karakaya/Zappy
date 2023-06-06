@@ -81,24 +81,24 @@ class Repetoile(Agent):
 
         @return: None
         """
-        if self.inventory["food"] <= 10:
-            self.state = "Searching food"
-        else:
-            self.state = "Broadcasting like a fool"
+        # if self.inventory["food"] <= 10:
+        #     self.state = "Searching food"
+        # else:
+        #     self.state = "Broadcasting like a fool"
 
-        if self.state == "Searching food":
-            self.searchObject(server, "food")
+        # if self.state == "Searching food":
+        #     self.searchObject(server, "food")
 
-        if self.state == "Broadcasting like a fool":
-            self.repeat(server)
-            self.state = "Searching rock"
+        # if self.state == "Broadcasting like a fool":
+        #     self.repeat(server)
+        #     self.state = "Searching rock"
 
-        if self.state == "Searching rock":
-            self.searchObject(server, "linemate")
-            if (self.inventory["linemate"] > 0):
-                self.askServer(server, "Set linemate")
-                self.fillVisions(server)
-                self.askServer(server, "Incantation")
+        # if self.state == "Searching rock":
+        #     self.searchObject(server, "linemate")
+        #     if (self.inventory["linemate"] > 0):
+        #         self.askServer(server, "Set linemate")
+        #         self.fillVisions(server)
+        #         self.askServer(server, "Incantation")
 
         self.searchObject(server, "food")
         self.fillInventory(server)

@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+##
+## EPITECH PROJECT, 2023
+## zappy_ai
+## File description:
+## main
+##
+
 from src.Parameters.Parameters import Parameters
 from src.Server.Server import Server
 from src.Agent.Agent import Agent
