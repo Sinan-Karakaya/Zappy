@@ -9,16 +9,15 @@
 #include "zappy_server.h"
 #include <unistd.h>
 
-// mettre la pos en random sur la map
 // faire le action_time + eat_timer
-static player_t *init_player(void)
+static player_t *init_player(int width, int height)
 {
     player_t *new_player = calloc(1, sizeof(player_t));
 
     if (new_player == NULL)
         return NULL;
-    new_player->x = 0;
-    new_player->y = 0;
+    new_player->x = rand() % width + 0;
+    new_player->y = rand() % height + 0;
     new_player->id = 0;
     new_player->direction = rand() % WEST + NORTH;
     new_player->lvl = 1;
@@ -31,7 +30,7 @@ static player_t *init_player(void)
     return new_player;
 }
 
-client_info_t *init_clients_info(int fd)
+client_info_t *init_clients_info(int fd, int width, int height)
 {
     client_info_t *info = calloc(1, sizeof(client_info_t));
 
@@ -40,6 +39,6 @@ client_info_t *init_clients_info(int fd)
     info->fd = fd;
     info->user_id = fd;
     info->team_id = -1;
-    info->player = init_player();
+    info->player = init_player(width, height);
     return info;
 }
