@@ -90,7 +90,7 @@ int pbc(my_zappy_t *zappy, int fd, char *message);
 int pic(my_zappy_t *zappy, int fd);
 int pie(my_zappy_t *zappy, int fd);
 int pfk(my_zappy_t *zappy, int fd);
-int pdr(my_zappy_t *zappy, int fd);
+int pdr(my_zappy_t *zappy, int fd, enum ressources ressource);
 int pgt(my_zappy_t *zappy, int fd);
 int pdi(my_zappy_t *zappy, int fd);
 int enw(my_zappy_t *zappy, int fd);
