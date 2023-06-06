@@ -102,7 +102,7 @@ class Repetoile(Agent):
     def birth(self, server: Server):
         """
         Call when the agent is born.
-        
+
         @param server: The server object used to communicate with the server.
         @type server: Server
 

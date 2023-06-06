@@ -22,6 +22,7 @@ class Agent:
         }
         self.vision = []
         self.isDead = False
+        self.level = 1
         self.moveStack = []
         self.broadcastStack = []
 
@@ -158,6 +159,11 @@ class Agent:
             self.moveStack.append(direction)
         for i in range(0, xToGo):
             self.moveStack.append("Forward")
+
+    def canElevate(self, server: Server):
+        if self.level == 1 and "linemate" in self.vision[0]:
+            return True
+        return False
 
     def live(self, server: Server):
         ...
