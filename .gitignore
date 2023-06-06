@@ -30,8 +30,11 @@
 *.exe
 *.out
 *.app
-.vscode
-.idea
+
+# Folders
+*build*/
+.idea/
+.vscode/
 
 # Others
 *vgcore.*
