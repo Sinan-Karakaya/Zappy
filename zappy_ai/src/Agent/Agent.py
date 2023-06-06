@@ -37,7 +37,7 @@ class Agent:
 
         @return: The response from the server.
         """
-        print("Sending: " + msg)
+        print("Sending: " + msg , end=" ")
         server.socket.sendall((msg + "\n").encode("ASCII"))
         response = server.getResponse()
         if response == "dead\n":
@@ -45,6 +45,9 @@ class Agent:
         if "message" in response:
             self.broadcastStack.append(response)
             response = server.getResponse()
+        if "Elevation underway" in response:
+            response = server.getResponse()
+        print("| Receive: " + response)
         return response
 
     def fillInventory(self, server: Server):
