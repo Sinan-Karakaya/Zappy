@@ -27,6 +27,7 @@ jobs:
             - name: Build Zappy_AI
               run: |
                   cd $AI_DIR
+                  pip install black
                   ./build.sh
 
             - name: Install dependencies
