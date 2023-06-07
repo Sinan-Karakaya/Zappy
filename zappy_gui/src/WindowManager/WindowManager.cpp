@@ -24,6 +24,7 @@ zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &s
         throw zp::WindowManagerException("Failed to load background texture");
     m_backgroundSprite.setTexture(m_backgroundTexture);
     m_gameView.setSize(size.x, size.y);
+    m_gameView.setCenter(size.x / 2, size.y / 2);
     m_gameTexture.setView(m_gameView);
 }
 

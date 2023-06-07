@@ -24,9 +24,12 @@ void zp::Map::drawMap(sf::RenderTexture &window)
 {
     if (m_size.x == 0 || m_size.y == 0)
         return;
+
+    auto size = window.getSize();
     for (int i = m_size.x; i > 0; i--) {
         for (int j = m_size.y; j > 0; j--) {
-            m_tileSprite.setPosition((i - j) * TILE_WIDTH_HALF, (i + j) * (TILE_HEIGHT_HALF - 8));
+            m_tileSprite.setPosition((i - j) * TILE_WIDTH_HALF + size.x / 4, (i + j) * (TILE_HEIGHT_HALF - 8) +
+            size.y / 4);
             window.draw(m_tileSprite);
         }
     }
