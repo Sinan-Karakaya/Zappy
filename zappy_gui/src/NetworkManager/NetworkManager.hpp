@@ -30,21 +30,92 @@ public:
     NetworkManager();
     ~NetworkManager();
 
+    /**
+     * @brief Connect to the server
+     * @param port
+     * @param ip Default to localhost
+     */
     void connect(const std::string &port, const std::string &ip = "127.0.0.1");
+
+    /**
+     * @brief Update the map with the data received from the server
+     * @param map Map to be updated
+     */
     void update(std::unique_ptr<Map> &map);
 
 private:
+    /**
+     * @brief Update the map with the data received from the server
+     * @param map Map to update
+     */
     void updateMap(std::unique_ptr<Map> &map);
+
+    /**
+     * @brief Update the players on the map
+     * @param map Map on which the players should be updated
+     */
     void updatePlayers(std::unique_ptr<Map> &map);
+
+    /**
+     * @brief Update the rocks on the map
+     * @param map Map on which the rocks should be updated
+     */
     void updateRocks(std::unique_ptr<Map> &map);
 
+    /**
+     * @brief Handle the welcome command, send "GRAPHIC" to the server
+     * @param tokens Vector of the response
+     * @param map map to updateq
+     */
     void welcome(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from msz
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
     void getMapSize(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from bct
+     * @param tokens Vector of the responsee
+     * @param map map to update
+     */
     void getMapContent(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from tna
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
     void getNamesOfTeam(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from pnw
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
     void getNewPlayer(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from ppo
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
     void getPlayerPos(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from plv
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
     void timeUnitRequest(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from pin
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
     void timeUnitModification(const std::vector<std::string> &tokens, Map &map);
 
 private:

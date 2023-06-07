@@ -29,14 +29,49 @@ public:
     Map(int x = 0, int y = 0);
     ~Map() = default;
 
+    /**
+     * @brief Draw the map on the window, the players, the rocks, and other entities
+     * @param window
+     */
     void drawMap(sf::RenderTexture &window);
+
+    /**
+     * @brief Set the size of the map
+     * @param x
+     * @param y
+     */
     void setSize(int x = 0, int y = 0);
+
+    /**
+     * @brief Get the tile at (x, y)
+     * @param x Must be between 0 and 30
+     * @param y Must be between 0 and 30
+     * @return std::shared_ptr<Tile>
+     */
     std::shared_ptr<Tile> getTile(int x, int y);
 
+    /**
+     * @brief Add an alien to the map
+     * @param alien
+     */
     void addAlien(std::shared_ptr<zp::IEntity> alien);
+
+    /**
+     * @brief Add a rock to the map
+     * @param rock
+     */
     void addRock(std::shared_ptr<zp::IEntity> rock);
 
+    /**
+     * @brief Returns all aliens on the map
+     * @return
+     */
     std::vector<std::shared_ptr<zp::IEntity>> &getAliens();
+
+    /**
+     * @brief Returns all rocks on the map
+     * @return
+     */
     std::vector<std::shared_ptr<zp::IEntity>> &getRocks();
 
 private:

@@ -33,17 +33,52 @@ public:
     WindowManager(const std::string &title, const sf::Vector2u &size);
     ~WindowManager();
 
+    /**
+     * @brief Update the window
+     * @param map Map to update
+     */
     void update(std::unique_ptr<Map> &map);
+
+    /**
+     * @brief Check if the window is open
+     * @return bool
+     */
     bool isOpen();
 
 private:
+    /**
+     * @brief Set the style of the window
+     */
     void setStyle();
+
+    /**
+     * @brief Draw the ImGui windows
+     */
     void drawImGui();
+
+    /**
+     * @brief Handle the events
+     */
     void handleEvents();
+
+    /**
+     * @brief Render the window
+     */
     void render();
 
+    /**
+     * @brief Draw the chat window
+     */
     void drawChat();
+
+    /**
+     * @brief Draw the game window
+     */
     void drawGame();
+
+    /**
+     * @brief Draw the control panel
+     */
     void drawControlPanel();
 
 private:

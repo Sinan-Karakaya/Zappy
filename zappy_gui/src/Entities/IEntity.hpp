@@ -31,9 +31,28 @@ class IEntity
 public:
     virtual ~IEntity() = default;
 
+    /**
+     * @brief Draw the sprite
+     */
     virtual void draw(sf::RenderTexture &window) = 0;
+
+    /**
+     * @brief Set the position of the entity on the map
+     * @param x between 0 and 30
+     * @param y between 0 and 30
+     */
     virtual void setTilePosition(int x, int y) = 0;
+
+    /**
+     * @brief Set the position of the entity on the window
+     * @param dir NORTH EAST SOUTH WEST NONE
+     */
     virtual void setDirection(Direction dir) = 0;
+
+    /**
+     * @brief
+     * @return
+     */
     virtual int getId() const = 0;
 
 protected:
