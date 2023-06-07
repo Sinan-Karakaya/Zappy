@@ -17,13 +17,16 @@ zp::Map::Map(int x, int y) : m_size(x, y)
     m_tileSprite.setTexture(m_tileTexture);
     m_tileSprite.setTextureRect(sf::IntRect(0, 0, 128, 128));
     m_tileSprite.setScale(0.5, 0.5);
+    m_tileSprite.setRotation(180);
 }
 
 void zp::Map::drawMap(sf::RenderTexture &window)
 {
-    for (int i = 0; i < m_size.x; i++) {
-        for (int j = 0; j < m_size.y; j++) {
-            m_tileSprite.setPosition((i - j) * TILE_WIDTH_HALF, (i + j) * TILE_HEIGHT_HALF);
+    if (m_size.x == 0 || m_size.y == 0)
+        return;
+    for (int i = m_size.x; i > 0; i--) {
+        for (int j = m_size.y; j > 0; j--) {
+            m_tileSprite.setPosition((i - j) * TILE_WIDTH_HALF, (i + j) * (TILE_HEIGHT_HALF - 0));
             window.draw(m_tileSprite);
         }
     }

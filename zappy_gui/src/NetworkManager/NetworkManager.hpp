@@ -19,6 +19,7 @@
 #include "Utils/Utils.hpp"
 #include "Map/Map.hpp"
 #include "Entities/Alien.hpp"
+#include "Socket/Socket.hpp"
 
 namespace zp
 {
@@ -37,7 +38,6 @@ private:
     void updatePlayers(std::unique_ptr<Map> &map);
     void updateRocks(std::unique_ptr<Map> &map);
 
-    std::unique_ptr<std::vector<std::vector<std::string>>> receive();
     void welcome(const std::vector<std::string> &tokens, Map &map);
     void getMapSize(const std::vector<std::string> &tokens, Map &map);
     void getMapContent(const std::vector<std::string> &tokens, Map &map);
@@ -48,7 +48,7 @@ private:
     void timeUnitModification(const std::vector<std::string> &tokens, Map &map);
 
 private:
-    sf::TcpSocket m_socket;
+    zp::Socket m_socket;
     std::string m_port;
     std::string m_ip;
 
