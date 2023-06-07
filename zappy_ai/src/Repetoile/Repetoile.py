@@ -98,6 +98,7 @@ class Repetoile(Agent):
         #     if (self.inventory["linemate"] > 0):
         #         self.askServer(server, "Set linemate")
         #         self.fillVisions(server)
+        #         self.canElevate(server)
         #         self.askServer(server, "Incantation")
 
         self.searchObject(server, "food")
