@@ -11,9 +11,7 @@ env:
 jobs:
     push_to_mirror:
       runs-on: ubuntu-latest
-      needs: [build]
       name: push-to-mirror
-      if: ${{ github.event_name == 'push' }}
       steps:                                              # <-- must use actions/checkout before mirroring!
         - uses: actions/checkout@v3
           with:
