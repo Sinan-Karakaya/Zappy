@@ -53,7 +53,9 @@ typedef struct {
     size_t lvl;
     double action_time;
     size_t id;
-    double eat_timer;
+    size_t tick;
+    bool is_incanting;
+    bool is_alive;
 } player_t;
 
 typedef struct client_info_s {

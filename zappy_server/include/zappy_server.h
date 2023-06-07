@@ -15,6 +15,7 @@
     #include "team.h"
     #include "map.h"
     #include "parsing.h"
+    #include "my_time.h"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -24,7 +25,6 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <string.h>
-    #include <time.h>
 
     #define NUSED __attribute__((unused))
 
@@ -42,6 +42,7 @@
         client_list_t *client_list;
         size_t frequency;
         map_t *map;
+        my_time_t *time;
     } my_zappy_t;
 
     typedef struct fd_setters_s {
