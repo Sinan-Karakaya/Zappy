@@ -53,7 +53,8 @@ typedef struct {
     size_t lvl;
     double action_time;
     size_t id;
-    size_t tick;
+    size_t last_tick;
+    size_t actual_tick;
     bool is_incanting;
     bool is_alive;
 } player_t;

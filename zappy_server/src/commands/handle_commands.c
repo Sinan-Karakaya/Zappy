@@ -59,6 +59,8 @@ int handle_commands(my_zappy_t *zappy, int client_fd, char **cmd)
     print_debug(client, cmd);
     if (client->info->team_id == -1)
         return set_team(zappy, client_fd, cmd);
+    if (client->info->player->is_alive == false)
+        return 0;
     for (size_t i = 0; commands[i].command != NULL; i++) {
         if (strcmp(commands[i].command, cmd[0]) == 0)
             return commands[i].func(zappy, client_fd, cmd);

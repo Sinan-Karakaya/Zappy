@@ -111,4 +111,10 @@
     // Connections
     int accept_client(my_zappy_t *zappy);
 
+    // Time
+    void get_actual_time(my_zappy_t *zappy, my_time_t *time);
+
+    // Commands
+    int eat_all_client(my_zappy_t *zappy);
+
 #endif /* !Zappy_Server_H_ */

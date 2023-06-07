@@ -6,13 +6,17 @@
 */
 
 #include "clients.h"
+#include <stdio.h>
 
 static int destroy_user_info(client_t *user)
 {
     if (!user || !user->info)
         return 0;
-    if (user->info->fd)
+    if (user->info->fd) {
+        printf("Client %d disconnected\n", user->info->fd);
         close(user->info->fd);
+    }
+    free(user->info->player);
     free(user->info);
     return 0;
 }

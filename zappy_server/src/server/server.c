@@ -50,6 +50,7 @@ static int read_cmd(my_zappy_t *zappy)
 
     if (!zappy || !zappy->client_list)
         return 84;
+    eat_all_client(zappy);
     tmp = zappy->client_list->first;
     while (tmp != NULL) {
         read_loop(zappy, tmp->info->fd);
@@ -76,7 +77,7 @@ int create_server(parsing_t *parsing)
         if (accept_client(zappy) == 84)
             return 84;
         read_cmd(zappy);
-        get_actual_time(zappy->time);
+        get_actual_time(zappy, zappy->time);
     }
     signal(SIGINT, SIG_DFL);
     return free_zappy(zappy);

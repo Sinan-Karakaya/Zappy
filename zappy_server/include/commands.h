@@ -188,6 +188,7 @@ int sbp(my_zappy_t *zappy, int fd);
 PROTOCOLE IA
 */
 
+int check_alive(my_zappy_t *zappy, int fd);
 int incantation(my_zappy_t *zappy, int fd, char **args);
 int forward(my_zappy_t *zappy, int fd, char **args);
 int fork_cmd(my_zappy_t *zappy, int fd, char **args);

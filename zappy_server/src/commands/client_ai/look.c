@@ -32,8 +32,8 @@ static int look_left(client_t *client, map_t *map)
 
     for (int i = 0, x = client->info->player->x;
         i <= (int)client->info->player->lvl; i++, x--) {
-        for (int y = client->info->player->y - i;
-            y <= client->info->player->y + i; y++) {
+        for (int y = client->info->player->y + i;
+            y >= client->info->player->y - i; y--) {
             x = (x < 0) ? (map->x - x) : ((x >= map->x) ? (x - map->x) : x);
             y = (y < 0) ? (map->y - y) : ((y >= map->y) ? (y - map->y) : y);
             asprintf(&result, "%s%s, ", result,
@@ -68,8 +68,8 @@ static int look_down(client_t *client, map_t *map)
 
     for (int i = 0, y = client->info->player->y;
         i <= (int)client->info->player->lvl; i++, y++) {
-        for (int x = client->info->player->x - i;
-            x <= client->info->player->x + i; x++) {
+        for (int x = client->info->player->x + i;
+            x <= client->info->player->x - i; x--) {
             x = (x < 0) ? (map->x - x) : ((x >= map->x) ? (x - map->x) : x);
             y = (y < 0) ? (map->y - y) : ((y >= map->y) ? (y - map->y) : y);
             asprintf(&result, "%s%s, ", result,

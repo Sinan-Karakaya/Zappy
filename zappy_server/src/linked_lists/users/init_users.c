@@ -25,7 +25,8 @@ static player_t *init_player(int width, int height)
         new_player->inventory[i] = 0;
     new_player->inventory[FOOD] = 10;
     new_player->id = 0;
-    new_player->tick = 0;
+    new_player->actual_tick = 0;
+    new_player->last_tick = 0;
     new_player->is_incanting = false;
     new_player->is_alive = true;
     return new_player;

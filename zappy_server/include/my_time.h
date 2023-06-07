@@ -21,6 +21,5 @@
 
     void refresh_time_per_tick(my_time_t *init_time);
     my_time_t *init_time(size_t frequency);
-    void get_actual_time(my_time_t *time);
 
 #endif /* !TIME_H_ */

@@ -12,6 +12,8 @@
     #include <string.h>
     #include <stdbool.h>
 
+    #define  TEAM_ID_GRAPHIC 0
+
     typedef struct team_info_s {
         char *name;
         size_t nb_clients;
