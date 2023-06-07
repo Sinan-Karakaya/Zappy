@@ -6,9 +6,10 @@
 */
 
 #include "commands.h"
+#include "my_id.h"
 
 static void set_id_client(client_list_t *client_list,
-    client_info_t *client_info)
+    client_info_t *client_info, map_t *map)
 {
     client_t *tmp = client_list->first;
     size_t id_tmp = 0;
@@ -21,6 +22,8 @@ static void set_id_client(client_list_t *client_list,
         tmp = tmp->next;
     }
     client_info->player->id = id_tmp + 1;
+    list_add_id(map->tiles[client_info->player->y] \
+        [client_info->player->x].players, client_info->player->id);
 }
 
 int accept_client(my_zappy_t *zappy)
@@ -40,7 +43,7 @@ int accept_client(my_zappy_t *zappy)
         ntohs(zappy->server->address.sin_port));
         client_info = init_clients_info(fd_actual, zappy->map->x,
             zappy->map->y);
-        set_id_client(zappy->client_list, client_info);
+        set_id_client(zappy->client_list, client_info, zappy->map);
         list_add_client(zappy->client_list, client_info);
         dprintf(fd_actual, "WELCOME\n");
     } return fd_actual;

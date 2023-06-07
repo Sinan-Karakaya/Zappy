@@ -5,7 +5,6 @@
 ** init_clients
 */
 
-#include "clients.h"
 #include "zappy_server.h"
 #include <unistd.h>
 
