@@ -16,6 +16,13 @@ static void tick_all_client(my_zappy_t *zappy)
     }
 }
 
+static void refill_ressources(my_zappy_t *zappy)
+{
+    if ((zappy->time->actual != zappy->time->last)
+        && ((int)zappy->time->actual % 20 == 0))
+            refill_map(zappy->map);
+}
+
 void get_actual_time(my_zappy_t *zappy, my_time_t *time)
 {
     if (!time)
@@ -26,6 +33,7 @@ void get_actual_time(my_zappy_t *zappy, my_time_t *time)
     if (time->elapsed >= time->time_per_tick) {
         time->last = time->actual;
         time->nb_ticks += 1;
+        refill_ressources(zappy);
         tick_all_client(zappy);
     }
 }

@@ -23,7 +23,7 @@
 typedef struct {
     size_t inventory[LENGHT_INVENTORY];
     id_list_t *players;
-    bool is_egg;
+    id_list_t *egg;
 } tiles_t;
 
 typedef struct {
@@ -34,5 +34,6 @@ typedef struct {
 } map_t;
 
 map_t *init_map(size_t x, size_t y);
+void refill_map(map_t *map);
 
 #endif /* !MAP_H_ */

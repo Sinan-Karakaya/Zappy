@@ -145,19 +145,19 @@ int pdi(my_zappy_t *zappy, int fd);
 /// @param zappy
 /// @param fd
 /// @return
-int enw(my_zappy_t *zappy, int fd);
+int enw(my_zappy_t *zappy, int fd, int id_egg, vector_t pos_egg);
 
 /// @brief player connection for an egg
 /// @param zappy
 /// @param fd
 /// @return
-int ebo(my_zappy_t *zappy, int fd);
+int ebo(my_zappy_t *zappy, int fd, int id_egg);
 
 /// @brief death of an egg
 /// @param zappy
 /// @param fd
 /// @return
-int edi(my_zappy_t *zappy, int fd);
+int edi(my_zappy_t *zappy, int fd, int id_egg);
 
 /// @brief end of an egg
 /// @param zappy
