@@ -76,6 +76,7 @@ int create_server(parsing_t *parsing)
         if (accept_client(zappy) == 84)
             return 84;
         read_cmd(zappy);
+        get_actual_time(zappy->time);
     }
     signal(SIGINT, SIG_DFL);
     return free_zappy(zappy);

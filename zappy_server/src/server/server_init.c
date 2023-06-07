@@ -32,6 +32,19 @@ int init_teams(my_zappy_t *zappy, parsing_t *parsing)
     return 0;
 }
 
+static int init_zappy_bis(my_zappy_t *zappy, parsing_t *parsing)
+{
+    if (!zappy->server || !parsing)
+        return 84;
+    zappy->map = init_map(parsing->width, parsing->height);
+    if (!zappy->map)
+        return 84;
+    zappy->time = init_time(parsing->freq);
+    if (!zappy->time)
+        return 84;
+    return 0;
+}
+
 my_zappy_t *init_zappy(parsing_t *parsing)
 {
     my_zappy_t *zappy = calloc(1, sizeof(my_zappy_t));
@@ -47,8 +60,7 @@ my_zappy_t *init_zappy(parsing_t *parsing)
     zappy->client_list = (client_list_t *)init_list();
     if (!zappy->client_list)
         return NULL;
-    zappy->map = init_map(parsing->width, parsing->height);
-    if (!zappy->map)
+    if (init_zappy_bis(zappy, parsing) == 84)
         return NULL;
     zappy->frequency = parsing->freq;
     free_parsing(parsing);

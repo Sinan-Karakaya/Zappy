@@ -22,11 +22,13 @@ static player_t *init_player(int width, int height)
     new_player->direction = rand() % WEST + NORTH;
     new_player->lvl = 1;
     new_player->action_time = 0;
-    new_player->eat_timer = 0;
     for (size_t i = 0; i < LENGHT_INVENTORY; i++)
         new_player->inventory[i] = 0;
     new_player->inventory[FOOD] = 10;
     new_player->id = 0;
+    new_player->tick = 0;
+    new_player->is_incanting = false;
+    new_player->is_alive = true;
     return new_player;
 }
 
