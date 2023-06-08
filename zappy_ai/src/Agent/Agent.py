@@ -22,7 +22,7 @@ class Agent:
         }
         self.vision = []
         self.isDead = False
-        self.level = 1
+        self.level = 0
         self.moveStack = []
         self.broadcastStack = []
         self.__levelRequirements = [{"player": 1, "linemate": 1},
@@ -50,10 +50,10 @@ class Agent:
         response = server.getResponse()
         if response == "dead\n":
             self.isDead = True
+        if "Incantation" in msg:
+            response = server.getResponse()
         if "message" in response:
             self.broadcastStack.append(response)
-            response = server.getResponse()
-        if "Elevation underway" in response:
             response = server.getResponse()
         print("| Receive: " + response, end="")
         return response
@@ -170,6 +170,36 @@ class Agent:
         for i in range(0, xToGo):
             self.moveStack.append("Forward")
 
+    def searchObject(self, server: Server, object: str):
+        """
+        Search for an object in the vision of the agent and move to it if it is found.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+
+        @return: None
+        """
+        indexObject = -1
+        minDistance = -1
+
+        self.fillVisions(server)
+        for tile, index in zip(self.vision, range(0, len(self.vision))):
+            if object in tile:
+                distance = self.distanceTo(index)
+                if minDistance == -1 or distance < minDistance:
+                    indexObject = index
+                    minDistance = distance
+
+        if indexObject == 0:
+            self.askServer(server, "Take " + object)
+        elif indexObject != -1:
+            self.fillMoveStack(indexObject)
+            while len(self.moveStack) > 0:
+                print(self.askServer(server, self.moveStack.pop()))
+            self.askServer(server, "Take " + object)
+        else:
+            self.askServer(server, "Forward")
+
     def distanceTo(self, listIndex: int):
         """
         Returns the distance to the index of the vision list.
@@ -195,6 +225,7 @@ class Agent:
 
         @return: bool
         """
+        self.fillVisions(server)
         for key in needed:
             if key not in self.vision[0]:
                 return False
@@ -206,6 +237,40 @@ class Agent:
         if self.__verifyVision(server, self.__levelRequirements[self.level]):
             return True
         return False
+    
+    def elevate(self, server: Server):
+        rock_needed = dict(self.__levelRequirements[self.level])
+
+        for key in rock_needed:
+            if (key != "player"):
+                rock_needed[key] -= self.inventory[key]
+
+        for key in rock_needed:
+            if rock_needed[key] > 0 and key != "player":
+                self.searchObject(server, key)
+
+        hasAllRock = True
+        for key in rock_needed:
+            if rock_needed[key] != 0 and key != "player":
+                hasAllRock = False
+                break
+
+        if hasAllRock:
+            for key in rock_needed:
+                print("AAAA ",key, self.__levelRequirements[self.level])
+                for i in range(0, self.__levelRequirements[self.level][key]):
+                    if key != "player":
+                        self.askServer(server, "Set " + key)
+            if (self.__levelRequirements[self.level]["player"] > 1):
+                self.broadcast(server, "I'm incantating !")
+            self.fillVisions(server)
+            print("VISION ", self.vision[0])
+            response = self.askServer(server, "Incantation")
+            if not "ko" in response:
+                self.level += 1
+    
+    def broadcast(self, server: Server, message: str):
+        ...
 
     def live(self, server: Server):
         ...

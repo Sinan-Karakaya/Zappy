@@ -16,36 +16,6 @@ class Repetoile(Agent):
         self.teamName = teamName
         self.state = "Searching food"
 
-    def searchObject(self, server: Server, object: str):
-        """
-        Search for an object in the vision of the agent and move to it if it is found.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
-
-        @return: None
-        """
-        indexObject = -1
-        minDistance = -1
-
-        self.fillVisions(server)
-        for tile, index in zip(self.vision, range(0, len(self.vision))):
-            if object in tile:
-                distance = self.distanceTo(index)
-                if minDistance == -1 or distance < minDistance:
-                    indexObject = index
-                    minDistance = distance
-
-        if indexObject == 0:
-            self.askServer(server, "Take " + object)
-        elif indexObject != -1:
-            self.fillMoveStack(indexObject)
-            while len(self.moveStack) > 0:
-                print(self.askServer(server, self.moveStack.pop()))
-            self.askServer(server, "Take " + object)
-        else:
-            self.askServer(server, "Forward")
-
     def repeat(self, server: Server):
         """
         Repeat a message from the broadcast stack if the message is not from the same team.
@@ -81,27 +51,25 @@ class Repetoile(Agent):
 
         @return: None
         """
-        # if self.inventory["food"] <= 10:
-        #     self.state = "Searching food"
-        # else:
-        #     self.state = "Broadcasting like a fool"
+        if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
+            print("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+        if self.inventory["food"] <= 10:
+            self.state = "Searching food"
+        else:
+            self.state = "Broadcasting like a fool"
 
-        # if self.state == "Searching food":
-        #     self.searchObject(server, "food")
+        if self.state == "Searching food":
+            self.searchObject(server, "food")
 
-        # if self.state == "Broadcasting like a fool":
-        #     self.repeat(server)
-        #     self.state = "Searching rock"
+        if self.state == "Broadcasting like a fool":
+            self.repeat(server)
+            self.state = "Searching rock"
 
-        # if self.state == "Searching rock":
-        #     self.searchObject(server, "linemate")
-        #     if (self.inventory["linemate"] > 0):
-        #         self.askServer(server, "Set linemate")
-        #         self.fillVisions(server)
-        #         self.canElevate(server)
-        #         self.askServer(server, "Incantation")
+        if self.state == "Searching rock":
+            self.elevate(server)
+            self.state = "Searching food"
 
-        self.searchObject(server, "food")
+        # self.searchObject(server, "food")
         self.fillInventory(server)
         # print(self.inventory)
 
@@ -114,5 +82,20 @@ class Repetoile(Agent):
 
         @return: None
         """
-        self.askServer(server, "Broadcast " + self.teamName + " I'm born !"),
+
+        self.broadcast(server, "I'm born")
         self.state = "Searching food"
+
+    def broadcast(self, server: Server, message: str):
+        """
+        Call when the agent need to comunicat so it can use is language.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+
+        @param message: The message to send.
+        @type message: str
+
+        @return: None
+        """
+        self.askServer(server, "Broadcast " + self.teamName + " " + message),
