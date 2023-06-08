@@ -60,6 +60,12 @@ static int read_cmd(my_zappy_t *zappy)
     return 0;
 }
 
+static void time_manager(my_zappy_t *zappy)
+{
+    get_actual_time(zappy, zappy->time);
+    handle_callbacks(zappy);
+}
+
 int create_server(parsing_t *parsing)
 {
     my_zappy_t *zappy = init_zappy(parsing);
@@ -78,8 +84,7 @@ int create_server(parsing_t *parsing)
         if (accept_client(zappy) == 84)
             return 84;
         read_cmd(zappy);
-        get_actual_time(zappy, zappy->time);
-        handle_callbacks(zappy);
+        time_manager(zappy);
     } signal(SIGINT, SIG_DFL);
     return free_zappy(zappy);
 }

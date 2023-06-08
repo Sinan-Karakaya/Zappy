@@ -14,7 +14,7 @@ char *get_elements_on_tile(map_t *map, size_t x, size_t y)
 
     for (my_id_t *i = map->tiles[y][x].players->first; i; i = i->next)
         asprintf(&result, "%splayer ", result);
-    if (map->tiles[y][x].is_egg)
+    for (my_id_t *i = map->tiles[y][x].egg->first; i; i = i->next)
         asprintf(&result, "%segg ", result);
     for (size_t i = 0; i < LENGHT_INVENTORY; i++) {
         for (size_t j = 0; j < map->tiles[y][x].inventory[i]; j++)

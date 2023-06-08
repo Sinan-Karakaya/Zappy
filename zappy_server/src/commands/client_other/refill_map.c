@@ -2,11 +2,10 @@
 ** EPITECH PROJECT, 2023
 ** Zappy
 ** File description:
-** map
+** refill_map
 */
 
 #include "map.h"
-#include "utils.h"
 
 static void fill_map_part1(tiles_t **map, size_t x, size_t y)
 {
@@ -50,37 +49,8 @@ static void fill_map_part2(tiles_t **map, size_t x, size_t y)
     }
 }
 
-static tiles_t **init_tiles(size_t x, size_t y)
+void refill_map(map_t *map)
 {
-    tiles_t **tile = calloc(x, sizeof(tiles_t *));
-
-    if (!tile)
-        return NULL;
-    for (size_t i = 0; i < x; i++) {
-        tile[i] = calloc(y, sizeof(tiles_t));
-        if (!tile[i])
-            return NULL;
-    }
-    for (size_t i = 0; i < x; i++)
-        for (size_t j = 0; j < y; j++) {
-            tile[i][j].players = (id_list_t *)init_list();
-            tile[i][j].egg = (id_list_t *)init_list();
-        }
-    fill_map_part1(tile, x, y);
-    fill_map_part2(tile, x, y);
-    return tile;
-}
-
-map_t *init_map(size_t x, size_t y)
-{
-    map_t *map = calloc(1, sizeof(map_t));
-
-    if (!map)
-        return NULL;
-    map->x = x;
-    map->y = y;
-    map->tiles = init_tiles(x, y);
-    for (size_t i = 0; i < LENGTH_DENSITY; i++)
-        map->density[i] = 0;
-    return map;
+    fill_map_part1(map->tiles, map->x, map->y);
+    fill_map_part2(map->tiles, map->x, map->y);
 }

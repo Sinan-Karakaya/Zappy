@@ -6,6 +6,7 @@
 */
 
 #include "zappy_server.h"
+#include "commands.h"
 
 int verify_look(my_zappy_t *zappy, int fd, char **args)
 {

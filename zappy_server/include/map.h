@@ -21,11 +21,11 @@
     #define PHIRAS_DENSITY 0.08
     #define THYSTAME_DENSITY 0.05
 
-    typedef struct {
-        size_t inventory[LENGHT_INVENTORY];
-        id_list_t *players;
-        bool is_egg;
-    } tiles_t;
+typedef struct {
+    size_t inventory[LENGHT_INVENTORY];
+    id_list_t *players;
+    id_list_t *egg;
+} tiles_t;
 
     typedef struct {
         ssize_t x;
@@ -53,5 +53,7 @@
     /// @param y the y
     /// @return the elements on the tile
     char *get_elements_on_tile(map_t *map, size_t x, size_t y);
+
+    void refill_map(map_t *map);
 
 #endif /* !MAP_H_ */
