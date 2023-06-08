@@ -39,7 +39,7 @@ int accept_client(my_zappy_t *zappy)
         (struct sockaddr *)&address, &addrlen);
         if (fd_actual == -1)
             return 84;
-        dprintf(1, "Client %d connected from %s:%d\n", fd_actual,
+        printf("%s: Client %d connected from %s:%d\n", SERVER_GREEN, fd_actual,
         inet_ntoa(address.sin_addr), ntohs(zappy->server->address.sin_port));
         client_info = init_clients_info(fd_actual, zappy->map->x,
             zappy->map->y);

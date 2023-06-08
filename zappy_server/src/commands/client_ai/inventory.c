@@ -8,6 +8,12 @@
 #include "zappy_server.h"
 #include "commands.h"
 
+int verify_inventory(my_zappy_t *zappy, int fd, char **args)
+{
+    add_to_callback(zappy, fd, args, args[0]);
+    return 0;
+}
+
 int inventory(my_zappy_t *zappy, int fd, char **args)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);

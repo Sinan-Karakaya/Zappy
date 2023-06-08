@@ -19,7 +19,11 @@
         time_t *time;
     } my_time_t;
 
-    void refresh_time_per_tick(my_time_t *init_time);
+    typedef struct time_vector {
+        size_t tick_start;
+        size_t tick_delay;
+    } time_vector_t;
+
     my_time_t *init_time(size_t frequency);
 
 #endif /* !TIME_H_ */

@@ -7,6 +7,7 @@
 
 #include "zappy_server.h"
 #include "free.h"
+#include "utils.h"
 #include <signal.h>
 #include <unistd.h>
 
@@ -41,6 +42,9 @@ static int init_zappy_bis(my_zappy_t *zappy, parsing_t *parsing)
         return 84;
     zappy->time = init_time(parsing->freq);
     if (!zappy->time)
+        return 84;
+    zappy->callback_list = init_list();
+    if (!zappy->callback_list)
         return 84;
     return 0;
 }

@@ -59,6 +59,12 @@ vector_t real_coordinates(client_t *client, map_t *map)
     return coordinates;
 }
 
+int verify_forward(my_zappy_t *zappy, int fd, char **args)
+{
+    add_to_callback(zappy, fd, args, args[0]);
+    return 0;
+}
+
 int forward(my_zappy_t *zappy, int fd, NUSED char **args)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);

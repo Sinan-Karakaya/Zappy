@@ -33,6 +33,12 @@ static int do_take(my_zappy_t *zappy, client_t *client, int fd, size_t i)
     }
 }
 
+int verify_take(my_zappy_t *zappy, int fd, char **args)
+{
+    add_to_callback(zappy, fd, args, args[0]);
+    return 0;
+}
+
 int take(my_zappy_t *zappy, int fd, char **args)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);
