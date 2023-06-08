@@ -6,7 +6,19 @@
 ##
 
 from src.Server.Server import Server
-from src.Color.Color import OKGREEN, ENDC, FAIL, WARNING, OKBLUE, HEADER, OKCYAN, BOLD, UNDERLINE, OKBLUE
+from src.Color.Color import (
+    OKGREEN,
+    ENDC,
+    FAIL,
+    WARNING,
+    OKBLUE,
+    HEADER,
+    OKCYAN,
+    BOLD,
+    UNDERLINE,
+    OKBLUE,
+)
+
 
 class Agent:
     def __init__(self, server: Server):
@@ -26,13 +38,23 @@ class Agent:
         self.level = 0
         self.moveStack = []
         self.broadcastStack = []
-        self.__levelRequirements = [{"player": 1, "linemate": 1},
-                                  {"player": 2, "linemate": 1, "deraumere": 1, "sibur": 1},
-                                  {"player": 2, "linemate": 2, "sibur": 1, "phiras": 2},
-                                  {"player": 4, "linemate": 1, "deraumere": 1, "sibur": 2, "phiras": 1},
-                                  {"player": 4, "linemate": 1, "deraumere": 2, "sibur": 1, "mendiane": 3},
-                                  {"player": 6, "linemate": 1, "deraumere": 2, "sibur": 3, "phiras": 1},
-                                  {"player": 6, "linemate": 2, "deraumere": 2, "sibur": 2, "mendiane": 2, "phiras": 2, "thystame": 1}]
+        self.__levelRequirements = [
+            {"player": 1, "linemate": 1},
+            {"player": 2, "linemate": 1, "deraumere": 1, "sibur": 1},
+            {"player": 2, "linemate": 2, "sibur": 1, "phiras": 2},
+            {"player": 4, "linemate": 1, "deraumere": 1, "sibur": 2, "phiras": 1},
+            {"player": 4, "linemate": 1, "deraumere": 2, "sibur": 1, "mendiane": 3},
+            {"player": 6, "linemate": 1, "deraumere": 2, "sibur": 3, "phiras": 1},
+            {
+                "player": 6,
+                "linemate": 2,
+                "deraumere": 2,
+                "sibur": 2,
+                "mendiane": 2,
+                "phiras": 2,
+                "thystame": 1,
+            },
+        ]
 
     def askServer(self, msg: str):
         """
@@ -236,23 +258,31 @@ class Agent:
         if self.__verifyVision(self.server, self.__levelRequirements[self.level]):
             return True
         return False
-    
+
     def __prepareTile(self, rock_needed: dict):
         """
         Prepare the tile to level up. Clear the tile of all the rocks that are not needed.
-    
-        
+
+
         @param rock_needed: The rocks needed to level up.
         @type rock_needed: dict
-        
+
         @return: None
         """
         for key in rock_needed:
-            for i in range(0, self.__levelRequirements[self.level][key] - self.vision[0].count(key)):
+            for i in range(
+                0, self.__levelRequirements[self.level][key] - self.vision[0].count(key)
+            ):
                 if key != "player":
                     self.askServer("Set " + key)
         for rock in self.vision[0]:
-            if (rock != "player" and rock != "food") and ((rock not in self.__levelRequirements[self.level]) or (self.vision[0].count(rock) > self.__levelRequirements[self.level][rock])):
+            if (rock != "player" and rock != "food") and (
+                (rock not in self.__levelRequirements[self.level])
+                or (
+                    self.vision[0].count(rock)
+                    > self.__levelRequirements[self.level][rock]
+                )
+            ):
                 self.askServer("Take " + rock)
 
     def __gatherRocks(self):
@@ -266,7 +296,7 @@ class Agent:
         rock_needed = dict(self.__levelRequirements[self.level])
 
         for key in rock_needed:
-            if (key != "player"):
+            if key != "player":
                 rock_needed[key] -= self.inventory[key]
 
         for key in rock_needed:
@@ -279,34 +309,39 @@ class Agent:
                 hasAllRock = False
                 break
         return (rock_needed, hasAllRock)
-    
+
     def joinIncantate(self):
         if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
-            print("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
+            print(
+                "OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
+            )
 
     def elevate(self):
         """
         Elevate the agent to the next level. gathering all rock and player
-    
-        
+
+
         @return: None
         """
         rock_needed, hasAllRock = self.__gatherRocks()
         self.fillVisions()
         if hasAllRock:
-            while (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
+            while (
+                self.vision[0].count("player")
+                < self.__levelRequirements[self.level]["player"]
+            ):
                 self.broadcast("I'm incantating " + str(self.level) + "!")
                 self.joinIncantate()
                 self.fillVisions()
                 self.fillInventory()
                 if self.inventory["food"] < 7:
                     self.searchObject("food")
-            
+
             self.__prepareTile(rock_needed)
             response = self.askServer("Incantation")
             if not "ko" in response:
                 self.level += 1
-    
+
     def broadcast(self, message: str):
         ...
 
@@ -319,7 +354,7 @@ class Agent:
     def run(self):
         """
         Run the agent.
-    
+
         @return: None"""
         self.birth()
         while not self.isDead:
