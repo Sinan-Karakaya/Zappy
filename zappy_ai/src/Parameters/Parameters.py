@@ -11,7 +11,7 @@ import sys
 class Parameters:
     def __init__(self):
         self.port = ""
-        self.host = ""
+        self.host = "localhost"
         self.name = ""
 
     def displayHelp(self):
@@ -29,7 +29,7 @@ class Parameters:
         """
         if len(sys.argv) != 7:
             self.displayHelp()
-            exit(84)
+            return 84
 
         for arg in sys.argv:
             if arg == "-p":
@@ -41,4 +41,4 @@ class Parameters:
 
         if len(self.port) == 0 or len(self.host) == 0 or len(self.name) == 0:
             self.displayHelp()
-            exit(84)
+            return 84

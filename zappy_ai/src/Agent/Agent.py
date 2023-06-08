@@ -179,7 +179,6 @@ class Agent:
 
         @return: None
         """
-
         if listIndex <= 0:
             return
         yToGo = self.__getYtoGo(listIndex)
@@ -194,6 +193,9 @@ class Agent:
     def searchObject(self, object: str):
         """
         Search for an object in the vision of the agent and move to it if it is found.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
 
         @return: None
         """
@@ -240,7 +242,7 @@ class Agent:
 
         @return: bool
         """
-        self.fillVisions(self.server)
+        self.fillVisions()
         for key in needed:
             if key not in self.vision[0]:
                 return False
@@ -254,8 +256,7 @@ class Agent:
 
         @return: bool
         """
-
-        if self.__verifyVision(self.server, self.__levelRequirements[self.level]):
+        if self.__verifyVision(self.__levelRequirements[self.level - 1]):
             return True
         return False
 
@@ -288,6 +289,9 @@ class Agent:
     def __gatherRocks(self):
         """
         Gather all the rocks needed to level up.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
 
         @return: (dict, bool)
         @rtype: (dict, bool)

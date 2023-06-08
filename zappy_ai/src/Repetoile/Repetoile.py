@@ -11,7 +11,7 @@ from random import randint
 
 
 class Repetoile(Agent):
-    def __init__(self, server: Server, teamName: str):
+    def __init__(self, teamName, server):
         super().__init__(server)
         self.teamName = teamName
         print("Team name: " + self.teamName)
@@ -61,7 +61,7 @@ class Repetoile(Agent):
         if self.state == "Searching rock":
             self.elevate()
 
-        # self.searchObject(server, "food")
+        # self.searchObject("food")
         self.fillInventory()
         # print(self.inventory)
 
@@ -78,6 +78,9 @@ class Repetoile(Agent):
     def broadcast(self, message: str):
         """
         Call when the agent need to comunicat so it can use is language.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
 
         @param message: The message to send.
         @type message: str

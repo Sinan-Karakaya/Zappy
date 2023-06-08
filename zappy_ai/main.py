@@ -6,31 +6,26 @@
 ## main
 ##
 
-##
-## EPITECH PROJECT, 2023
-## zappy_ai
-## File description:
-## main
-##
-
 from src.Parameters.Parameters import Parameters
 from src.Server.Server import Server
-from src.Agent.Agent import Agent
 from src.Repetoile.Repetoile import Repetoile
 
 
 def main():
     args = Parameters()
-    args.checkParameters()
+
+    if args.checkParameters() == 84:
+        exit(84)
 
     server = Server(args.host, int(args.port))
     server.connect()
+
+    myAgent = Repetoile(args.name, server)
 
     server.printResponse()
     server.socket.sendall((args.name + "\n").encode("ASCII"))
     server.printResponse()
 
-    myAgent = Repetoile(server, args.name)
     myAgent.run()
 
     server.socket.close()

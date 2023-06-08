@@ -34,3 +34,9 @@ class Server:
         """
         self.data = self.socket.recv(2048).decode("ASCII")
         return self.data
+
+    def printResponse(self):
+        """
+        Display the response from the server and set the data.
+        """
+        print(self.getResponse(), end="")
