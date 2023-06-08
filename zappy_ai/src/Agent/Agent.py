@@ -234,6 +234,15 @@ class Agent:
         return True
 
     def canElevate(self, server: Server):
+        """
+        Return true if its possible to Level Up.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+
+        @return: bool
+        """
+
         if self.__verifyVision(server, self.__levelRequirements[self.level]):
             return True
         return False
