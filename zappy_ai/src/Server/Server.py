@@ -25,12 +25,12 @@ class Server:
         """
         Display the response from the server and set the data.
         """
-        self.data = self.socket.recv(1024).decode("ASCII")
+        self.data = self.socket.recv(2048).decode("ASCII")
         print(self.data, end="")
 
     def getResponse(self):
         """
         Get the response from the server, set the data and return the response.
         """
-        self.data = self.socket.recv(1024).decode("ASCII")
+        self.data = self.socket.recv(2048).decode("ASCII")
         return self.data

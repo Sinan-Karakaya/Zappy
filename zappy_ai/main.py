@@ -21,8 +21,8 @@ from src.Repetoile.Repetoile import Repetoile
 
 def main():
     args = Parameters()
-    myAgent = Repetoile(args.name)
     args.checkParameters()
+    myAgent = Repetoile(args.name)
 
     server = Server(args.host, int(args.port))
     server.connect()

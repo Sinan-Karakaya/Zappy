@@ -14,6 +14,7 @@ class Repetoile(Agent):
     def __init__(self, teamName):
         super().__init__()
         self.teamName = teamName
+        print("Team name: " + self.teamName)
         self.state = "Searching food"
 
     def repeat(self, server: Server):
@@ -51,8 +52,6 @@ class Repetoile(Agent):
 
         @return: None
         """
-        if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
-            print("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
         if self.inventory["food"] <= 10:
             self.state = "Searching food"
         else:
@@ -67,7 +66,6 @@ class Repetoile(Agent):
 
         if self.state == "Searching rock":
             self.elevate(server)
-            self.state = "Searching food"
 
         # self.searchObject(server, "food")
         self.fillInventory(server)

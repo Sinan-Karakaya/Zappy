@@ -6,7 +6,7 @@
 ##
 
 from src.Server.Server import Server
-
+from src.Color.Color import OKGREEN, ENDC, FAIL, WARNING, OKBLUE, HEADER, OKCYAN, BOLD, UNDERLINE, OKBLUE
 
 class Agent:
     def __init__(self):
@@ -50,12 +50,19 @@ class Agent:
         response = server.getResponse()
         if response == "dead\n":
             self.isDead = True
+            exit(0)
         if "Incantation" in msg:
             response = server.getResponse()
         if "message" in response:
             self.broadcastStack.append(response)
+            print(OKBLUE, "New message: " + response, end=ENDC)
             response = server.getResponse()
-        print("| Receive: " + response, end="")
+        if "ok" in response:
+            print(OKGREEN, "| Receive: " + response, end=ENDC)
+        elif "ko" in response:
+            print(WARNING, "| Receive: " + response, end=ENDC)
+        else:
+            print(OKCYAN, "| Receive: " + response, end=ENDC)
         return response
 
     def fillInventory(self, server: Server):
@@ -247,7 +254,37 @@ class Agent:
             return True
         return False
     
-    def elevate(self, server: Server):
+    def __prepareTile(self, server: Server, rock_needed: dict):
+        """
+        Prepare the tile to level up. Clear the tile of all the rocks that are not needed.
+        
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+        
+        @param rock_needed: The rocks needed to level up.
+        @type rock_needed: dict
+        
+        @return: None
+        """
+        for key in rock_needed:
+            for i in range(0, self.__levelRequirements[self.level][key] - self.vision[0].count(key)):
+                if key != "player":
+                    self.askServer(server, "Set " + key)
+        for rock in self.vision[0]:
+            if (rock != "player" and rock != "food") and ((rock not in self.__levelRequirements[self.level]) or (self.vision[0].count(rock) > self.__levelRequirements[self.level][rock])):
+                self.askServer(server, "Take " + rock)
+
+    def __gatherRocks(self, server: Server):
+        """
+        Gather all the rocks needed to level up.
+
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+
+        @return: (dict, bool)
+        @rtype: (dict, bool)
+        @return: The rocks needed to level up and if the agent has all the rocks needed.
+        """
         rock_needed = dict(self.__levelRequirements[self.level])
 
         for key in rock_needed:
@@ -263,17 +300,33 @@ class Agent:
             if rock_needed[key] != 0 and key != "player":
                 hasAllRock = False
                 break
+        return (rock_needed, hasAllRock)
+    
+    def joinMessage(self, server: Server, message: str):
+        if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
+            print("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
 
+    def elevate(self, server: Server):
+        """
+        Elevate the agent to the next level. gathering all rock and player
+        
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+        
+        @return: None
+        """
+        rock_needed, hasAllRock = self.__gatherRocks(server)
+        self.fillVisions(server)
         if hasAllRock:
-            for key in rock_needed:
-                print("AAAA ",key, self.__levelRequirements[self.level])
-                for i in range(0, self.__levelRequirements[self.level][key]):
-                    if key != "player":
-                        self.askServer(server, "Set " + key)
-            if (self.__levelRequirements[self.level]["player"] > 1):
-                self.broadcast(server, "I'm incantating !")
-            self.fillVisions(server)
-            print("VISION ", self.vision[0])
+            while (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
+                self.broadcast(server, "I'm incantating " + str(self.level) + "!")
+                self.joinMessage(server, server.receive())
+                self.fillVisions(server)
+                self.fillInventory(server)
+                if self.inventory["food"] < 7:
+                    self.searchObject(server, "food")
+            
+            self.__prepareTile(server, rock_needed)
             response = self.askServer(server, "Incantation")
             if not "ko" in response:
                 self.level += 1
@@ -288,6 +341,13 @@ class Agent:
         ...
 
     def run(self, server: Server):
+        """
+        Run the agent.
+        
+        @param server: The server object used to communicate with the server.
+        @type server: Server
+        
+        @return: None"""
         self.birth(server)
         while not self.isDead:
             self.live(server)
