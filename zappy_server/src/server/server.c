@@ -7,6 +7,7 @@
 
 #include "zappy_server.h"
 #include "commands.h"
+#include "callback.h"
 #include "free.h"
 #include <ctype.h>
 #include <signal.h>
@@ -62,6 +63,7 @@ static int read_cmd(my_zappy_t *zappy)
 static void time_manager(my_zappy_t *zappy)
 {
     get_actual_time(zappy, zappy->time);
+    handle_callbacks(zappy);
 }
 
 int create_server(parsing_t *parsing)
@@ -83,7 +85,6 @@ int create_server(parsing_t *parsing)
             return 84;
         read_cmd(zappy);
         time_manager(zappy);
-    }
-    signal(SIGINT, SIG_DFL);
+    } signal(SIGINT, SIG_DFL);
     return free_zappy(zappy);
 }

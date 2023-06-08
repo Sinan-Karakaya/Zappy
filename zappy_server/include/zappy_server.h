@@ -45,6 +45,7 @@
         socket_t *server;
         team_list_t *team_list;
         client_list_t *client_list;
+        list_t *callback_list;
         size_t frequency;
         map_t *map;
         my_time_t *time;
@@ -118,8 +119,10 @@
 
     // Time
     void get_actual_time(my_zappy_t *zappy, my_time_t *time);
+    void refresh_time_per_tick(my_zappy_t *zappy);
 
     // Commands
     int eat_all_client(my_zappy_t *zappy);
+
 
 #endif /* !Zappy_Server_H_ */

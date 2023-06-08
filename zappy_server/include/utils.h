@@ -12,10 +12,9 @@
     #include "clients.h"
     #include "map.h"
 
-    typedef struct vector_s {
-        int x;
-        int y;
-    } vector_t;
+    #define SERVER_RED "\033[0;31m[SERVER]\033[0m"
+    #define SERVER_GREEN "\033[0;32m[SERVER]\033[0m"
+    #define SERVER_YELLOW "\033[0;33m[SERVER]\033[0m"
 
     typedef struct list_s {
         void *first;
@@ -61,17 +60,10 @@
     /// @return the item name
     const char *get_item_name(size_t item);
 
-    /// @brief get coordinates
-    /// @param client the client
-    /// @param map the map
-    /// @return the coordinates
-    vector_t real_coordinates(client_t *client, map_t *map);
+    /// @brief duplicate a char **
+    /// @param array the array to duplicate
+    /// @return the duplicated array
+    char **dup_array(char **array);
 
-    /// @brief get the elements on a tile
-    /// @param map the map
-    /// @param x the x
-    /// @param y the y
-    /// @return the elements on the tile
-    char *get_elements_on_tile(map_t *map, size_t x, size_t y);
 
 #endif /* !UTILS_H_ */

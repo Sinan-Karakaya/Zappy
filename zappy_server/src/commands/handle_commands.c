@@ -24,18 +24,18 @@ commands_t commands[] = {
     /*
         PROTOCOL AI
     */
-    {"Forward", &forward},
-    {"Right", &right},
-    {"Left", &left},
-    {"Look", &look},
-    {"Inventory", &inventory},
-    {"Broadcast", &broadcast},
+    {"Forward", &verify_forward},
+    {"Right", &verify_right},
+    {"Left", &verify_left},
+    {"Look", &verify_look},
+    {"Inventory", &verify_inventory},
+    {"Broadcast", &verify_broadcast},
     {"Connect_nbr", &connect_nbr},
-    {"Fork", &fork_cmd},
-    {"Eject", &eject},
-    {"Take", &take},
-    {"Set", &set},
-    {"Incantation", &incantation},
+    {"Fork", &verify_fork},
+    {"Eject", &verify_eject},
+    {"Take", &verify_take},
+    {"Set", &verify_set},
+    {"Incantation", &verify_incantation},
     {NULL, NULL}
 };
 
@@ -43,7 +43,7 @@ static int print_debug(client_t *client, char **cmd)
 {
     if (client == NULL || cmd == NULL)
         return 84;
-    printf("Client %d: ", client->info->fd);
+    printf("%s: Client %d: ", SERVER_YELLOW, client->info->fd);
     for (size_t i = 0; cmd[i] != NULL; i++)
         printf("%s ", cmd[i]);
     printf("\n");

@@ -5,7 +5,7 @@
 ** init_time
 */
 
-#include "my_time.h"
+#include "zappy_server.h"
 #include <stdlib.h>
 
 static size_t get_time_per_tick(size_t frequency)
@@ -13,9 +13,9 @@ static size_t get_time_per_tick(size_t frequency)
     return 1000000 / frequency;
 }
 
-void refresh_time_per_tick(my_time_t *init_time)
+void refresh_time_per_tick(my_zappy_t *zappy)
 {
-    init_time->time_per_tick = get_time_per_tick(init_time->time_per_tick);
+    zappy->time->time_per_tick = get_time_per_tick(zappy->frequency);
 }
 
 my_time_t *init_time(size_t frequency)

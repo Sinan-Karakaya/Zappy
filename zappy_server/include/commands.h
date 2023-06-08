@@ -9,11 +9,18 @@
     #define COMMANDS_H_
 
     #include "zappy_server.h"
+    #include "callback.h"
 
     typedef struct commands_s {
         char *command;
         int (*func)(my_zappy_t *zappy, int fd, cmd_t *cmd);
     } commands_t;
+
+    typedef struct commands_time_s {
+        char *command;
+        int (*func)(my_zappy_t *zappy, int fd, cmd_t *cmd);
+        size_t time;
+    } commands_time_t;
 
 int set_team(my_zappy_t *zappy, int fd, cmd_t *cmd);
 int add_cmd(cmd_t *cmd, char *str);
@@ -192,17 +199,40 @@ PROTOCOLE IA
 */
 
 int check_alive(my_zappy_t *zappy, int fd);
+
 int incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int fork_cmd(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_fork(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int eject(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_eject(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int inventory(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_inventory(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int take(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_take(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int set(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_set(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int right(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_right(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int look(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_look(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int left(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_left(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
 int connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 #endif /* !COMMANDS_H_ */
