@@ -59,11 +59,11 @@ protected:
     int m_id = -1;
     std::string m_teamName;
     sf::Texture m_baseTexture;
-    std::array<sf::Texture, 4> m_textures;
+    std::array<sf::Texture, 5> m_textures;
     sf::Sprite m_sprite;
     sf::Vector2i m_position;
     sf::Vector2i m_tilePosition;
-    Direction m_direction;
+    Direction m_direction = Direction::WEST;
 };
 
 } // zp

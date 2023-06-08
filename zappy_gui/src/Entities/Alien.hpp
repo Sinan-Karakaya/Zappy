@@ -8,6 +8,7 @@
 #pragma once
 
 #include "IEntity.hpp"
+#include "Utils/Utils.hpp"
 
 #define ALIEN_PATH "assets/sprites/zeologue.png"
 

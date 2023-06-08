@@ -7,7 +7,8 @@
 
 #include "NetworkManager.hpp"
 
-zp::NetworkManager::NetworkManager()
+zp::NetworkManager::NetworkManager(Chat &chat)
+    : m_chat(chat)
 {
     m_commands["WELCOME"] = std::bind(&NetworkManager::welcome, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["msz"] = std::bind(&NetworkManager::getMapSize, this, std::placeholders::_1, std::placeholders::_2);
@@ -17,6 +18,9 @@ zp::NetworkManager::NetworkManager()
     m_commands["sgt"] = std::bind(&NetworkManager::timeUnitRequest, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["sst"] = std::bind(&NetworkManager::timeUnitModification, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["ppo"] = std::bind(&NetworkManager::getPlayerPos, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pbc"] = std::bind(&NetworkManager::broadCast, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pgt"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pin"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
 }
 
 zp::NetworkManager::~NetworkManager()
@@ -43,6 +47,8 @@ void zp::NetworkManager::update(std::unique_ptr<Map> &map)
         if (m_socket.isReadyToRead()) {
             auto commands = m_socket.receive();
             if (commands) {
+                if (commands->begin()->empty())
+                    commands->erase(commands->begin());
                 for (auto &tokens: *commands) {
                     if (m_commands.find(tokens[0]) != m_commands.end())
                         m_commands[tokens[0]](tokens, *map);
@@ -59,6 +65,9 @@ void zp::NetworkManager::update(std::unique_ptr<Map> &map)
     } catch (const std::runtime_error &e) {
         spdlog::error("{}", e.what());
         throw std::runtime_error("Lost connection to server");
+    } catch (const std::exception &e) {
+        spdlog::error("{}", e.what());
+        throw std::runtime_error("Something bad happened when updating with the server");
     }
 }
 
@@ -124,19 +133,29 @@ void zp::NetworkManager::getNamesOfTeam(const std::vector<std::string> &tokens, 
 
 void zp::NetworkManager::getNewPlayer(const std::vector<std::string> &tokens, Map &map)
 {
-    std::shared_ptr<Alien> newAlien = std::make_shared<Alien>(sf::Vector2i(std::stoi(tokens[2]), std::stoi(tokens[3])), (zp::Direction)std::stoi(tokens[4]), tokens[6], std::stoi(tokens[1]));
-
-    map.addAlien(newAlien);
-    spdlog::info("getNewPlayer: {}", tokens[1]);
+    try {
+        std::shared_ptr<Alien> newAlien = std::make_shared<Alien>(
+                sf::Vector2i(std::stoi(tokens[2]), std::stoi(tokens[3])),
+                (zp::Direction) std::stoi(tokens[4]), tokens[6], std::stoi(tokens[1]));
+        map.addAlien(newAlien);
+    } catch (const std::exception &e) {
+        spdlog::error("Exception thrown on alien creation", e.what());
+        return;
+    }
 }
 
 void zp::NetworkManager::getPlayerPos(const std::vector<std::string> &tokens, Map &map)
 {
+    if (tokens.size() != 5) {
+        spdlog::warn("Received invalid number of tokens for ppo");
+        return;
+    }
     auto aliens = map.getAliens();
 
     for (auto &alien : aliens) {
         if (alien->getId() == std::stoi(tokens[1])) {
             alien->setTilePosition(std::stoi(tokens[2]), std::stoi(tokens[3]));
+            alien->setDirection((zp::Direction) std::stoi(tokens[4]));
             return;
         }
     }
@@ -149,6 +168,19 @@ void zp::NetworkManager::timeUnitRequest(const std::vector<std::string> &tokens,
 }
 
 void zp::NetworkManager::timeUnitModification(const std::vector<std::string> &tokens, Map &map)
+{
+    (void)map;
+    (void)tokens;
+}
+
+void zp::NetworkManager::broadCast(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    (void)map;
+    spdlog::info("broadCast: {}", tokens[1]);
+    m_chat.addMessage(tokens[1], tokens[2]);
+}
+
+void zp::NetworkManager::doNothing(const std::vector<std::string> &tokens, zp::Map &map)
 {
     (void)map;
     (void)tokens;

@@ -20,6 +20,7 @@
 #include "Map/Map.hpp"
 #include "Entities/Alien.hpp"
 #include "Socket/Socket.hpp"
+#include "Chat/Chat.hpp"
 
 namespace zp
 {
@@ -27,7 +28,11 @@ namespace zp
 class NetworkManager
 {
 public:
-    NetworkManager();
+    /**
+     * @brief Construct a new Network Manager object with a reference to the chat instance required for broadcasting
+     * @param chat chat to hold reference of
+     */
+    NetworkManager(Chat &chat);
     ~NetworkManager();
 
     /**
@@ -118,12 +123,28 @@ private:
      */
     void timeUnitModification(const std::vector<std::string> &tokens, Map &map);
 
+    /**
+     * @brief Handle incoming broadcast
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void broadCast(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief For commands I don't care about for now
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void doNothing(const std::vector<std::string> &tokens, Map &map);
+
 private:
     zp::Socket m_socket;
     std::string m_port;
     std::string m_ip;
 
     std::unordered_map<std::string, std::function<void(const std::vector<std::string> &tokens, Map &map)>> m_commands;
+
+    Chat &m_chat;
 };
 
 } // zp
