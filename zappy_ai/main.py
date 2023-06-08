@@ -22,7 +22,6 @@ from src.Repetoile.Repetoile import Repetoile
 def main():
     args = Parameters()
     args.checkParameters()
-    myAgent = Repetoile(args.name)
 
     server = Server(args.host, int(args.port))
     server.connect()
@@ -31,7 +30,8 @@ def main():
     server.socket.sendall((args.name + "\n").encode("ASCII"))
     server.printResponse()
 
-    myAgent.run(server)
+    myAgent = Repetoile(server, args.name)
+    myAgent.run()
 
     server.socket.close()
 

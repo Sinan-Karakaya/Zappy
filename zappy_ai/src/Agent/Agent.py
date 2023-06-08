@@ -9,7 +9,7 @@ from src.Server.Server import Server
 from src.Color.Color import OKGREEN, ENDC, FAIL, WARNING, OKBLUE, HEADER, OKCYAN, BOLD, UNDERLINE, OKBLUE
 
 class Agent:
-    def __init__(self):
+    def __init__(self, server: Server):
         self.actions = {}
         self.inventory = {
             "food": 0,
@@ -20,6 +20,7 @@ class Agent:
             "phiras": 0,
             "thystame": 0,
         }
+        self.server = server
         self.vision = []
         self.isDead = False
         self.level = 0
@@ -33,12 +34,9 @@ class Agent:
                                   {"player": 6, "linemate": 1, "deraumere": 2, "sibur": 3, "phiras": 1},
                                   {"player": 6, "linemate": 2, "deraumere": 2, "sibur": 2, "mendiane": 2, "phiras": 2, "thystame": 1}]
 
-    def askServer(self, server: Server, msg: str):
+    def askServer(self, msg: str):
         """
         Sends a message to the server and returns the response.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @param msg: The message to send to the server.
         @type msg: str
@@ -46,17 +44,17 @@ class Agent:
         @return: The response from the server.
         """
         print("Sending: " + msg, end=" ")
-        server.socket.sendall((msg + "\n").encode("ASCII"))
-        response = server.getResponse()
+        self.server.socket.sendall((msg + "\n").encode("ASCII"))
+        response = self.server.getResponse()
         if response == "dead\n":
             self.isDead = True
             exit(0)
         if "Incantation" in msg:
-            response = server.getResponse()
+            response = self.server.getResponse()
         if "message" in response:
             self.broadcastStack.append(response)
             print(OKBLUE, "New message: " + response, end=ENDC)
-            response = server.getResponse()
+            response = self.server.getResponse()
         if "ok" in response:
             print(OKGREEN, "| Receive: " + response, end=ENDC)
         elif "ko" in response:
@@ -65,16 +63,13 @@ class Agent:
             print(OKCYAN, "| Receive: " + response, end=ENDC)
         return response
 
-    def fillInventory(self, server: Server):
+    def fillInventory(self):
         """
         Fills the inventory of the agent by sending a request to the server and parsing the response.
 
-        @param server: The server object used to communicate with the server.
-        @type server: Server
-
         @return: None
         """
-        response = self.askServer(server, "Inventory")
+        response = self.askServer("Inventory")
         response = response.replace("[", "").replace("]", "").replace("\n", "")
         response_tab = response.split(",")
 
@@ -86,16 +81,13 @@ class Agent:
             print("Error while parsing inventory")
             print(response)
 
-    def fillVisions(self, server: Server):
+    def fillVisions(self):
         """
         Fills the visions of the agent by sending a request to the server and parsing the response.
 
-        @param server: The server object used to communicate with the server.
-        @type server: Server
-
         @return: None
         """
-        response = self.askServer(server, "Look")
+        response = self.askServer("Look")
         response = response.replace("[", "").replace("]", "").replace("\n", "")
         response_tab = response.split(",")
 
@@ -177,19 +169,16 @@ class Agent:
         for i in range(0, xToGo):
             self.moveStack.append("Forward")
 
-    def searchObject(self, server: Server, object: str):
+    def searchObject(self, object: str):
         """
         Search for an object in the vision of the agent and move to it if it is found.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @return: None
         """
         indexObject = -1
         minDistance = -1
 
-        self.fillVisions(server)
+        self.fillVisions()
         for tile, index in zip(self.vision, range(0, len(self.vision))):
             if object in tile:
                 distance = self.distanceTo(index)
@@ -198,14 +187,14 @@ class Agent:
                     minDistance = distance
 
         if indexObject == 0:
-            self.askServer(server, "Take " + object)
+            self.askServer("Take " + object)
         elif indexObject != -1:
             self.fillMoveStack(indexObject)
             while len(self.moveStack) > 0:
-                print(self.askServer(server, self.moveStack.pop()))
-            self.askServer(server, "Take " + object)
+                print(self.askServer(self.moveStack.pop()))
+            self.askServer("Take " + object)
         else:
-            self.askServer(server, "Forward")
+            self.askServer("Forward")
 
     def distanceTo(self, listIndex: int):
         """
@@ -220,19 +209,16 @@ class Agent:
         xToGo, direction = self.__getXandDirectionToGo(listIndex)
         return yToGo + xToGo
 
-    def __verifyVision(self, server: Server, needed: dict):
+    def __verifyVision(self, needed: dict):
         """
         Verify if the vision of the agent contains the needed resources.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @param needed: The resources needed.
         @type needed: dict
 
         @return: bool
         """
-        self.fillVisions(server)
+        self.fillVisions(self.server)
         for key in needed:
             if key not in self.vision[0]:
                 return False
@@ -240,26 +226,21 @@ class Agent:
                 return False
         return True
 
-    def canElevate(self, server: Server):
+    def canElevate(self):
         """
         Return true if its possible to Level Up.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @return: bool
         """
 
-        if self.__verifyVision(server, self.__levelRequirements[self.level]):
+        if self.__verifyVision(self.server, self.__levelRequirements[self.level]):
             return True
         return False
     
-    def __prepareTile(self, server: Server, rock_needed: dict):
+    def __prepareTile(self, rock_needed: dict):
         """
         Prepare the tile to level up. Clear the tile of all the rocks that are not needed.
-        
-        @param server: The server object used to communicate with the server.
-        @type server: Server
+    
         
         @param rock_needed: The rocks needed to level up.
         @type rock_needed: dict
@@ -269,17 +250,14 @@ class Agent:
         for key in rock_needed:
             for i in range(0, self.__levelRequirements[self.level][key] - self.vision[0].count(key)):
                 if key != "player":
-                    self.askServer(server, "Set " + key)
+                    self.askServer("Set " + key)
         for rock in self.vision[0]:
             if (rock != "player" and rock != "food") and ((rock not in self.__levelRequirements[self.level]) or (self.vision[0].count(rock) > self.__levelRequirements[self.level][rock])):
-                self.askServer(server, "Take " + rock)
+                self.askServer("Take " + rock)
 
-    def __gatherRocks(self, server: Server):
+    def __gatherRocks(self):
         """
         Gather all the rocks needed to level up.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @return: (dict, bool)
         @rtype: (dict, bool)
@@ -293,7 +271,7 @@ class Agent:
 
         for key in rock_needed:
             if rock_needed[key] > 0 and key != "player":
-                self.searchObject(server, key)
+                self.searchObject(key)
 
         hasAllRock = True
         for key in rock_needed:
@@ -302,52 +280,47 @@ class Agent:
                 break
         return (rock_needed, hasAllRock)
     
-    def joinMessage(self, server: Server, message: str):
+    def joinIncantate(self):
         if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
             print("OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK")
 
-    def elevate(self, server: Server):
+    def elevate(self):
         """
         Elevate the agent to the next level. gathering all rock and player
-        
-        @param server: The server object used to communicate with the server.
-        @type server: Server
+    
         
         @return: None
         """
-        rock_needed, hasAllRock = self.__gatherRocks(server)
-        self.fillVisions(server)
+        rock_needed, hasAllRock = self.__gatherRocks()
+        self.fillVisions()
         if hasAllRock:
             while (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
-                self.broadcast(server, "I'm incantating " + str(self.level) + "!")
-                self.joinMessage(server, server.receive())
-                self.fillVisions(server)
-                self.fillInventory(server)
+                self.broadcast("I'm incantating " + str(self.level) + "!")
+                self.joinIncantate()
+                self.fillVisions()
+                self.fillInventory()
                 if self.inventory["food"] < 7:
-                    self.searchObject(server, "food")
+                    self.searchObject("food")
             
-            self.__prepareTile(server, rock_needed)
-            response = self.askServer(server, "Incantation")
+            self.__prepareTile(rock_needed)
+            response = self.askServer("Incantation")
             if not "ko" in response:
                 self.level += 1
     
-    def broadcast(self, server: Server, message: str):
+    def broadcast(self, message: str):
         ...
 
-    def live(self, server: Server):
+    def live(self):
         ...
 
-    def birth(self, server: Server):
+    def birth(self):
         ...
 
-    def run(self, server: Server):
+    def run(self):
         """
         Run the agent.
-        
-        @param server: The server object used to communicate with the server.
-        @type server: Server
-        
+    
         @return: None"""
-        self.birth(server)
+        self.birth()
         while not self.isDead:
-            self.live(server)
+            self.live()

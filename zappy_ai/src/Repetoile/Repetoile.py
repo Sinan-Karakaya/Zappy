@@ -11,18 +11,15 @@ from random import randint
 
 
 class Repetoile(Agent):
-    def __init__(self, teamName):
-        super().__init__()
+    def __init__(self, server: Server, teamName: str):
+        super().__init__(server)
         self.teamName = teamName
         print("Team name: " + self.teamName)
         self.state = "Searching food"
 
-    def repeat(self, server: Server):
+    def repeat(self):
         """
         Repeat a message from the broadcast stack if the message is not from the same team.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @return: None
         """
@@ -41,14 +38,11 @@ class Repetoile(Agent):
                 return
 
             message = message.split(",")[1]
-            self.askServer(server, "Broadcast " + message)
+            self.askServer("Broadcast " + message)
 
-    def live(self, server: Server):
+    def live(self):
         """
         The main function of the agent. It is called every turn.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @return: None
         """
@@ -58,42 +52,36 @@ class Repetoile(Agent):
             self.state = "Broadcasting like a fool"
 
         if self.state == "Searching food":
-            self.searchObject(server, "food")
+            self.searchObject("food")
 
         if self.state == "Broadcasting like a fool":
-            self.repeat(server)
+            self.repeat()
             self.state = "Searching rock"
 
         if self.state == "Searching rock":
-            self.elevate(server)
+            self.elevate()
 
         # self.searchObject(server, "food")
-        self.fillInventory(server)
+        self.fillInventory()
         # print(self.inventory)
 
-    def birth(self, server: Server):
+    def birth(self):
         """
         Call when the agent is born.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @return: None
         """
 
-        self.broadcast(server, "I'm born")
+        self.broadcast("I'm born")
         self.state = "Searching food"
 
-    def broadcast(self, server: Server, message: str):
+    def broadcast(self, message: str):
         """
         Call when the agent need to comunicat so it can use is language.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @param message: The message to send.
         @type message: str
 
         @return: None
         """
-        self.askServer(server, "Broadcast " + self.teamName + " " + message),
+        self.askServer("Broadcast " + self.teamName + " " + message),
