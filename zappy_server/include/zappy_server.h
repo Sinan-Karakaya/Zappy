@@ -36,6 +36,11 @@
     #define UNKNOWN_PARAMETER "sbp\n"
     #define DEATH "dead\n"
 
+    typedef struct {
+        char **args;
+        char **result;
+    } cmd_t;
+
     typedef struct my_zappy_s {
         socket_t *server;
         team_list_t *team_list;
@@ -66,9 +71,9 @@
     /// @brief handle the commands from the client
     /// @param zappy the zappy struct
     /// @param client_fd the fd of the client
-    /// @param args the args of the command
+    /// @param cmd the args of the command
     /// @return 0 if success, 84 if error
-    int handle_commands(my_zappy_t *zappy, int client_fd, char **args);
+    int handle_commands(my_zappy_t *zappy, int client_fd, cmd_t *cmd);
 
     /// @brief set the fd of the server and the clients
     /// @param server the socket of the server

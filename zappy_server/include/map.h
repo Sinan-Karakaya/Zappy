@@ -23,7 +23,7 @@
 typedef struct {
     size_t inventory[LENGHT_INVENTORY];
     id_list_t *players;
-    id_list_t *egg;
+    bool is_egg;
 } tiles_t;
 
 typedef struct {

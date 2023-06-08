@@ -8,7 +8,7 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-static int look_right(client_t *client, map_t *map)
+static int look_right(client_t *client, map_t *map, cmd_t *cmd)
 {
     char *result = "[";
 
@@ -22,11 +22,12 @@ static int look_right(client_t *client, map_t *map)
             get_elements_on_tile(map, x, y));
         }
     } asprintf(&result, "%s]\n", result);
-    send_message(client->info->fd, result), free(result);
+    add_cmd(cmd, result);
+    free(result);
     return 0;
 }
 
-static int look_left(client_t *client, map_t *map)
+static int look_left(client_t *client, map_t *map, cmd_t *cmd)
 {
     char *result = "[";
 
@@ -40,11 +41,12 @@ static int look_left(client_t *client, map_t *map)
             get_elements_on_tile(map, x, y));
         }
     } asprintf(&result, "%s]\n", result);
-    send_message(client->info->fd, result), free(result);
+    add_cmd(cmd, result);
+    free(result);
     return 0;
 }
 
-static int look_up(client_t *client, map_t *map)
+static int look_up(client_t *client, map_t *map, cmd_t *cmd)
 {
     char *result = "[";
 
@@ -58,11 +60,12 @@ static int look_up(client_t *client, map_t *map)
             get_elements_on_tile(map, x, y));
         }
     } asprintf(&result, "%s]\n", result);
-    send_message(client->info->fd, result), free(result);
+    add_cmd(cmd, result);
+    free(result);
     return 0;
 }
 
-static int look_down(client_t *client, map_t *map)
+static int look_down(client_t *client, map_t *map, cmd_t *cmd)
 {
     char *result = "[";
 
@@ -76,23 +79,24 @@ static int look_down(client_t *client, map_t *map)
             get_elements_on_tile(map, x, y));
         }
     } asprintf(&result, "%s]\n", result);
-    send_message(client->info->fd, result), free(result);
+    add_cmd(cmd, result);
+    free(result);
     return 0;
 }
 
-int look(my_zappy_t *zappy, int fd, char **args)
+int look(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);
 
-    if (!client || !zappy || count_args(args) != 1)
-        return send_message(fd, "ko\n");
+    if (!client || !zappy || count_args(cmd->args) != 1)
+        return add_cmd(cmd, "ko\n");
     if (client->info->player->direction == NORTH)
-        look_up(client, zappy->map);
+        look_up(client, zappy->map, cmd);
     if (client->info->player->direction == EAST)
-        look_right(client, zappy->map);
+        look_right(client, zappy->map, cmd);
     if (client->info->player->direction == SOUTH)
-        look_down(client, zappy->map);
+        look_down(client, zappy->map, cmd);
     if (client->info->player->direction == WEST)
-        look_left(client, zappy->map);
+        look_left(client, zappy->map, cmd);
     return 0;
 }

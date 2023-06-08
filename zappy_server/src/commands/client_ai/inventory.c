@@ -8,13 +8,13 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int inventory(my_zappy_t *zappy, int fd, char **args)
+int inventory(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);
     char *msg = "";
 
-    if (!client || !zappy || count_args(args) != 1)
-        return send_message(fd, "ko\n");
+    if (!client || !zappy || count_args(cmd->args) != 1)
+        return add_cmd(cmd, "ko\n");
     asprintf(&msg, "[ food %ld, linemate %ld, deraumere %ld, sibur %ld, "
         "mendiane %ld, phiras %ld, thystame %ld ]\n",
         client->info->player->inventory[FOOD],
@@ -24,6 +24,5 @@ int inventory(my_zappy_t *zappy, int fd, char **args)
         client->info->player->inventory[MENDIANE],
         client->info->player->inventory[PHIRAS],
         client->info->player->inventory[THYSTAME]);
-    send_message(fd, msg);
-    return 0;
+    return add_cmd(cmd, msg);
 }

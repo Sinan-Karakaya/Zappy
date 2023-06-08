@@ -8,10 +8,10 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int connect_nbr(my_zappy_t *zappy, int fd, char **args)
+int connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
     (void)zappy;
     (void)fd;
-    (void)args;
+    (void)cmd;
     return 0;
 }

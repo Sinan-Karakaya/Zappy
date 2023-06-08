@@ -8,14 +8,14 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int tna(my_zappy_t *zappy, int fd, char **args)
+int tna(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
     char *result = NULL;
     team_t *tmp = NULL;
 
-    if (zappy == NULL || args == NULL)
+    if (zappy == NULL || cmd->args == NULL)
         return 0;
-    if (count_args(args) != 1) {
+    if (count_args(cmd->args) != 1) {
         send_message(fd, "ko\n");
         return 0;
     } tmp = zappy->team_list->first;
@@ -27,6 +27,6 @@ int tna(my_zappy_t *zappy, int fd, char **args)
         result = strcat(result, tmp->info->name);
         result = strcat(result, "\n");
         tmp = tmp->next;
-    } send_message(fd, result);
-    return 0;
+    }
+    return add_cmd(cmd, result);
 }

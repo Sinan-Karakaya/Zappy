@@ -9,14 +9,14 @@
 #include "commands.h"
 #include "utils.h"
 
-int eject(my_zappy_t *zappy, int fd, char **args)
+int eject(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);
     vector_t coordinates = real_coordinates(client, zappy->map);
     char *result = NULL;
 
-    if (!zappy || !args || !client || count_args(args) != 1)
-        return send_message(fd, "ko\n");
+    if (!zappy || !cmd || !cmd->args || !client || count_args(cmd->args) != 1)
+        return add_cmd(cmd, "ko\n");
     asprintf(&result, "pex %ld\n", client->info->player->id);
     for (my_id_t *tmp = zappy->map->tiles[client->info->player->y]
     [client->info->player->x].players->first; tmp; tmp = tmp->next) {
@@ -27,6 +27,5 @@ int eject(my_zappy_t *zappy, int fd, char **args)
             send_message(tmp_client->info->fd, result);
         }
     }
-    send_message(fd, "ok\n");
-    return 0;
+    return add_cmd(cmd, "ok\n");
 }

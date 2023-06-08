@@ -15,6 +15,6 @@ int ebo(my_zappy_t *zappy, int fd, int id_egg)
     if (zappy == NULL)
         return 84;
     asprintf(&result, "ebo %d\n", id_egg);
-    send_message(result, fd);
+    send_message(fd, result);
     return 0;
 }
