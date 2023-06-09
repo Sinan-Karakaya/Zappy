@@ -37,5 +37,7 @@ int send_all_message(cmd_t *cmd, int fd)
         return 84;
     for (size_t i = 0; cmd->result[i]; i++)
         asprintf(&result, "%s%s", result, cmd->result[i]);
-    return send_message(fd, result);
+    send_message(fd, result);
+    free(result);
+    return 0;
 }

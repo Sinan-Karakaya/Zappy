@@ -8,9 +8,8 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int sst(my_zappy_t *zappy, int fd, cmd_t *cmd)
+int sst(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
 {
-    (void)fd;
     char *result = NULL;
     int value = 0;
 

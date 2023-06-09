@@ -8,9 +8,8 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int sgt(my_zappy_t *zappy, int fd, cmd_t *cmd)
+int sgt(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
 {
-    (void)fd;
     char *result = NULL;
 
     if (zappy == NULL || cmd->args == NULL)
@@ -19,5 +18,6 @@ int sgt(my_zappy_t *zappy, int fd, cmd_t *cmd)
         return 84;
     asprintf(&result, "sgt %ld\n", zappy->frequency);
     add_cmd(cmd, result);
+    free(result);
     return 0;
 }

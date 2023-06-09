@@ -5,18 +5,17 @@
 ** tna
 */
 
-#include "zappy_server.h"
+#include "free.h"
 #include "commands.h"
 
-int tna(my_zappy_t *zappy, int fd, cmd_t *cmd)
+int tna(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
 {
     char *result = NULL;
     team_t *tmp = NULL;
-
     if (zappy == NULL || cmd->args == NULL)
         return 0;
     if (count_args(cmd->args) != 1) {
-        send_message(fd, "ko\n");
+        add_cmd(cmd, "ko\n");
         return 0;
     } tmp = zappy->team_list->first;
     result = calloc(1, sizeof(char));
@@ -27,6 +26,8 @@ int tna(my_zappy_t *zappy, int fd, cmd_t *cmd)
         result = strcat(result, tmp->info->name);
         result = strcat(result, "\n");
         tmp = tmp->next;
-    }
-    return add_cmd(cmd, result);
+    } add_cmd(cmd, result);
+    destroy_struct_team(tmp);
+    free(result);
+    return 0;
 }

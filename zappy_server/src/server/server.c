@@ -39,6 +39,7 @@ static int read_loop(my_zappy_t *zappy, int fd)
             cmd = init_cmd(get_command(buffer));
             handle_commands(zappy, fd, cmd);
             send_all_message(cmd, fd);
+            destroy_cmd(cmd);
         }
     } if (buffer)
         free(buffer);

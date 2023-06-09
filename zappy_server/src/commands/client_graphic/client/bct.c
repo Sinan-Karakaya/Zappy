@@ -29,5 +29,7 @@ int bct(my_zappy_t *zappy, int fd, cmd_t *cmd)
     zappy->map->tiles[x][y].inventory[MENDIANE],
     zappy->map->tiles[x][y].inventory[PHIRAS],
     zappy->map->tiles[x][y].inventory[THYSTAME]);
-    return add_cmd(cmd, result);
+    add_cmd(cmd, result);
+    free(result);
+    return 0;
 }

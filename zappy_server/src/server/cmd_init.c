@@ -6,6 +6,7 @@
 */
 
 #include "commands.h"
+#include "utils.h"
 
 cmd_t *init_cmd(char **args)
 {
@@ -13,7 +14,7 @@ cmd_t *init_cmd(char **args)
 
     if (cmd == NULL)
         return NULL;
-    cmd->args = args;
+    cmd->args = dup_array(args);
     cmd->result = calloc(1, sizeof(char *));
     if (cmd->result == NULL)
         return NULL;

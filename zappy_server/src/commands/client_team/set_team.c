@@ -11,12 +11,20 @@
 static int send_message_graphic(NUSED my_zappy_t *zappy,
     client_t *client, cmd_t *cmd)
 {
+    if (cmd->args[0])
+        free(cmd->args[0]);
     cmd->args[0] = strdup("msz");
     msz(zappy, client->info->fd, cmd);
+    if (cmd->args[0])
+        free(cmd->args[0]);
     cmd->args[0] = strdup("sgt");
     sgt(zappy, client->info->fd, cmd);
+    if (cmd->args[0])
+        free(cmd->args[0]);
     cmd->args[0] = strdup("mct");
     mct(zappy, client->info->fd, cmd);
+    if (cmd->args[0])
+        free(cmd->args[0]);
     cmd->args[0] = strdup("tna");
     tna(zappy, client->info->fd, cmd);
     return 0;

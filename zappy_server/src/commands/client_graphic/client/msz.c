@@ -8,15 +8,16 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int msz(my_zappy_t *zappy, int fd, cmd_t *cmd)
+int msz(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
 {
     char *result = NULL;
 
     if (zappy == NULL || cmd == NULL)
         return 0;
     if (count_args(cmd->args) != 1)
-        return send_message(fd, "ko\n");
+        return add_cmd(cmd, "ko\n");
     asprintf(&result, "%s %ld %ld\n", "msz", zappy->map->x, zappy->map->y);
     add_cmd(cmd, result);
+    free(result);
     return 0;
 }
