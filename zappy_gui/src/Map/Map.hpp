@@ -70,6 +70,12 @@ public:
     std::vector<std::shared_ptr<zp::IEntity>> &getAliens();
 
     /**
+     * @brief Remove an alien from the map
+     * @param id id of the alien
+     */
+    void removeAlien(int id);
+
+    /**
      * @brief Returns all rocks on the map
      * @return
      */

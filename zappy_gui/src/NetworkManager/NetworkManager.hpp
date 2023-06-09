@@ -131,6 +131,13 @@ private:
     void broadCast(const std::vector<std::string> &tokens, Map &map);
 
     /**
+     * @brief Remove a player due to death or disconnection
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void removePlayer(const std::vector<std::string> &tokens, Map &map);
+
+    /**
      * @brief For commands I don't care about for now
      * @param tokens Vector of the response
      * @param map map to update

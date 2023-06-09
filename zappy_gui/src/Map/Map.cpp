@@ -77,3 +77,13 @@ std::vector<std::shared_ptr<zp::IEntity>> &zp::Map::getRocks()
 {
     return m_rocks;
 }
+
+void zp::Map::removeAlien(int id)
+{
+    for (auto it = m_aliens.begin(); it != m_aliens.end(); it++) {
+        if ((*it)->getId() == id) {
+            m_aliens.erase(it);
+            return;
+        }
+    }
+}

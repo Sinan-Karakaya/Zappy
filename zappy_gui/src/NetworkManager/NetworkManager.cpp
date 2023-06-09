@@ -21,6 +21,8 @@ zp::NetworkManager::NetworkManager(Chat &chat)
     m_commands["pbc"] = std::bind(&NetworkManager::broadCast, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pgt"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pin"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pex"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pdi"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
 }
 
 zp::NetworkManager::~NetworkManager()
@@ -184,4 +186,16 @@ void zp::NetworkManager::doNothing(const std::vector<std::string> &tokens, zp::M
 {
     (void)map;
     (void)tokens;
+}
+
+void zp::NetworkManager::removePlayer(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    auto aliens = map.getAliens();
+
+    for (auto &alien : aliens) {
+        if (alien->getId() == std::stoi(tokens[1])) {
+            map.removeAlien(std::stoi(tokens[1]));
+            return;
+        }
+    }
 }
