@@ -73,7 +73,7 @@ class Agent:
             exit(0)
         if "Incantation" in msg:
             response = self.server.getResponse()
-        if "message" in response:
+        while "message" in response:
             self.broadcastStack.append(response)
             print(OKBLUE, "New message: " + response, end=ENDC)
             response = self.server.getResponse()
@@ -315,11 +315,22 @@ class Agent:
         return (rock_needed, hasAllRock)
 
     def joinIncantate(self):
+        print("OKKKK", self.broadcastStack)
         if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
-            print(
-                "OKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK"
-            )
-
+            self.broadcast("I'm joining the incantation")
+            direction = int(self.broadcastStack[-1][8])
+            if (direction >= 6 and direction <= 8):
+                self.askServer("Right")
+                self.askServer("Right")
+            while (direction != 4 and direction != 5):
+                self.askServer("Forward")
+            if direction == 5:
+                self.askServer("Right")
+            else:
+                self.askServer("Left")
+            while (direction != 0 and direction == 2):
+                self.askServer("Forward")
+                
     def elevate(self):
         """
         Elevate the agent to the next level. gathering all rock and player
@@ -334,7 +345,7 @@ class Agent:
                 self.vision[0].count("player")
                 < self.__levelRequirements[self.level]["player"]
             ):
-                self.broadcast("I'm incantating " + str(self.level) + "!")
+                self.broadcast("I'm incanting " + str(self.level) + "!")
                 self.joinIncantate()
                 self.fillVisions()
                 self.fillInventory()
