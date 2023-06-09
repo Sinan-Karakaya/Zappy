@@ -60,7 +60,8 @@ int handle_callbacks(my_zappy_t *zappy)
         printf("%s: Callback %s executed for client %d \n", SERVER_YELLOW,
         actual->info->cmd->args[0], actual->info->fd);
         destroy_callback((callback_list_t *)zappy->callback_list, actual);
-        destroy_cmd(actual->info->cmd);
+        if (actual->info->cmd)
+            destroy_cmd(actual->info->cmd);
         } else
             tmp = actual->next;
     return 0;

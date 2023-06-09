@@ -39,6 +39,6 @@ int send_all_message(cmd_t *cmd, int fd)
         asprintf(&result, "%s%s", result, cmd->result[i]);
     }
     send_message(fd, result);
-    free(cmd->result);
+    free(result);
     return 0;
 }
