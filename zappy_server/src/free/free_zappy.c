@@ -45,8 +45,8 @@ static void destroy_map(map_t *map)
         return;
     for (ssize_t i = 0; i < map->y; i++) {
         for (ssize_t j = 0; j < map->x; j++) {
-            if (map->tiles[i][j].players->first)
-                remove_id_in_list(map->tiles[i][j].players, map->tiles[i][j].players->first->id);
+            map->tiles[i][j].players->first ? remove_id_in_list(
+            map->tiles[i][j].players, map->tiles[i][j].players->first->id) : 0;
         }
         free(map->tiles[i]);
     }

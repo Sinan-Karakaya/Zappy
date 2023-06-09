@@ -52,17 +52,18 @@ int handle_callbacks(my_zappy_t *zappy)
     if (!zappy || !zappy->callback_list)
         return 84;
     for (callback_t *actual = zappy->callback_list->first; actual != NULL;
-    actual = tmp)
+    actual = tmp) {
         if (actual->info->tick_end <= zappy->time->nb_ticks) {
-        tmp = actual->next;
-        actual->info->func(zappy, actual->info->fd, actual->info->cmd);
-        send_all_message(actual->info->cmd, actual->info->fd);
-        printf("%s: Callback %s executed for client %d \n", SERVER_YELLOW,
-        actual->info->cmd->args[0], actual->info->fd);
-        destroy_callback((callback_list_t *)zappy->callback_list, actual);
-        if (actual->info->cmd)
-            destroy_cmd(actual->info->cmd);
+            tmp = actual->next;
+            actual->info->func(zappy, actual->info->fd, actual->info->cmd);
+            send_all_message(actual->info->cmd, actual->info->fd);
+            printf("%s: Callback %s executed for client %d \n", SERVER_YELLOW,
+            actual->info->cmd->args[0], actual->info->fd);
+            destroy_callback((callback_list_t *)zappy->callback_list, actual);
         } else
             tmp = actual->next;
+        if (actual->info->cmd)
+            destroy_cmd(actual->info->cmd);
+    }
     return 0;
 }
