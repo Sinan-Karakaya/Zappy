@@ -16,8 +16,10 @@ int verify_fork(my_zappy_t *zappy, int fd, char **args)
 
 int fork_cmd(my_zappy_t *zappy, int fd, char **args)
 {
-    (void)zappy;
-    (void)fd;
-    (void)args;
+    client_t *client = get_client_by_fd(zappy->client_list, fd);
+
+    if (!zappy || !client || count_args(args) != 1)
+        return send_message(fd, "ko\n");
+    printf("%s: Ici je vais ajouter un nouveau client\n", SERVER_RED);
     return 0;
 }
