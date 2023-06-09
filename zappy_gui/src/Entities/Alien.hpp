@@ -11,6 +11,11 @@
 #include "Utils/Utils.hpp"
 
 #define ALIEN_PATH "assets/sprites/zeologue.png"
+#define ALIEN_HEIGHT 84
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
+#define TILE_WIDTH_HALF 32
+#define TILE_ESCALATION 8
 
 namespace zp
 {

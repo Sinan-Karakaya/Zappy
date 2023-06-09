@@ -13,8 +13,9 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
     m_tilePosition = tilePos;
     m_direction = dir;
     m_teamName = teamName;
-    m_position.x = (m_tilePosition.x - m_tilePosition.y) * 32 + 1920 / 4; // (x - y) * 32 * 2 + 32
-    m_position.y = (m_tilePosition.x + m_tilePosition.y) * 32 + 1080 / 4; // (x + y) * 32 + 32
+    m_position.x = (m_tilePosition.x - m_tilePosition.y) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;
+    m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + WINDOW_HEIGHT / 4 -
+            ALIEN_HEIGHT / 4;
 
     if (!m_baseTexture.loadFromFile(ALIEN_PATH)) {
         spdlog::error("Cannot load texture");
@@ -30,7 +31,7 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
     m_sprite.setColor(zp::Utils::randomHue(teamName));
     m_sprite.setRotation(180);
     m_sprite.setScale(0.5, 0.5);
-    m_sprite.setOrigin(42, 42);
+    m_sprite.setOrigin(42, 34);
     m_sprite.setPosition(m_position.x, m_position.y);
 }
 
@@ -43,8 +44,9 @@ void zp::Alien::setTilePosition(int x, int y)
 {
     m_tilePosition.x = x;
     m_tilePosition.y = y;
-    m_position.x = (m_tilePosition.x - m_tilePosition.y) * 32 + 1920 / 4; // (x - y) * 32 * 2 + 32
-    m_position.y = (m_tilePosition.x + m_tilePosition.y) * 32 + 1080 / 4; // (x + y) * 32 + 32
+    m_position.x = (m_tilePosition.x - m_tilePosition.y) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;
+    m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + WINDOW_HEIGHT / 4 -
+            ALIEN_HEIGHT / 4;
     m_sprite.setPosition(m_position.x, m_position.y);
 }
 

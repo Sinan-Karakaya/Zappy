@@ -19,6 +19,7 @@
 #define TILE_PATH "assets/sprites/floor_zappy.png"
 #define TILE_WIDTH_HALF 32
 #define TILE_HEIGHT_HALF 32
+#define TILE_ESCALATION 8
 
 namespace zp
 {

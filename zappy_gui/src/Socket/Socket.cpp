@@ -44,16 +44,16 @@ std::unique_ptr<std::vector<std::vector<std::string>>> zp::Socket::receive()
     std::string response;
     std::string temp;
 
-    char buffer[10240] = {0};
+    char buffer[1025] = {0};
     int valread;
 
-    while ((valread = read(m_socket, buffer, 10240)) > 0) {
+    while ((valread = read(m_socket, buffer, 1024)) > 0) {
         temp = std::string(buffer);
         response += temp;
         memset(buffer, 0, sizeof(buffer)); // Clear the buffer
 
         // Break the loop if the received data does not fill the buffer
-        if (valread < 10240)
+        if (valread < 1024)
             break;
     }
 

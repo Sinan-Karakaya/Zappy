@@ -12,7 +12,8 @@ zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &s
     spdlog::info("Initializing WindowManager");
     m_window.create(sf::VideoMode(size.x, size.y), title, sf::Style::Default | sf::Style::Resize);
     m_window.setFramerateLimit(60);
-    if (!m_gameTexture.create(size.x, size.y))
+    m_window.setKeyRepeatEnabled(false);
+    if (!m_gameTexture.create(2000, 2000))
         throw zp::WindowManagerException("Failed to create game texture");
     m_gameSprite.setTexture(m_gameTexture.getTexture());
     spdlog::info("Initializing ImGui");
@@ -23,8 +24,8 @@ zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &s
     if (!m_backgroundTexture.loadFromFile(BACKGROUND_PATH))
         throw zp::WindowManagerException("Failed to load background texture");
     m_backgroundSprite.setTexture(m_backgroundTexture);
-    m_gameView.setSize(size.x, size.y);
-    m_gameView.setCenter(size.x / 2, size.y / 2);
+    m_gameView.setSize(2000, 2000);
+    m_gameView.setCenter(1000, 1000);
     m_gameTexture.setView(m_gameView);
 }
 
@@ -60,6 +61,10 @@ void zp::WindowManager::handleEvents()
                 m_gameView.move(0, -10);
             if (event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S)
                 m_gameView.move(0, 10);
+            if (event.mouseWheelScroll.delta > 0)
+                m_gameView.zoom(0.9);
+            if (event.mouseWheelScroll.delta < 0)
+                m_gameView.zoom(1.1);
         }
     }
 }
