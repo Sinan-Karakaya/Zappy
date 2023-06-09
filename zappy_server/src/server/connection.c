@@ -11,19 +11,11 @@
 static void set_id_client(client_list_t *client_list,
     client_info_t *client_info, map_t *map)
 {
-    client_t *tmp = client_list->first;
-    size_t id_tmp = 0;
-
     if (!client_list || !client_info)
         return;
-    while (tmp) {
-        if (tmp->info->player->id > id_tmp)
-            id_tmp = tmp->info->player->id;
-        tmp = tmp->next;
-    }
-    client_info->player->id = id_tmp + 1;
+    client_info->player->id = client_info->fd;
     list_add_id(map->tiles[client_info->player->y] \
-        [client_info->player->x].players, client_info->player->id);
+        [client_info->player->x].players, client_info->fd);
 }
 
 int accept_client(my_zappy_t *zappy)
