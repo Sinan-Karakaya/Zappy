@@ -22,6 +22,12 @@
         size_t time;
     } commands_time_t;
 
+    typedef struct incantation_s {
+        size_t level;
+        size_t nb_players;
+        size_t ressources[7];
+    } incantation_t;
+
 int set_team(my_zappy_t *zappy, int fd, cmd_t *cmd);
 int add_cmd(cmd_t *cmd, char *str);
 cmd_t *init_cmd(char **args);
