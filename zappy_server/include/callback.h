@@ -14,9 +14,9 @@
         size_t tick_start;
         size_t tick_delay;
         size_t tick_end;
-        char **args;
+        cmd_t *cmd;
         int fd;
-        int (*func)(my_zappy_t *zappy, int fd, char **args);
+        int (*func)(my_zappy_t *zappy, int fd, cmd_t *cmd);
     } callback_info_t;
 
     typedef struct callback_s callback_t;
@@ -32,12 +32,12 @@
     } callback_list_t;
 
     int handle_callbacks(my_zappy_t *zappy);
-    int add_to_callback(my_zappy_t *zappy, int fd, char **args, char *cmd);
+    int add_to_callback(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
     void list_add_callback(callback_list_t *callback_list,
     callback_info_t *callback_info);
     size_t destroy_callback(callback_list_t *list, callback_t *callback);
-    callback_info_t *init_callback_info(int fd, char **args,
-    int (*func)(my_zappy_t *zappy, int fd, char **args), time_vector_t delay);
+    callback_info_t *init_callback_info(int fd, cmd_t *cmd,
+    int (*func)(my_zappy_t *zappy, int fd, cmd_t *cmd), time_vector_t delay);
 
 #endif /* !CALLBACK_H_ */

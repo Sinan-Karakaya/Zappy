@@ -50,19 +50,19 @@ static int print_debug(client_t *client, char **cmd)
     return 0;
 }
 
-int handle_commands(my_zappy_t *zappy, int client_fd, char **cmd)
+int handle_commands(my_zappy_t *zappy, int client_fd, cmd_t *cmd)
 {
     client_t *client = get_client_by_fd(zappy->client_list, client_fd);
 
-    if (zappy == NULL || cmd == NULL || client == NULL)
+    if (!zappy || !cmd || !cmd->args || !client)
         return 0;
-    print_debug(client, cmd);
+    print_debug(client, cmd->args);
     if (client->info->team_id == -1)
         return set_team(zappy, client_fd, cmd);
     if (client->info->player->is_alive == false)
         return 0;
     for (size_t i = 0; commands[i].command != NULL; i++) {
-        if (strcmp(commands[i].command, cmd[0]) == 0)
+        if (strcmp(commands[i].command, cmd->args[0]) == 0)
             return commands[i].func(zappy, client_fd, cmd);
     }
     send_message(client_fd, "ko\n");

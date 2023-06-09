@@ -13,16 +13,19 @@
 
     typedef struct commands_s {
         char *command;
-        int (*func)(my_zappy_t *zappy, int fd, char **args);
+        int (*func)(my_zappy_t *zappy, int fd, cmd_t *cmd);
     } commands_t;
 
     typedef struct commands_time_s {
         char *command;
-        int (*func)(my_zappy_t *zappy, int fd, char **args);
+        int (*func)(my_zappy_t *zappy, int fd, cmd_t *cmd);
         size_t time;
     } commands_time_t;
 
-int set_team(my_zappy_t *zappy, int fd, char **args);
+int set_team(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int add_cmd(cmd_t *cmd, char *str);
+cmd_t *init_cmd(char **args);
+int send_all_message(cmd_t *cmd, int fd);
 
 /*
 PROTOCOLE GRAPHICS
@@ -33,63 +36,63 @@ PROTOCOLE GRAPHICS
 /// @param fd
 /// @param args
 /// @return
-int msz(my_zappy_t *zappy, int fd, char **args);
+int msz(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give the content of a tile
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int bct(my_zappy_t *zappy, int fd, char **args);
+int bct(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give the content of the map (all the tiles)
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int mct(my_zappy_t *zappy, int fd, char **args);
+int mct(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief name of all the teams in the server
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int tna(my_zappy_t *zappy, int fd, char **args);
+int tna(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give the player’s position
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int ppo(my_zappy_t *zappy, int fd, char **args);
+int ppo(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give the player’s level
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int plv(my_zappy_t *zappy, int fd, char **args);
+int plv(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give the player’s inventory
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int pin(my_zappy_t *zappy, int fd, char **args);
+int pin(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give the time unit request
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int sgt(my_zappy_t *zappy, int fd, char **args);
+int sgt(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give the time unit modification
 /// @param zappy
 /// @param fd
 /// @param args
 /// @return
-int sst(my_zappy_t *zappy, int fd, char **args);
+int sst(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 /// @brief give some informations about the player
 /// @param zappy
@@ -197,39 +200,39 @@ PROTOCOLE IA
 
 int check_alive(my_zappy_t *zappy, int fd);
 
-int incantation(my_zappy_t *zappy, int fd, char **args);
-int verify_incantation(my_zappy_t *zappy, int fd, char **args);
+int incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int forward(my_zappy_t *zappy, int fd, char **args);
-int verify_forward(my_zappy_t *zappy, int fd, char **args);
+int forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int fork_cmd(my_zappy_t *zappy, int fd, char **args);
-int verify_fork(my_zappy_t *zappy, int fd, char **args);
+int fork_cmd(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_fork(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int eject(my_zappy_t *zappy, int fd, char **args);
-int verify_eject(my_zappy_t *zappy, int fd, char **args);
+int eject(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_eject(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int broadcast(my_zappy_t *zappy, int fd, char **args);
-int verify_broadcast(my_zappy_t *zappy, int fd, char **args);
+int broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int inventory(my_zappy_t *zappy, int fd, char **args);
-int verify_inventory(my_zappy_t *zappy, int fd, char **args);
+int inventory(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_inventory(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int take(my_zappy_t *zappy, int fd, char **args);
-int verify_take(my_zappy_t *zappy, int fd, char **args);
+int take(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_take(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int set(my_zappy_t *zappy, int fd, char **args);
-int verify_set(my_zappy_t *zappy, int fd, char **args);
+int set(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_set(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int right(my_zappy_t *zappy, int fd, char **args);
-int verify_right(my_zappy_t *zappy, int fd, char **args);
+int right(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_right(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int look(my_zappy_t *zappy, int fd, char **args);
-int verify_look(my_zappy_t *zappy, int fd, char **args);
+int look(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_look(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int left(my_zappy_t *zappy, int fd, char **args);
-int verify_left(my_zappy_t *zappy, int fd, char **args);
+int left(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_left(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
-int connect_nbr(my_zappy_t *zappy, int fd, char **args);
+int connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 #endif /* !COMMANDS_H_ */

@@ -24,19 +24,19 @@ static char *get_info_player(my_zappy_t *zappy, int id)
     return result;
 }
 
-int ppo(my_zappy_t *zappy, int fd, char **args)
+int ppo(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
     char *result = NULL;
 
-    if (zappy == NULL || args == NULL)
+    if (zappy == NULL || cmd->args == NULL)
         return 0;
-    if (count_args(args) != 2)
+    if (count_args(cmd->args) != 2)
         return send_message(fd, "ko\n");
-    if (atoi(args[1]) <= 0)
+    if (atoi(cmd->args[1]) <= 0)
         return send_message(fd, "ko\n");
-    result = get_info_player(zappy, atoi(args[1]));
+    result = get_info_player(zappy, atoi(cmd->args[1]));
     if (result == NULL)
         return send_message(fd, "ko\n");
-    send_message(fd, result);
+    add_cmd(cmd, result);
     return 0;
 }

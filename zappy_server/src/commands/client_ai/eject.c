@@ -9,18 +9,18 @@
 #include "commands.h"
 #include "utils.h"
 
-int verify_eject(my_zappy_t *zappy, int fd, char **args)
+int verify_eject(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
-    add_to_callback(zappy, fd, args, args[0]);
+    add_to_callback(zappy, fd, cmd);
     return 0;
 }
 
-int eject(my_zappy_t *zappy, int fd, char **args)
+int eject(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);
     vector_t coordinates = real_coordinates(client, zappy->map);
 
-    if (!zappy || !args || !client || count_args(args) != 1)
+    if (!zappy || !cmd || !cmd->args || !client || count_args(cmd->args) != 1)
         return send_message(fd, "ko\n");
     for (my_id_t *tmp = zappy->map->tiles[client->info->player->y]
     [client->info->player->x].players->first; tmp; tmp = tmp->next) {
@@ -31,6 +31,5 @@ int eject(my_zappy_t *zappy, int fd, char **args)
             send_message(tmp_client->info->fd, "Eject: LADIRECTION\n");
         }
     }
-    send_message(fd, "ok\n");
-    return 0;
+    return add_cmd(cmd, "ok\n");
 }

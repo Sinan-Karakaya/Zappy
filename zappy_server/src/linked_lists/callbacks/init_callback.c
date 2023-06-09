@@ -9,14 +9,14 @@
 #include "zappy_server.h"
 #include "utils.h"
 
-callback_info_t *init_callback_info(int fd, char **args,
-int (*func)(my_zappy_t *zappy, int fd, char **args), time_vector_t delay)
+callback_info_t *init_callback_info(int fd, cmd_t *cmd,
+int (*func)(my_zappy_t *zappy, int fd, cmd_t *cmd), time_vector_t delay)
 {
     callback_info_t *info = calloc(1, sizeof(callback_info_t));
 
     if (info == NULL)
         return NULL;
-    info->args = dup_array(args);
+    info->cmd = cmd;
     info->fd = fd;
     info->func = func;
     info->tick_start = delay.tick_start;

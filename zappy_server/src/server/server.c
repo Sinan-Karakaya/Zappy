@@ -6,6 +6,7 @@
 */
 
 #include "zappy_server.h"
+#include "commands.h"
 #include "callback.h"
 #include "free.h"
 #include <ctype.h>
@@ -28,17 +29,16 @@ static char *read_input(int fd)
 static int read_loop(my_zappy_t *zappy, int fd)
 {
     char *buffer = NULL;
-    char **cmd = NULL;
+    cmd_t *cmd = NULL;
 
     if (FD_ISSET(fd, &zappy->server->rset)) {
-        if (!(buffer = read_input(fd))) {
+        if (!(buffer = read_input(fd)))
             return 84;
-        }
     } if (FD_ISSET(fd, &zappy->server->wset)) {
         if (buffer) {
-            cmd = get_command(buffer);
+            cmd = init_cmd(get_command(buffer));
             handle_commands(zappy, fd, cmd);
-            cmd = free_command(cmd);
+            send_all_message(cmd, fd);
         }
     } if (buffer)
         free(buffer);

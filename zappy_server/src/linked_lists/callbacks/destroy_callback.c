@@ -12,9 +12,9 @@ static size_t destroy_callback_info(callback_t *callback)
 {
     if (!callback || !callback->info)
         return 84;
-    for (size_t i = 0; callback->info->args[i] != NULL; i++)
-        free(callback->info->args[i]);
-    free(callback->info->args);
+    for (size_t i = 0; callback->info->cmd->args[i] != NULL; i++)
+        free(callback->info->cmd->args[i]);
+    free(callback->info->cmd->args);
     free(callback->info);
     return 0;
 }

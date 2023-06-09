@@ -62,10 +62,8 @@ static tiles_t **init_tiles(size_t x, size_t y)
             return NULL;
     }
     for (size_t i = 0; i < x; i++)
-        for (size_t j = 0; j < y; j++) {
+        for (size_t j = 0; j < y; j++)
             tile[i][j].players = (id_list_t *)init_list();
-            tile[i][j].egg = (id_list_t *)init_list();
-        }
     fill_map_part1(tile, x, y);
     fill_map_part2(tile, x, y);
     return tile;

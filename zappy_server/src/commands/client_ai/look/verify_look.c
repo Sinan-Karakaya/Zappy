@@ -8,8 +8,8 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int verify_look(my_zappy_t *zappy, int fd, char **args)
+int verify_look(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
-    add_to_callback(zappy, fd, args, args[0]);
+    add_to_callback(zappy, fd, cmd);
     return 0;
 }
