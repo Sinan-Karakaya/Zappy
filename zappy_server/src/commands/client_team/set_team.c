@@ -30,7 +30,8 @@ static int send_message_graphic(NUSED my_zappy_t *zappy,
     return 0;
 }
 
-static int send_message_team(my_zappy_t *zappy, team_t *team, cmd_t *cmd)
+static int send_message_team(my_zappy_t *zappy, client_t *client,
+team_t *team, cmd_t *cmd)
 {
     char *msg = "";
 
@@ -39,6 +40,7 @@ static int send_message_team(my_zappy_t *zappy, team_t *team, cmd_t *cmd)
     add_cmd(cmd, msg);
     asprintf(&msg, "%ld %ld\n", zappy->map->x, zappy->map->y);
     add_cmd(cmd, msg);
+    pnw(zappy, client->info->fd);
     return 0;
 }
 
@@ -55,5 +57,5 @@ int set_team(my_zappy_t *zappy, int fd, cmd_t *cmd)
     client->info->team_id = team->info->team_id;
     if (team->info->team_id == 0)
         return send_message_graphic(zappy, client, cmd);
-    return send_message_team(zappy, team, cmd);
+    return send_message_team(zappy, client, team, cmd);
 }

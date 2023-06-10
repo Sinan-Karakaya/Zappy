@@ -16,6 +16,7 @@
     #include "map.h"
     #include "parsing.h"
     #include "my_time.h"
+    #include "egg.h"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -46,6 +47,7 @@
         team_list_t *team_list;
         client_list_t *client_list;
         list_t *callback_list;
+        egg_list_t *egg_list;
         size_t frequency;
         map_t *map;
         my_time_t *time;
@@ -110,6 +112,8 @@
     /// @param message the message to send
     /// @return 1 if success, 84 if error
     int send_message_error(int fd, char *message);
+
+    int send_to_graphics(my_zappy_t *zappy, char *message);
 
     bool is_running(int sig);
     void sigint_handler(int sig);

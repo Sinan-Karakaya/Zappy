@@ -123,13 +123,14 @@ int pbc(my_zappy_t *zappy, int fd, char *message);
 /// @param zappy
 /// @param fd
 /// @return
-int pic(client_t *client, id_list_t *list);
+int pic(my_zappy_t *zappy, client_t *client, id_list_t *list);
 
 /// @brief function call when an incantation is finish
+/// @param zappy
 /// @param client
 /// @param result
 /// @return
-int pie(client_t *client, char *result);
+int pie(my_zappy_t *zappy, client_t *client, char *result);
 
 /// @brief egg laying by the player
 /// @param zappy
@@ -161,7 +162,7 @@ int pdi(my_zappy_t *zappy, int fd);
 /// @param zappy
 /// @param fd
 /// @return
-int enw(my_zappy_t *zappy, int fd, int id_egg, vector_t pos_egg);
+int enw(my_zappy_t *zappy, egg_t *egg);
 
 /// @brief player connection for an egg
 /// @param zappy
@@ -173,7 +174,7 @@ int ebo(my_zappy_t *zappy, int fd, int id_egg);
 /// @param zappy
 /// @param fd
 /// @return
-int edi(my_zappy_t *zappy, int fd, int id_egg);
+int edi(my_zappy_t *zappy, int id_egg);
 
 /// @brief end of an egg
 /// @param zappy
