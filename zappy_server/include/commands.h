@@ -123,13 +123,13 @@ int pbc(my_zappy_t *zappy, int fd, char *message);
 /// @param zappy
 /// @param fd
 /// @return
-int pic(my_zappy_t *zappy, int fd);
+int pic(client_t *client, id_list_t *list);
 
 /// @brief function call when an incantation is finish
-/// @param zappy
-/// @param fd
+/// @param client
+/// @param result
 /// @return
-int pie(my_zappy_t *zappy, int fd);
+int pie(client_t *client, char *result);
 
 /// @brief egg laying by the player
 /// @param zappy
