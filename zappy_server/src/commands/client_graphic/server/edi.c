@@ -16,5 +16,6 @@ int edi(my_zappy_t *zappy, int fd, int id_egg)
         return 84;
     asprintf(&result, "edi %d\n", id_egg);
     send_message(fd, result);
+    free(result);
     return 0;
 }

@@ -15,5 +15,7 @@ int enw(my_zappy_t *zappy, int fd, int id_egg, vector_t pos_egg)
     if (zappy == NULL)
         return 84;
     asprintf(&result, "enw %d %d %d %d\n", id_egg, fd, pos_egg.x, pos_egg.y);
+    send_message(fd, result);
+    free(result);
     return 0;
 }

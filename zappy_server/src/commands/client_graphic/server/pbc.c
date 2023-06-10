@@ -16,5 +16,6 @@ int pbc(my_zappy_t *zappy, int fd, char *message)
         return 0;
     asprintf(&result, "pbc %d %s\n", fd, message);
     send_message(fd, result);
+    free(result);
     return 0;
 }

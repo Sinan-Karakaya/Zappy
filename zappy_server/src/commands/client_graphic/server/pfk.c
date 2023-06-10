@@ -16,5 +16,6 @@ int pfk(my_zappy_t *zappy, int fd)
         return 0;
     asprintf(&result, "pfk %d\n", fd);
     send_message(fd, result);
+    free(result);
     return 0;
 }

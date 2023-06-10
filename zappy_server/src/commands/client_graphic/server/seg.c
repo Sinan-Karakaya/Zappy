@@ -5,7 +5,7 @@
 ** seg
 */
 
-#include "zappy_server.h"
+#include "free.h"
 #include "commands.h"
 
 int seg(my_zappy_t *zappy, int fd)
@@ -20,5 +20,9 @@ int seg(my_zappy_t *zappy, int fd)
     team = get_team_by_id(zappy->team_list, client->info->team_id);
     asprintf(&result, "seg %s\n", team->info->name);
     send_message(fd, result);
+    free(result);
+    destroy_client_info(client->info);
+    free(client);
+    destroy_struct_team(team);
     return 0;
 }

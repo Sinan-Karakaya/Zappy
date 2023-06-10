@@ -16,5 +16,6 @@ int pdi(my_zappy_t *zappy, int fd)
         return 84;
     asprintf(&result, "pdi %d\n", fd);
     send_message(fd, result);
+    free(result);
     return 0;
 }

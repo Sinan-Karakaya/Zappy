@@ -23,5 +23,6 @@ int pnw(my_zappy_t *zappy, int fd)
         client->info->player->direction, client->info->player->lvl,
         team->info->name);
     send_message(fd, result);
+    free(result);
     return 0;
 }
