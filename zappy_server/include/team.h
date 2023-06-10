@@ -21,6 +21,7 @@
         id_list_t *client_list;
         bool printable;
         ssize_t slots_available;
+        size_t nb_eggs;
     } team_info_t;
 
     typedef struct team_s team_t;

@@ -15,7 +15,7 @@ int pdi(my_zappy_t *zappy, int fd)
     if (zappy == NULL)
         return 84;
     asprintf(&result, "pdi %d\n", fd);
-    send_message(fd, result);
+    send_to_graphics(zappy, result);
     free(result);
     return 0;
 }

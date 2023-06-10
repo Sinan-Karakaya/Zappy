@@ -16,8 +16,21 @@ int verify_broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd)
 
 int broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
-    (void)zappy;
-    (void)fd;
-    (void)cmd;
+    client_t *client = get_client_by_fd(zappy->client_list, fd);
+    char *msg = "";
+
+    if (!zappy || !client || count_args(cmd->args) != 2)
+        return 84;
+    send_message(fd, "ok\n");
+    pbc(zappy, fd, cmd->args[1]);
+    for (client_t *tmp = zappy->client_list->first; tmp; tmp = tmp->next) {
+        if (tmp != client) {
+            asprintf(&msg, "message %ld, %s\n",
+            get_real_direction(tmp->info->player->direction,
+            get_direction(tmp, client)), cmd->args[1]);
+            send_message(tmp->info->fd, msg);
+            free(msg);
+        }
+    }
     return 0;
 }

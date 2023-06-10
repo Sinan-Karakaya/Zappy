@@ -16,6 +16,18 @@
     #define SERVER_GREEN "\033[0;32m[SERVER]\033[0m"
     #define SERVER_YELLOW "\033[0;33m[SERVER]\033[0m"
 
+    enum DIRECTION {
+        SAME,
+        N,
+        NW,
+        W,
+        SW,
+        S,
+        SE,
+        E,
+        NE
+    };
+
     typedef struct list_s {
         void *first;
         void *last;
@@ -25,6 +37,8 @@
         char *key;
         int value;
     } key_value_t;
+
+
 
     // Utils
 
@@ -65,5 +79,7 @@
     /// @return the duplicated array
     char **dup_array(char **array);
 
+    size_t get_direction(client_t *client, client_t *other);
+    size_t get_real_direction(size_t orientation, size_t direction);
 
 #endif /* !UTILS_H_ */

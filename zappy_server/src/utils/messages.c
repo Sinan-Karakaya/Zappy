@@ -42,3 +42,15 @@ int send_all_message(cmd_t *cmd, int fd)
     free(result);
     return 0;
 }
+
+int send_to_graphics(my_zappy_t *zappy, char *message)
+{
+    client_t *tmp = zappy->client_list->first;
+
+    while (tmp != NULL) {
+        if (tmp->info->team_id == TEAM_ID_GRAPHIC)
+            send_message(tmp->info->fd, message);
+        tmp = tmp->next;
+    }
+    return 0;
+}

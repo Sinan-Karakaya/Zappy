@@ -68,6 +68,10 @@ static int verify_all_values(my_zappy_t *zappy, int fd)
 
 int verify_incantation(my_zappy_t *zappy, int fd, cmd_t *cmd)
 {
+    client_t *client = get_client_by_fd(zappy->client_list, fd);
+
+    pic(zappy, client, zappy->map->tiles[client->info->player->y]
+    [client->info->player->x].players);
     if (verify_all_values(zappy, fd))
         send_message(fd, "ko\n");
     else
@@ -81,8 +85,11 @@ int incantation(my_zappy_t *zappy, int fd, cmd_t *cmd)
     char *result = "";
     client_t *client = get_client_by_fd(zappy->client_list, fd);
 
-    if (verify_all_values(zappy, fd))
+    if (verify_all_values(zappy, fd)) {
+        pie(zappy, client, "0");
         return add_cmd(cmd, "ko\n");
+    }
+    pie(zappy, client, "1");
     client->info->player->lvl++;
     asprintf(&result, "Current level: %ld\n",
     client->info->player->lvl);

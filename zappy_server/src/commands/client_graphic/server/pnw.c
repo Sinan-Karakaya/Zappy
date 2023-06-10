@@ -17,12 +17,16 @@ int pnw(my_zappy_t *zappy, int fd)
     if (zappy == NULL)
         return 0;
     client = get_client_by_fd(zappy->client_list, fd);
+    if (!client)
+        return 0;
     team = get_team_by_id(zappy->team_list, client->info->team_id);
+    if (!team)
+        return 0;
     asprintf(&result, "pnw %ld %d %d %d %ld %s\n", client->info->player->id,
         client->info->player->x, client->info->player->y,
         client->info->player->direction, client->info->player->lvl,
         team->info->name);
-    send_message(fd, result);
+    send_to_graphics(zappy, result);
     free(result);
     return 0;
 }

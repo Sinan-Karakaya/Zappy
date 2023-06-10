@@ -8,7 +8,7 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int pic(client_t *client, id_list_t *list)
+int pic(my_zappy_t *zappy, client_t *client, id_list_t *list)
 {
     char *result = NULL;
     char *tmp = "";
@@ -22,7 +22,7 @@ int pic(client_t *client, id_list_t *list)
     asprintf(&tmp, "%s%d", tmp, list->first->id);
     asprintf(&result, "pic %d %d %ld %s\n", client->info->player->x,
         client->info->player->y, client->info->player->lvl, tmp);
-    send_message(client->info->fd, result);
+    send_to_graphics(zappy, result);
     free(result);
     free(tmp);
     return 0;

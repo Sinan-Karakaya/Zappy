@@ -6,6 +6,7 @@
 */
 
 #include "zappy_server.h"
+#include "commands.h"
 
 int check_alive(my_zappy_t *zappy, int fd)
 {
@@ -14,6 +15,7 @@ int check_alive(my_zappy_t *zappy, int fd)
     if (client->info->team_id > TEAM_ID_GRAPHIC)
         return 0;
     if (client->info->player->is_alive == false) {
+        pdi(zappy, fd);
         send_message(fd, DEATH);
         destroy_client_in_list(zappy->client_list, fd);
         return 1;

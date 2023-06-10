@@ -8,14 +8,15 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int enw(my_zappy_t *zappy, int fd, int id_egg, vector_t pos_egg)
+int enw(my_zappy_t *zappy, egg_t *egg)
 {
     char *result = NULL;
 
     if (zappy == NULL)
         return 84;
-    asprintf(&result, "enw %d %d %d %d\n", id_egg, fd, pos_egg.x, pos_egg.y);
-    send_message(fd, result);
+    asprintf(&result, "enw %ld %ld %ld %ld\n", egg->info->id,
+    egg->info->player_id, egg->info->x, egg->info->y);
+    send_to_graphics(zappy, result);
     free(result);
     return 0;
 }

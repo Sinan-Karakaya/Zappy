@@ -57,6 +57,7 @@ typedef struct {
     size_t actual_tick;
     bool is_incanting;
     bool is_alive;
+    bool is_egg;
 } player_t;
 
 typedef struct client_info_s {
