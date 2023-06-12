@@ -50,10 +50,16 @@ public:
     virtual void setDirection(Direction dir) = 0;
 
     /**
-     * @brief
-     * @return
+     * @brief returns the id of the player
+     * @return id of the player
      */
     virtual int getId() const = 0;
+
+    /**
+     * @brief returns the team name of the player
+     * @return team name of the player
+     */
+    virtual const std::string &getTeamName() const = 0;
 
 protected:
     int m_id = -1;

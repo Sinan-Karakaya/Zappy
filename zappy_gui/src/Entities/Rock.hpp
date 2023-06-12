@@ -26,6 +26,7 @@ public:
     void setTilePosition(int x, int y) override;
     void setDirection(Direction dir) override;
     int getId() const override { return m_id; }
+    const std::string &getTeamName() const override { return m_teamName; }
 };
 
 } // zp

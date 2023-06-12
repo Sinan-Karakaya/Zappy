@@ -75,18 +75,31 @@ void zp::WindowManager::drawImGui(const zp::Map &map, const zp::Chat &chat)
     ImGui::SFML::Update(m_window, m_deltaClock.restart());
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-    drawChat(chat);
+    drawChat(chat, const_cast<zp::Map &>(map));
     drawGame();
     drawControlPanel(map);
 }
 
-void zp::WindowManager::drawChat(const zp::Chat &chat)
+void zp::WindowManager::drawChat(const zp::Chat &chat, zp::Map &map)
 {
     auto messages = chat.getMessages();
     ImGui::Begin("Chat");
     ImGui::BeginChild("Chat Messages", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+
+    auto aliens = map.getAliens();
+    auto colors = zp::TeamManager::getTeamsColors();
     for (auto &message : messages) {
-        ImGui::TextWrapped("%s: %s", message.first.c_str(), message.second.c_str());
+        auto it = std::find_if(aliens.begin(), aliens.end(), [&message](const auto &alien) {
+            return alien->getId() == std::stoi(message.first);
+        });
+        if (it != aliens.end()) {
+            auto color = colors[(*it)->getTeamName()];
+            ImGui::PushStyleColor(ImGuiCol_Text, color);
+            ImGui::TextWrapped("%s: %s", message.first.c_str(), message.second.c_str());
+            ImGui::PopStyleColor();
+        } else {
+            ImGui::TextWrapped("%s: %s", message.first.c_str(), message.second.c_str());
+        }
     }
     ImGui::EndChild();
     ImGui::End();
@@ -122,8 +135,10 @@ void zp::WindowManager::drawControlPanel(const zp::Map &map)
     for (auto &team : teams) {
         auto teamColor = zp::TeamManager::getTeamColor(team);
         ImVec4 newColor = teamColor;
+        std::string labelName = team + " color";
 
-        ImGui::ColorEdit4("TeamColor", (float*)&newColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
+        ImGui::ColorEdit3(labelName.c_str(), (float*)&newColor, ImGuiColorEditFlags_NoInputs |
+        ImGuiColorEditFlags_NoLabel);
         if (newColor != teamColor)
             zp::TeamManager::setTeamColor(team, newColor);
         ImGui::SameLine();

@@ -70,7 +70,7 @@ private:
     /**
      * @brief Draw the chat window
      */
-    void drawChat(const Chat &chat);
+    void drawChat(const Chat &chat, Map &map);
 
     /**
      * @brief Draw the game window
