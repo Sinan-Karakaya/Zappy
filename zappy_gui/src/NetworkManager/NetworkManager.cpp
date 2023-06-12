@@ -64,7 +64,6 @@ void zp::NetworkManager::update(std::unique_ptr<Map> &map)
             updatePlayers(map);
             updateRocks(map);
             for (auto &message : m_messageQueue) {
-                spdlog::info("Sending message: {}", message);
                 m_socket.send(message);
                 m_messageQueue.pop_front();
             }

@@ -51,7 +51,7 @@ int main(int ac, char **av)
         return 1;
     }
     try {
-        zp::App app(ip, port);
+        zp::App app(port, ip);
         app.run();
     } catch (const zp::WindowManagerException &e) {
         spdlog::error(e.what());
