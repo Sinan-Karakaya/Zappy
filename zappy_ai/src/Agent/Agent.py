@@ -315,21 +315,20 @@ class Agent:
         return (rock_needed, hasAllRock)
 
     def joinIncantate(self):
-        print("OKKKK", self.broadcastStack)
+        lenBroadcast = len(self.broadcastStack)
         if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
             self.broadcast("I'm joining the incantation")
             direction = int(self.broadcastStack[-1][8])
-            if (direction >= 6 and direction <= 8):
-                self.askServer("Right")
-                self.askServer("Right")
-            while (direction != 4 and direction != 5):
-                self.askServer("Forward")
-            if direction == 5:
+            if direction == 3:
+                self.askServer("Left")
+            elif direction == 7:
                 self.askServer("Right")
             else:
-                self.askServer("Left")
-            while (direction != 0 and direction == 2):
                 self.askServer("Forward")
+        else:
+            self.broadcast("I'm incanting " + str(self.level) + "!")
+
+                
                 
     def elevate(self):
         """
@@ -345,7 +344,6 @@ class Agent:
                 self.vision[0].count("player")
                 < self.__levelRequirements[self.level]["player"]
             ):
-                self.broadcast("I'm incanting " + str(self.level) + "!")
                 self.joinIncantate()
                 self.fillVisions()
                 self.fillInventory()
