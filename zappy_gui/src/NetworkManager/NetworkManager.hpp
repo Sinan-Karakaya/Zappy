@@ -34,7 +34,7 @@ public:
      * @brief Construct a new Network Manager object with a reference to the chat instance required for broadcasting
      * @param chat chat to hold reference of
      */
-    NetworkManager(Chat &chat);
+    NetworkManager(Chat &chat, bool &isConnected);
     ~NetworkManager();
 
     /**
@@ -56,7 +56,17 @@ public:
      */
     static void addMessage(const std::string &message) { m_messageQueue.push_back(message); }
 
+    /**
+     * @brief Send the message to the networkManager to attempt connecting to the server
+     */
+     static void connectionInfos(const std::string &ip, const std::string &port) { m_connectionAwaiting = {ip, port}; }
+
 private:
+    /**
+     * @brief Disconnect from the server and clear all left over data
+     */
+     void disconnect(Map &map, Chat &chat);
+
     /**
      * @brief Update the map with the data received from the server
      * @param map Map to update
@@ -160,7 +170,9 @@ private:
     std::unordered_map<std::string, std::function<void(const std::vector<std::string> &tokens, Map &map)>> m_commands;
 
     Chat &m_chat;
+    bool &m_isConnected;
     inline static std::deque<std::string> m_messageQueue;
+    inline static std::pair<std::string, std::string> m_connectionAwaiting;
 };
 
 } // zp

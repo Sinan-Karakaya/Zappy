@@ -106,6 +106,11 @@ public:
      */
     void setTimeUnitModifier(int timeUnitModifier) { m_timeUnitModifier = timeUnitModifier;}
 
+    /**
+     * @brief Clear all data
+     */
+     void clearAll();
+
 private:
     sf::Vector2i m_size = {0, 0};
     sf::Texture m_tileTexture;

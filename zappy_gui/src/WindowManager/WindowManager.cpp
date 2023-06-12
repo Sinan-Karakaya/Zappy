@@ -7,8 +7,9 @@
 
 #include "WindowManager.hpp"
 
-zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &size, const std::string &ip, const std::string &port)
-    : m_ip(ip), m_port(port)
+zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &size, const std::string &ip, const
+std::string &port, bool &isConnected)
+    : m_ip(ip), m_port(port), m_isConnected(isConnected)
 {
     spdlog::info("Initializing WindowManager");
     m_window.create(sf::VideoMode(size.x, size.y), title, sf::Style::Default | sf::Style::Resize);
@@ -75,9 +76,13 @@ void zp::WindowManager::drawImGui(const zp::Map &map, const zp::Chat &chat)
     ImGui::SFML::Update(m_window, m_deltaClock.restart());
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-    drawChat(chat, const_cast<zp::Map &>(map));
-    drawGame();
-    drawControlPanel(map);
+    if (m_isConnected) {
+        drawChat(chat, const_cast<zp::Map &>(map));
+        drawGame();
+        drawControlPanel(map);
+    } else {
+        drawConnection();
+    }
 }
 
 void zp::WindowManager::drawChat(const zp::Chat &chat, zp::Map &map)
@@ -119,7 +124,23 @@ void zp::WindowManager::drawGame()
 void zp::WindowManager::drawControlPanel(const zp::Map &map)
 {
     ImGui::Begin("Control Panel");
-    ImGui::Text("Connected to %s:%s", m_ip.c_str(), m_port.c_str());
+    ImGui::Text("Connected to %s:%s", m_ip.c_str(), m_port.c_str()); ImGui::SameLine();
+    if (ImGui::Button("Disconnect"))
+        ImGui::OpenPopup("Disconnect?");
+
+    ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+    ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+    ImGui::SetNextWindowSize(ImVec2(90, 65));
+    if (ImGui::BeginPopupModal("Disconnect?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        if (ImGui::Button("Yes")) {
+            zp::NetworkManager::addMessage("quit\n");
+            ImGui::CloseCurrentPopup();
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("No"))
+            ImGui::CloseCurrentPopup();
+        ImGui::EndPopup();
+    }
 
     ImGui::NewLine();
     ImGui::Text("Current time modifier: %d", map.getTimeUnitModifier());
@@ -146,6 +167,22 @@ void zp::WindowManager::drawControlPanel(const zp::Map &map)
         ImGui::PushStyleColor(ImGuiCol_Text, teamColor);
         ImGui::Text("%s", team.c_str());
         ImGui::PopStyleColor();
+    }
+    ImGui::End();
+}
+
+void zp::WindowManager::drawConnection()
+{
+    static char ip[16] = "127.0.0.1";
+    static int port = 4242;
+
+    ImGui::Begin("Connection");
+    ImGui::InputText("IP", ip, 16);
+    ImGui::InputInt("Port", &port);
+    if (ImGui::Button("Connect")) {
+        zp::NetworkManager::connectionInfos(ip, std::to_string(port));
+        m_ip = ip;
+        m_port = std::to_string(port);
     }
     ImGui::End();
 }
@@ -203,11 +240,11 @@ void zp::WindowManager::setStyle()
     colors[ImGuiCol_TabHovered] = ImVec4(0.39f, 0.39f, 0.39f, 1.00f);
     colors[ImGuiCol_TabActive] = ImVec4(0.48f, 0.48f, 0.48f, 1.00f);
     colors[ImGuiCol_DockingPreview] = ImVec4(1.00f, 1.00f, 1.00f, 0.70f);
+
+    ImGui::GetStyle().WindowMinSize = ImVec2(300, 100);
 }
 
 bool zp::WindowManager::isOpen()
 {
     return m_window.isOpen();
 }
-
-

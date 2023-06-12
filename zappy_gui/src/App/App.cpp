@@ -14,11 +14,12 @@ zp::App::App(const std::string &port, const std::string &ip)
         m_chat = std::make_unique<Chat>();
         spdlog::info("Chat created");
         spdlog::info("Creating network manager");
-        m_networkManager = std::make_unique<NetworkManager>(*m_chat);
-        spdlog::info("Connecting to {}:{}", ip, port);
-        m_networkManager->connect(ip, port);
-        spdlog::info("Connected to {}:{}", ip, port);
-        m_windowManager = std::make_unique<WindowManager>("Zappy", sf::Vector2u(1920, 1080), port, ip);
+        m_networkManager = std::make_unique<NetworkManager>(*m_chat, isConnected);
+        if (!port.empty() && !ip.empty()) {
+            m_networkManager->connect(ip, port);
+            spdlog::info("Connected to {}:{}", ip, port);
+        }
+        m_windowManager = std::make_unique<WindowManager>("Zappy", sf::Vector2u(1920, 1080), port, ip, isConnected);
         spdlog::info("Window created");
         m_map = std::make_unique<Map>();
         spdlog::info("Map created");
