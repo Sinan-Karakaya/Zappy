@@ -328,8 +328,6 @@ class Agent:
         else:
             self.broadcast("I'm incanting " + str(self.level) + "!")
 
-                
-                
     def elevate(self):
         """
         Elevate the agent to the next level. gathering all rock and player
