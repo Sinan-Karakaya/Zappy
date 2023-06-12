@@ -18,7 +18,7 @@ zp::App::App(const std::string &port, const std::string &ip)
         spdlog::info("Connecting to {}:{}", ip, port);
         m_networkManager->connect(port, ip);
         spdlog::info("Connected to {}:{}", ip, port);
-        m_windowManager = std::make_unique<WindowManager>("Zappy", sf::Vector2u(1920, 1080));
+        m_windowManager = std::make_unique<WindowManager>("Zappy", sf::Vector2u(1920, 1080), ip, port);
         spdlog::info("Window created");
         m_map = std::make_unique<Map>();
         spdlog::info("Map created");

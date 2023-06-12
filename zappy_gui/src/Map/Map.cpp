@@ -87,3 +87,14 @@ void zp::Map::removeAlien(int id)
         }
     }
 }
+
+const std::vector<std::string> &zp::Map::getTeams() const
+{
+    return m_teams;
+}
+
+void zp::Map::addTeam(const std::string &team)
+{
+    m_teams.push_back(team);
+    zp::TeamManager::setTeamColor(team, zp::TeamManager::randomHue(team));
+}

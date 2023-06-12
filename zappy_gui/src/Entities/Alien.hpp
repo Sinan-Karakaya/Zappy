@@ -9,6 +9,7 @@
 
 #include "IEntity.hpp"
 #include "Utils/Utils.hpp"
+#include "Utils/TeamManager.hpp"
 
 #define ALIEN_PATH "assets/sprites/zeologue.png"
 #define ALIEN_HEIGHT 84

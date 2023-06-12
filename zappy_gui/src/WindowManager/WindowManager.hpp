@@ -30,7 +30,7 @@ namespace zp {
 class WindowManager
 {
 public:
-    WindowManager(const std::string &title, const sf::Vector2u &size);
+    WindowManager(const std::string &title, const sf::Vector2u &size, const std::string &ip, const std::string &port);
     ~WindowManager();
 
     /**
@@ -55,7 +55,7 @@ private:
     /**
      * @brief Draw the ImGui windows
      */
-    void drawImGui(const Chat &chat);
+    void drawImGui(const Map &map, const Chat &chat);
 
     /**
      * @brief Handle the events
@@ -80,7 +80,7 @@ private:
     /**
      * @brief Draw the control panel
      */
-    void drawControlPanel();
+    void drawControlPanel(const Map &map);
 
 private:
     sf::RenderWindow m_window;
@@ -91,6 +91,9 @@ private:
     sf::Texture m_backgroundTexture;
     sf::Sprite m_backgroundSprite;
     sf::View m_gameView;
+
+    std::string m_ip;
+    std::string m_port;
 };
 
 } // namespace zp

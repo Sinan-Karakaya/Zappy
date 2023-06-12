@@ -7,7 +7,8 @@
 
 #include "WindowManager.hpp"
 
-zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &size)
+zp::WindowManager::WindowManager(const std::string &title, const sf::Vector2u &size, const std::string &ip, const std::string &port)
+    : m_ip(ip), m_port(port)
 {
     spdlog::info("Initializing WindowManager");
     m_window.create(sf::VideoMode(size.x, size.y), title, sf::Style::Default | sf::Style::Resize);
@@ -35,13 +36,13 @@ zp::WindowManager::~WindowManager()
     ImGui::SFML::Shutdown();
 }
 
-void zp::WindowManager::update(std::unique_ptr<Map> &map, std::unique_ptr<Chat> &chat)
+void zp::WindowManager::update(std::unique_ptr<zp::Map> &map, std::unique_ptr<zp::Chat> &chat)
 {
     handleEvents();
     m_gameTexture.clear();
     m_gameTexture.draw(m_backgroundSprite);
     map->drawMap(m_gameTexture);
-    drawImGui(*chat);
+    drawImGui(*map, *chat);
     render();
 }
 
@@ -69,17 +70,17 @@ void zp::WindowManager::handleEvents()
     }
 }
 
-void zp::WindowManager::drawImGui(const Chat &chat)
+void zp::WindowManager::drawImGui(const zp::Map &map, const zp::Chat &chat)
 {
     ImGui::SFML::Update(m_window, m_deltaClock.restart());
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
     drawChat(chat);
     drawGame();
-    drawControlPanel();
+    drawControlPanel(map);
 }
 
-void zp::WindowManager::drawChat(const Chat &chat)
+void zp::WindowManager::drawChat(const zp::Chat &chat)
 {
     auto messages = chat.getMessages();
     ImGui::Begin("Chat");
@@ -102,10 +103,25 @@ void zp::WindowManager::drawGame()
     ImGui::PopStyleVar();
 }
 
-void zp::WindowManager::drawControlPanel()
+void zp::WindowManager::drawControlPanel(const zp::Map &map)
 {
     ImGui::Begin("Control Panel");
-    ImGui::Text("This is the control panel window");
+    ImGui::Text("Connected to %s:%s", m_ip.c_str(), m_port.c_str());
+    ImGui::Text("\nTeams:");
+    auto teams = map.getTeams();
+    for (auto &team : teams) {
+        auto teamColor = zp::TeamManager::getTeamColor(team);
+        ImVec4 newColor = teamColor;
+
+        ImGui::ColorEdit4("TeamColor", (float*)&newColor, ImGuiColorEditFlags_NoInputs | ImGuiColorEditFlags_NoLabel);
+        if (newColor != teamColor)
+            zp::TeamManager::setTeamColor(team, newColor);
+        ImGui::SameLine();
+
+        ImGui::PushStyleColor(ImGuiCol_Text, teamColor);
+        ImGui::Text("%s", team.c_str());
+        ImGui::PopStyleColor();
+    }
     ImGui::End();
 }
 

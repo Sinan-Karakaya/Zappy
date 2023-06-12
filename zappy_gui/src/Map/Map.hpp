@@ -15,6 +15,7 @@
 
 #include "Entities/IEntity.hpp"
 #include "Tile.hpp"
+#include "Utils/TeamManager.hpp"
 
 #define TILE_PATH "assets/sprites/floor_zappy.png"
 #define TILE_WIDTH_HALF 32
@@ -64,6 +65,12 @@ public:
     void addRock(std::shared_ptr<zp::IEntity> rock);
 
     /**
+     * @brief Add a team to the map
+     * @param team
+     */
+    void addTeam(const std::string &team);
+
+    /**
      * @brief Returns all aliens on the map
      * @return
      */
@@ -81,6 +88,12 @@ public:
      */
     std::vector<std::shared_ptr<zp::IEntity>> &getRocks();
 
+    /**
+     * @brief Returns the teams
+     * @return
+     */
+    const std::vector<std::string> & getTeams() const;
+
 private:
     sf::Vector2i m_size = {0, 0};
     sf::Texture m_tileTexture;
@@ -89,6 +102,7 @@ private:
     std::vector<std::shared_ptr<Tile>> m_tiles;
     std::vector<std::shared_ptr<zp::IEntity>> m_rocks;
     std::vector<std::shared_ptr<zp::IEntity>> m_aliens;
+    std::vector<std::string> m_teams;
 };
 
 } // zp

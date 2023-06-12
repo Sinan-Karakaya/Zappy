@@ -130,7 +130,8 @@ void zp::NetworkManager::getMapContent(const std::vector<std::string> &tokens, M
 void zp::NetworkManager::getNamesOfTeam(const std::vector<std::string> &tokens, Map &map)
 {
     (void)map;
-    spdlog::info("getNamesOfTeam: {}", tokens[1]);
+    if (tokens[1] != "GRAPHIC")
+        map.addTeam(tokens[1]);
 }
 
 void zp::NetworkManager::getNewPlayer(const std::vector<std::string> &tokens, Map &map)

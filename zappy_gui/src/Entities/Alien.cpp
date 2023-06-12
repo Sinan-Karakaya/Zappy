@@ -28,7 +28,7 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
     m_textures[Direction::EAST].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(252, 0, 84, 84));
     m_sprite.setTexture(m_textures[Direction::WEST]);
     m_sprite.setPosition(m_position.x, m_position.y);
-    m_sprite.setColor(zp::Utils::randomHue(teamName));
+    m_sprite.setColor(zp::TeamManager::getTeamColor(teamName));
     m_sprite.setRotation(180);
     m_sprite.setScale(0.5, 0.5);
     m_sprite.setOrigin(42, 34);
@@ -37,6 +37,9 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
 
 void zp::Alien::draw(sf::RenderTexture &window)
 {
+    auto color = zp::TeamManager::getTeamColor(m_teamName);
+    if (color != m_sprite.getColor())
+        m_sprite.setColor(color);
     window.draw(m_sprite);
 }
 

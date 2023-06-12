@@ -12,6 +12,7 @@
 #include <exception>
 #include <unordered_map>
 #include <functional>
+#include <algorithm>
 
 #include <spdlog/spdlog.h>
 #include <SFML/Network.hpp>
