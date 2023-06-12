@@ -25,7 +25,7 @@ public:
     void draw(sf::RenderTexture &window) override;
     void setTilePosition(int x, int y) override;
     void setDirection(Direction dir) override;
-    int getId() const { return m_id; }
+    int getId() const override { return m_id; }
 };
 
 } // zp

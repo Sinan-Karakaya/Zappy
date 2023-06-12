@@ -8,7 +8,7 @@
 #pragma once
 
 #include <string>
-#include <stack>
+#include <deque>
 
 namespace zp {
 
@@ -29,10 +29,10 @@ public:
      * @brief Get the messages
      * @return Stack of messages
      */
-    const std::stack<std::pair<std::string, std::string>> &getMessages() const;
+    const std::deque<std::pair<std::string, std::string>> &getMessages() const;
 
 private:
-    std::stack<std::pair<std::string, std::string>> m_messages;
+    std::deque<std::pair<std::string, std::string>> m_messages;
 };
 
 };

@@ -35,13 +35,13 @@ zp::WindowManager::~WindowManager()
     ImGui::SFML::Shutdown();
 }
 
-void zp::WindowManager::update(std::unique_ptr<Map> &map)
+void zp::WindowManager::update(std::unique_ptr<Map> &map, std::unique_ptr<Chat> &chat)
 {
     handleEvents();
     m_gameTexture.clear();
     m_gameTexture.draw(m_backgroundSprite);
     map->drawMap(m_gameTexture);
-    drawImGui();
+    drawImGui(*chat);
     render();
 }
 
@@ -69,20 +69,25 @@ void zp::WindowManager::handleEvents()
     }
 }
 
-void zp::WindowManager::drawImGui()
+void zp::WindowManager::drawImGui(const Chat &chat)
 {
     ImGui::SFML::Update(m_window, m_deltaClock.restart());
     ImGui::DockSpaceOverViewport(ImGui::GetMainViewport());
 
-    drawChat();
+    drawChat(chat);
     drawGame();
     drawControlPanel();
 }
 
-void zp::WindowManager::drawChat()
+void zp::WindowManager::drawChat(const Chat &chat)
 {
+    auto messages = chat.getMessages();
     ImGui::Begin("Chat");
-    ImGui::Text("This is the chat window");
+    ImGui::BeginChild("Chat Messages", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
+    for (auto &message : messages) {
+        ImGui::TextWrapped("%s: %s", message.first.c_str(), message.second.c_str());
+    }
+    ImGui::EndChild();
     ImGui::End();
 }
 

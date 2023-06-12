@@ -36,8 +36,9 @@ public:
     /**
      * @brief Update the window
      * @param map Map to update
+     * @param chat Chat to update
      */
-    void update(std::unique_ptr<Map> &map);
+    void update(std::unique_ptr<Map> &map, std::unique_ptr<Chat> &chat);
 
     /**
      * @brief Check if the window is open
@@ -54,7 +55,7 @@ private:
     /**
      * @brief Draw the ImGui windows
      */
-    void drawImGui();
+    void drawImGui(const Chat &chat);
 
     /**
      * @brief Handle the events
@@ -69,7 +70,7 @@ private:
     /**
      * @brief Draw the chat window
      */
-    void drawChat();
+    void drawChat(const Chat &chat);
 
     /**
      * @brief Draw the game window

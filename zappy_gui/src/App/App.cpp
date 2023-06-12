@@ -35,6 +35,6 @@ void zp::App::run()
 {
     while (m_windowManager->isOpen()) {
         m_networkManager->update(m_map);
-        m_windowManager->update(m_map);
+        m_windowManager->update(m_map, m_chat);
     }
 }

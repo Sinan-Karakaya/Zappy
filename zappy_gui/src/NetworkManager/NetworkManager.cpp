@@ -179,7 +179,12 @@ void zp::NetworkManager::broadCast(const std::vector<std::string> &tokens, zp::M
 {
     (void)map;
     spdlog::info("broadCast: {}", tokens[1]);
-    m_chat.addMessage(tokens[1], tokens[2]);
+
+    std::string message = tokens[2];
+    for (size_t i = 3; i < tokens.size(); i++)
+        message += " " + tokens[i];
+
+    m_chat.addMessage(tokens[1], message);
 }
 
 void zp::NetworkManager::doNothing(const std::vector<std::string> &tokens, zp::Map &map)
