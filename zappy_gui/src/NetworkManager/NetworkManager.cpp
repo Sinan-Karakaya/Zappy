@@ -63,6 +63,11 @@ void zp::NetworkManager::update(std::unique_ptr<Map> &map)
             updateMap(map);
             updatePlayers(map);
             updateRocks(map);
+            for (auto &message : m_messageQueue) {
+                spdlog::info("Sending message: {}", message);
+                m_socket.send(message);
+                m_messageQueue.pop_front();
+            }
         }
     } catch (const std::runtime_error &e) {
         spdlog::error("{}", e.what());
@@ -167,13 +172,13 @@ void zp::NetworkManager::getPlayerPos(const std::vector<std::string> &tokens, Ma
 void zp::NetworkManager::timeUnitRequest(const std::vector<std::string> &tokens, Map &map)
 {
     (void)map;
-    spdlog::info("timeUnitRequest: {}", tokens[1]);
+    map.setTimeUnitModifier(std::stoi(tokens[1]));
 }
 
 void zp::NetworkManager::timeUnitModification(const std::vector<std::string> &tokens, Map &map)
 {
-    (void)map;
     (void)tokens;
+    map.setTimeUnitModifier(std::stoi(tokens[1]));
 }
 
 void zp::NetworkManager::broadCast(const std::vector<std::string> &tokens, zp::Map &map)

@@ -94,6 +94,18 @@ public:
      */
     const std::vector<std::string> & getTeams() const;
 
+    /**
+     * @brief Returns the time unit modifier
+     * @return
+     */
+    int getTimeUnitModifier() const { return m_timeUnitModifier; }
+
+    /**
+     * @brief Set the time unit modifier
+     * @param timeUnitModifier
+     */
+    void setTimeUnitModifier(int timeUnitModifier) { m_timeUnitModifier = timeUnitModifier;}
+
 private:
     sf::Vector2i m_size = {0, 0};
     sf::Texture m_tileTexture;
@@ -103,6 +115,8 @@ private:
     std::vector<std::shared_ptr<zp::IEntity>> m_rocks;
     std::vector<std::shared_ptr<zp::IEntity>> m_aliens;
     std::vector<std::string> m_teams;
+
+    int m_timeUnitModifier = 1;
 };
 
 } // zp

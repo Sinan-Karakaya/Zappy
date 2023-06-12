@@ -13,6 +13,7 @@
 #include <unordered_map>
 #include <functional>
 #include <algorithm>
+#include <deque>
 
 #include <spdlog/spdlog.h>
 #include <SFML/Network.hpp>
@@ -48,6 +49,12 @@ public:
      * @param map Map to be updated
      */
     void update(std::unique_ptr<Map> &map);
+
+    /**
+     * @brief Add a message to the queue
+     * @param message message to add
+     */
+    static void addMessage(const std::string &message) { m_messageQueue.push_back(message); }
 
 private:
     /**
@@ -153,6 +160,7 @@ private:
     std::unordered_map<std::string, std::function<void(const std::vector<std::string> &tokens, Map &map)>> m_commands;
 
     Chat &m_chat;
+    inline static std::deque<std::string> m_messageQueue;
 };
 
 } // zp
