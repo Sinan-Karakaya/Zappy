@@ -31,6 +31,11 @@ public:
      */
     const std::deque<std::pair<std::string, std::string>> &getMessages() const;
 
+    /**
+     * @brief Clear the messages
+     */
+    void clearMessages() { m_messages.clear(); }
+
 private:
     std::deque<std::pair<std::string, std::string>> m_messages;
 };

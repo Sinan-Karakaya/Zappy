@@ -34,6 +34,8 @@ private:
     std::unique_ptr<NetworkManager> m_networkManager;
     std::unique_ptr<Map> m_map;
     std::unique_ptr<Chat> m_chat;
+
+    bool isConnected = false;
 };
 
 } // zp

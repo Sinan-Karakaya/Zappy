@@ -7,8 +7,8 @@
 
 #include "NetworkManager.hpp"
 
-zp::NetworkManager::NetworkManager(Chat &chat)
-    : m_chat(chat)
+zp::NetworkManager::NetworkManager(Chat &chat, bool &isConnected)
+    : m_chat(chat), m_isConnected(isConnected)
 {
     m_commands["WELCOME"] = std::bind(&NetworkManager::welcome, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["msz"] = std::bind(&NetworkManager::getMapSize, this, std::placeholders::_1, std::placeholders::_2);
@@ -28,22 +28,34 @@ zp::NetworkManager::NetworkManager(Chat &chat)
 zp::NetworkManager::~NetworkManager()
 {
     m_socket.disconnect();
+    m_isConnected = false;
 }
 
 void zp::NetworkManager::connect(const std::string &ip, const std::string &port)
 {
+    if (port.empty() || ip.empty())
+        return;
     try {
         m_socket.connect(port, ip);
+        m_ip = ip;
+        m_port = port;
+        m_isConnected = true;
+        spdlog::info("Connected to remote server");
     } catch (const std::runtime_error &e) {
         throw e;
     }
-    m_ip = ip;
-    m_port = port;
-    spdlog::info("Connected to remote server");
 }
 
 void zp::NetworkManager::update(std::unique_ptr<Map> &map)
 {
+    if (!m_isConnected) {
+        if (!m_connectionAwaiting.first.empty() && !m_connectionAwaiting.second.empty()) {
+            connect(m_connectionAwaiting.first, m_connectionAwaiting.second);
+            m_connectionAwaiting.first.clear();
+            m_connectionAwaiting.second.clear();
+        }
+        return;
+    }
     try {
         m_socket.update();
         if (m_socket.isReadyToRead()) {
@@ -64,6 +76,10 @@ void zp::NetworkManager::update(std::unique_ptr<Map> &map)
             updatePlayers(map);
             updateRocks(map);
             for (auto &message : m_messageQueue) {
+                if (message == "quit\n") {
+                    disconnect(*map, m_chat);
+                    return;
+                }
                 m_socket.send(message);
                 m_messageQueue.pop_front();
             }
@@ -232,4 +248,13 @@ void zp::NetworkManager::setInventory(const std::vector <std::string> &tokens, z
     for (size_t i = 4; i < tokens.size(); i++) {
         target->setRockQuantity((zp::Rocks)(i - 4), std::stoi(tokens[i]));
     }
+}
+
+void zp::NetworkManager::disconnect(Map &map, Chat &chat)
+{
+    m_socket.disconnect();
+    m_isConnected = false;
+    m_messageQueue.clear();
+    map.clearAll();
+    chat.clearMessages();
 }

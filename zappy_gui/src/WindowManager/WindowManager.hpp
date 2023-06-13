@@ -30,7 +30,8 @@ namespace zp {
 class WindowManager
 {
 public:
-    WindowManager(const std::string &title, const sf::Vector2u &size, const std::string &ip, const std::string &port);
+    WindowManager(const std::string &title, const sf::Vector2u &size, const std::string &ip, const std::string &port,
+                  bool &isConnected);
     ~WindowManager();
 
     /**
@@ -87,6 +88,11 @@ private:
      */
     void drawControlPanel(const Map &map);
 
+    /**
+     * @brief Draw the connection window depending on the state of isConnected
+     */
+     void drawConnection();
+
 private:
     sf::RenderWindow m_window;
     sf::Clock m_deltaClock;
@@ -99,6 +105,7 @@ private:
 
     std::string m_ip;
     std::string m_port;
+    bool &m_isConnected;
 };
 
 } // namespace zp

@@ -98,3 +98,13 @@ void zp::Map::addTeam(const std::string &team)
     m_teams.push_back(team);
     zp::TeamManager::setTeamColor(team, zp::TeamManager::randomHue(team));
 }
+
+void zp::Map::clearAll()
+{
+    m_aliens.clear();
+    m_rocks.clear();
+    m_teams.clear();
+    m_tiles.clear();
+    m_size = {0, 0};
+    m_timeUnitModifier = 1;
+}

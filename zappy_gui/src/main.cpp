@@ -46,10 +46,6 @@ int main(int ac, char **av)
 
     if (handleOpt(ac, av, ip, port))
         return 0;
-    if (port.empty()) {
-        printHelp();
-        return 1;
-    }
     try {
         zp::App app(port, ip);
         app.run();
