@@ -34,6 +34,9 @@ public:
     void setDirection(Direction dir) override;
     int getId() const override { return m_id; }
     const std::string &getTeamName() const override { return m_teamName; }
+
+    void setRockQuantity(Rocks rock, int quantity) override { m_inventory[rock] = quantity; }
+    const std::unordered_map<Rocks, int> &getInventory() const override { return m_inventory; }
 };
 
 } // zp

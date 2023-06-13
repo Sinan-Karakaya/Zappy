@@ -14,6 +14,8 @@
 #include <SFML/Graphics.hpp>
 #include <spdlog/spdlog.h>
 
+#include "Map/Tile.hpp"
+
 namespace zp
 {
 
@@ -61,6 +63,19 @@ public:
      */
     virtual const std::string &getTeamName() const = 0;
 
+    /**
+     * @brief Set quantity of a rock in the inventory of the player
+     * @param rock Rock to set quantity
+     * @param quantity quantity value
+     */
+    virtual void setRockQuantity(Rocks rock, int quantity) = 0;
+
+    /**
+     * @brief Get inventory
+     * @return Inventory const ref
+     */
+    virtual const std::unordered_map<Rocks, int> &getInventory() const = 0;
+
 protected:
     int m_id = -1;
     std::string m_teamName;
@@ -70,6 +85,9 @@ protected:
     sf::Vector2i m_position;
     sf::Vector2i m_tilePosition;
     Direction m_direction = Direction::WEST;
+
+    std::unordered_map<Rocks, int> m_inventory;
+
 };
 
 } // zp

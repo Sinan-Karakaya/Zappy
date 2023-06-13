@@ -38,7 +38,7 @@ zp::WindowManager::~WindowManager()
 
 void zp::WindowManager::update(std::unique_ptr<zp::Map> &map, std::unique_ptr<zp::Chat> &chat)
 {
-    handleEvents();
+    handleEvents(*map);
     m_gameTexture.clear();
     m_gameTexture.draw(m_backgroundSprite);
     map->drawMap(m_gameTexture);
@@ -46,9 +46,10 @@ void zp::WindowManager::update(std::unique_ptr<zp::Map> &map, std::unique_ptr<zp
     render();
 }
 
-void zp::WindowManager::handleEvents()
+void zp::WindowManager::handleEvents(Map &map)
 {
     sf::Event event;
+
     while (m_window.pollEvent(event)) {
         ImGui::SFML::ProcessEvent(event);
         if (event.type == sf::Event::Closed)
@@ -66,6 +67,10 @@ void zp::WindowManager::handleEvents()
                 m_gameView.zoom(0.9);
             if (event.mouseWheelScroll.delta < 0)
                 m_gameView.zoom(1.1);
+        }
+        if (event.mouseButton.button == sf::Mouse::Left) {
+            if (event.type == sf::Event::MouseButtonReleased)
+                setPlayerInventory(event, map);
         }
     }
 }
@@ -208,6 +213,10 @@ void zp::WindowManager::setStyle()
 bool zp::WindowManager::isOpen()
 {
     return m_window.isOpen();
+}
+
+void zp::WindowManager::setPlayerInventory(sf::Event &event, const Map &map)
+{
 }
 
 

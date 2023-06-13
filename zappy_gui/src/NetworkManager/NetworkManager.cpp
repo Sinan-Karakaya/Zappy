@@ -20,7 +20,7 @@ zp::NetworkManager::NetworkManager(Chat &chat)
     m_commands["ppo"] = std::bind(&NetworkManager::getPlayerPos, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pbc"] = std::bind(&NetworkManager::broadCast, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pgt"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
-    m_commands["pin"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pin"] = std::bind(&NetworkManager::setInventory, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pex"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pdi"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
 }
@@ -207,5 +207,29 @@ void zp::NetworkManager::removePlayer(const std::vector<std::string> &tokens, zp
             map.removeAlien(std::stoi(tokens[1]));
             return;
         }
+    }
+}
+
+void zp::NetworkManager::setInventory(const std::vector <std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 11) {
+        spdlog::warn("Received invalid number of tokens for pin");
+        return;
+    }
+    auto players = map.getAliens();
+    std::shared_ptr<IEntity> target = nullptr;
+
+    for (auto &player : players) {
+        if (player->getId() == std::stoi(tokens[1])) {
+            target = player;
+            break;
+        }
+    }
+    if (target == nullptr) {
+        spdlog::warn("Received inventory for unknown player");
+        return;
+    }
+    for (size_t i = 4; i < tokens.size(); i++) {
+        target->setRockQuantity((zp::Rocks)(i - 4), std::stoi(tokens[i]));
     }
 }

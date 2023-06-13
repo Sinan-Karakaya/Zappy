@@ -146,6 +146,13 @@ private:
     void removePlayer(const std::vector<std::string> &tokens, Map &map);
 
     /**
+     * @brief Handle incoming inventory
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void setInventory(const std::vector<std::string> &tokens, Map &map);
+
+    /**
      * @brief For commands I don't care about for now
      * @param tokens Vector of the response
      * @param map map to update

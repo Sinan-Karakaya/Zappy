@@ -60,7 +60,12 @@ private:
     /**
      * @brief Handle the events
      */
-    void handleEvents();
+    void handleEvents(Map &map);
+
+    /**
+     * @brief Set m_inventoryToDraw to the corresponding player id. Set to -1 if fails
+     */
+    void setPlayerInventory(sf::Event &event, const Map &map);
 
     /**
      * @brief Render the window
