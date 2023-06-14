@@ -27,7 +27,7 @@ static player_t *init_player(int width, int height)
     new_player->id = 0;
     new_player->actual_tick = 0;
     new_player->last_tick = 0;
-    new_player->is_incanting = false;
+    new_player->is_action = false;
     new_player->is_alive = true;
     return new_player;
 }
@@ -41,6 +41,11 @@ client_info_t *init_clients_info(int fd, int width, int height)
     info->fd = fd;
     info->user_id = fd;
     info->team_id = -1;
+    info->lst_cmd = calloc(1, sizeof(lst_commands_t));
+    if (info->lst_cmd == NULL)
+        return NULL;
+    info->lst_cmd->first = NULL;
+    info->lst_cmd->last = NULL;
     info->player = init_player(width, height);
     return info;
 }

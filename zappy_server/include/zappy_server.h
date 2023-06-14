@@ -128,5 +128,7 @@
     // Commands
     int eat_all_client(my_zappy_t *zappy);
 
+    int exec_command(client_t *client, cmd_t *cmd,
+        my_zappy_t *zappy, int client_fd);
 
 #endif /* !Zappy_Server_H_ */

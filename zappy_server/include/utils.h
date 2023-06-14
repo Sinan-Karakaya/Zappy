@@ -15,6 +15,8 @@
     #define SERVER_RED "\033[0;31m[SERVER]\033[0m"
     #define SERVER_GREEN "\033[0;32m[SERVER]\033[0m"
     #define SERVER_YELLOW "\033[0;33m[SERVER]\033[0m"
+    #define SERVER_BLUE "\033[0;34m[SERVER]\033[0m"
+    #define SERVER_MAGENTA "\033[0;35m[SERVER]\033[0m"
 
     enum DIRECTION {
         SAME,

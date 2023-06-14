@@ -48,6 +48,7 @@ int add_to_callback(my_zappy_t *zappy, int fd, cmd_t *cmd)
 int handle_callbacks(my_zappy_t *zappy)
 {
     callback_t *tmp = NULL;
+    client_t *client = NULL;
 
     if (!zappy || !zappy->callback_list)
         return 84;
@@ -57,13 +58,13 @@ int handle_callbacks(my_zappy_t *zappy)
             tmp = actual->next;
             actual->info->func(zappy, actual->info->fd, actual->info->cmd);
             send_all_message(actual->info->cmd, actual->info->fd);
+            client = get_client_by_fd(zappy->client_list, actual->info->fd);
             printf("%s: Callback %s executed for client %d \n", SERVER_YELLOW,
             actual->info->cmd->args[0], actual->info->fd);
             destroy_callback((callback_list_t *)zappy->callback_list, actual);
+            client->info->player->is_action = false;
+
         } else
             tmp = actual->next;
-        if (actual->info->cmd)
-            destroy_cmd(actual->info->cmd);
-    }
-    return 0;
+    } return 0;
 }

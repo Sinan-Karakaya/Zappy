@@ -5,8 +5,10 @@
 ** handle_commands
 */
 
+#include "free.h"
 #include "zappy_server.h"
 #include "commands.h"
+#include "utils.h"
 
 commands_t commands[] = {
     /*
@@ -39,15 +41,60 @@ commands_t commands[] = {
     {NULL, NULL}
 };
 
-static int print_debug(client_t *client, char **cmd)
+static int add_command_list(client_t *client, cmd_t *cmd)
 {
+    command_t *tmp = NULL;
+
     if (client == NULL || cmd == NULL)
         return 84;
-    printf("%s: Client %d: ", SERVER_YELLOW, client->info->fd);
-    for (size_t i = 0; cmd[i] != NULL; i++)
-        printf("%s ", cmd[i]);
-    printf("\n");
+    if (client->info->team_id == TEAM_ID_GRAPHIC)
+        return 0;
+    if (client->info->lst_cmd->first == NULL) {
+        tmp = init_lst_commands(cmd->args);
+        list_add_command(client->info->lst_cmd, tmp);
+        client->info->lst_cmd->size++;
+        return 0;
+    } if (client->info->player->is_action == true) {
+        if (client->info->lst_cmd->size == 9)
+            return 0;
+        tmp = init_lst_commands(cmd->args);
+        list_add_command(client->info->lst_cmd, tmp);
+        client->info->lst_cmd->size++;
+    }
     return 0;
+}
+
+static bool get_command_list(client_t *client, cmd_t *cmd)
+{
+    if (client == NULL || cmd == NULL)
+        return false;
+    if (client->info->player->is_action == false) {
+        if (client->info->lst_cmd->first != NULL) {
+            pop_front_cmd(client->info->lst_cmd);
+            client->info->lst_cmd->size--;
+            return true;
+        }
+    }
+    return false;
+}
+
+int exec_command(client_t *client, cmd_t *cmd, my_zappy_t *zappy, int client_fd)
+{
+    if (client->info->player->is_alive == false)
+        return 0;
+    if (client->info->lst_cmd->first != NULL &&
+        client->info->player->is_action == false)
+        cmd = init_cmd(client->info->lst_cmd->first->args);
+    if (get_command_list(client, cmd) == false)
+        return 0;
+    for (size_t i = 0; commands[i].command != NULL; i++) {
+        if (strcmp(commands[i].command, cmd->args[0]) == 0) {
+            client->info->player->is_action = true;
+            commands[i].func(zappy, client_fd, cmd);
+            return 0;
+        }
+    }
+    return 1;
 }
 
 int handle_commands(my_zappy_t *zappy, int client_fd, cmd_t *cmd)
@@ -56,15 +103,10 @@ int handle_commands(my_zappy_t *zappy, int client_fd, cmd_t *cmd)
 
     if (!zappy || !cmd || !cmd->args || !client)
         return 0;
-    print_debug(client, cmd->args);
     if (client->info->team_id == -1)
         return set_team(zappy, client_fd, cmd);
-    if (client->info->player->is_alive == false)
-        return 0;
-    for (size_t i = 0; commands[i].command != NULL; i++) {
-        if (strcmp(commands[i].command, cmd->args[0]) == 0)
-            return commands[i].func(zappy, client_fd, cmd);
-    }
-    send_message(client_fd, "ko\n");
+    add_command_list(client, cmd);
+    if (cmd && cmd->args)
+        print_debug(client, cmd->args);
     return 0;
 }

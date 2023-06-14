@@ -8,36 +8,34 @@
 #include "free.h"
 #include <stdlib.h>
 
-//     my_time_t *time;
+// static void free_client_list(client_list_t *list)
+// {
+//     client_list_t *tmp = NULL;
 
-static void free_client_list(client_list_t *list)
-{
-    client_list_t *tmp = NULL;
+//     if (!list)
+//         return;
+//     while (list) {
+//         tmp = list;
+//         list = (client_list_t *)list->first->next;
+//         destroy_client_info(tmp->first->info);
+//         free(tmp);
+//     }
+// }
 
-    if (!list)
-        return;
-    while (list) {
-        tmp = list;
-        list = (client_list_t *)list->first->next;
-        destroy_client_info(tmp->first->info);
-        free(tmp);
-    }
-}
+// static void free_callback_list(list_t *list)
+// {
+//     list_t *tmp = NULL;
 
-static void free_callback_list(list_t *list)
-{
-    list_t *tmp = NULL;
-
-    if (!list)
-        return;
-    while (list) {
-        tmp = list;
-        list = (list_t *)list->first;
-        free(tmp);
-    }
-    if (list)
-        free(list);
-}
+//     if (!list)
+//         return;
+//     while (list) {
+//         tmp = list;
+//         list = (list_t *)list->first;
+//         free(tmp);
+//     }
+//     if (list)
+//         free(list);
+// }
 
 static void destroy_map(map_t *map)
 {
@@ -58,9 +56,7 @@ size_t free_zappy(my_zappy_t *zappy)
 {
     close(zappy->server->sockfd);
     free(zappy->server);
-    free_client_list(zappy->client_list);
     destroy_struct_team(zappy->team_list->first);
-    free_callback_list(zappy->callback_list);
     destroy_map(zappy->map);
     free(zappy);
     return 0;
