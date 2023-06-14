@@ -71,7 +71,7 @@ void zp::WindowManager::handleEvents(Map &map)
         }
         if (event.mouseButton.button == sf::Mouse::Left) {
             if (event.type == sf::Event::MouseButtonReleased)
-                setPlayerInventory(event, map);
+                setPlayerInventory(map);
         }
     }
 }
@@ -85,6 +85,8 @@ void zp::WindowManager::drawImGui(const zp::Map &map, const zp::Chat &chat)
         drawChat(chat, const_cast<zp::Map &>(map));
         drawGame();
         drawControlPanel(map);
+        if (m_inventoryToDraw != -1)
+            drawInventory(const_cast<zp::Map &>(map));
     } else {
         drawConnection();
     }
@@ -122,6 +124,11 @@ void zp::WindowManager::drawGame()
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui::Begin("Game", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
     ImGui::Image(m_gameSprite);
+    if (ImGui::IsWindowHovered()) {
+//        sf::Vector2i mousePosition = sf::Mouse::getPosition(m_window);
+//        m_mousePos = m_gameTexture.mapPixelToCoords(mousePosition, m_gameTexture.getView());
+        m_mousePos = {static_cast<float>(sf::Mouse::getPosition(m_window).x), static_cast<float>(sf::Mouse::getPosition(m_window).y)};
+    }
     ImGui::End();
     ImGui::PopStyleVar();
 }
@@ -254,6 +261,38 @@ bool zp::WindowManager::isOpen()
     return m_window.isOpen();
 }
 
-void zp::WindowManager::setPlayerInventory(sf::Event &event, const Map &map)
+void zp::WindowManager::setPlayerInventory(Map &map)
 {
+    auto players = map.getAliens();
+
+    for (auto &player : players) {
+        if (player->onClick(m_window, m_gameTexture, m_gameView, m_mousePos)) {
+            m_inventoryToDraw = player->getId();
+            return;
+        }
+    }
+}
+
+void zp::WindowManager::drawInventory(Map &map)
+{
+    auto players = map.getAliens();
+    std::shared_ptr<IEntity> target;
+
+    for (auto &player : players) {
+        if (player->getId() == m_inventoryToDraw) {
+            target = player;
+            break;
+        }
+    }
+    if (target == nullptr)
+        return;
+
+    ImGui::Begin("Inventory");
+    auto inventory = target->getInventory();
+    for (auto &item : inventory) {
+        ImGui::Text("%s: %d",g_rocksToString[item.first].c_str(), item.second);
+    }
+    if (ImGui::Button("Close"))
+        m_inventoryToDraw = -1;
+    ImGui::End();
 }

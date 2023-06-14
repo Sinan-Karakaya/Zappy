@@ -12,6 +12,8 @@
 #include <exception>
 
 #include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
 #include <spdlog/spdlog.h>
 
 #include "Map/Tile.hpp"
@@ -75,6 +77,15 @@ public:
      * @return Inventory const ref
      */
     virtual const std::unordered_map<Rocks, int> &getInventory() const = 0;
+
+    /**
+     * @brief Check if the entity is clicked
+     * @param window View of the game
+     * @param event Event of the window
+     * @return returns true if the entity is clicked
+     */
+    virtual bool onClick(sf::RenderWindow &window, sf::RenderTexture &renderTexture, sf::View &view, sf::Vector2f
+    mousePos) = 0;
 
 protected:
     int m_id = -1;

@@ -27,6 +27,16 @@
 
 namespace zp {
 
+inline static const std::array<std::string, NUM_OF_ROCKS> g_rocksToString = {
+    "Food",
+    "Linemate",
+    "Deraumere",
+    "Sibur",
+    "Mendiane",
+    "Phiras",
+    "Thystame"
+};
+
 class WindowManager
 {
 public:
@@ -66,7 +76,7 @@ private:
     /**
      * @brief Set m_inventoryToDraw to the corresponding player id. Set to -1 if fails
      */
-    void setPlayerInventory(sf::Event &event, const Map &map);
+    void setPlayerInventory(Map &map);
 
     /**
      * @brief Render the window
@@ -93,6 +103,11 @@ private:
      */
      void drawConnection();
 
+     /**
+      * @brief Draw the inventory window if m_inventoryToDraw is not -1
+      */
+      void drawInventory(Map &map);
+
 private:
     sf::RenderWindow m_window;
     sf::Clock m_deltaClock;
@@ -106,6 +121,9 @@ private:
     std::string m_ip;
     std::string m_port;
     bool &m_isConnected;
+
+    int m_inventoryToDraw = -1;
+    sf::Vector2f m_mousePos = {0.f, 0.f};
 };
 
 } // namespace zp

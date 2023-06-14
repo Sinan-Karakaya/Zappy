@@ -58,3 +58,31 @@ void zp::Alien::setDirection(zp::Direction dir)
     m_direction = dir;
     m_sprite.setTexture(m_textures[dir]);
 }
+#include <iostream>
+
+bool zp::Alien::onClick(sf::RenderWindow &window, sf::RenderTexture &renderTexture, sf::View &view, sf::Vector2f
+mousePos)
+{
+    (void)view;
+    (void)window;
+    (void)renderTexture;
+    (void)mousePos;
+//    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+//    sf::Vector2f viewPosition = window.mapPixelToCoords(mousePosition, renderTexture.getView());
+//    sf::Vector2i textureCoords = renderTexture.mapCoordsToPixel(viewPosition);
+//    sf::Vector2f pos = {static_cast<float>(textureCoords.x), static_cast<float>(textureCoords.y)};
+//    sf::Vector2i merde = {static_cast<int>(m_sprite.getPosition().x), static_cast<int>(m_sprite.getPosition().y)};
+//    sf::Vector2f spritePos = window.mapPixelToCoords(merde, renderTexture.getView());
+//    sf::Vector2f size = {static_cast<float>(m_textures[m_direction].getSize().x),
+//                         static_cast<float>(m_textures[m_direction].getSize().y)};
+//    sf::FloatRect rect = {spritePos, size};
+//
+//    std::cout << "MOUSE POS: " << mousePos.x << " " << mousePos.y << std::endl;
+//    std::cout << "SPRITE POS: " << spritePos.x << " " << spritePos.y << std::endl;
+//    if (rect.contains(mousePos)) {
+//        std::cout << "CLICKED" << std::endl;
+//        return true;
+//    }
+//    return false;
+    return m_sprite.getGlobalBounds().contains(window.mapPixelToCoords(sf::Mouse::getPosition(window)));
+}
