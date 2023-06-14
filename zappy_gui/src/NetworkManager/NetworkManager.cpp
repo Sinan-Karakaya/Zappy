@@ -106,6 +106,8 @@ void zp::NetworkManager::updatePlayers(std::unique_ptr<Map> &map)
     for (auto &alien : aliens) {
         std::string request = "ppo " + std::to_string(alien->getId()) + "\n";
         m_socket.send(request);
+        request = "pin " + std::to_string(alien->getId()) + "\n";
+        m_socket.send(request);
     }
 }
 
@@ -247,6 +249,7 @@ void zp::NetworkManager::setInventory(const std::vector <std::string> &tokens, z
     }
     for (size_t i = 4; i < tokens.size(); i++) {
         target->setRockQuantity((zp::Rocks)(i - 4), std::stoi(tokens[i]));
+        spdlog::info("Player {} has {} {}", tokens[1], tokens[i], i - 4);
     }
 }
 

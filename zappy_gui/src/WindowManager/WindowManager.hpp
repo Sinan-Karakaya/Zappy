@@ -71,12 +71,7 @@ private:
     /**
      * @brief Handle the events
      */
-    void handleEvents(Map &map);
-
-    /**
-     * @brief Set m_inventoryToDraw to the corresponding player id. Set to -1 if fails
-     */
-    void setPlayerInventory(Map &map);
+    void handleEvents();
 
     /**
      * @brief Render the window
@@ -122,8 +117,7 @@ private:
     std::string m_port;
     bool &m_isConnected;
 
-    int m_inventoryToDraw = -1;
-    sf::Vector2f m_mousePos = {0.f, 0.f};
+    bool m_showInventory = false;
 };
 
 } // namespace zp

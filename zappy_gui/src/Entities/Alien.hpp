@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <spdlog/spdlog.h>
+
 #include "IEntity.hpp"
 #include "Utils/Utils.hpp"
 #include "Utils/TeamManager.hpp"
@@ -37,9 +39,6 @@ public:
 
     void setRockQuantity(Rocks rock, int quantity) override { m_inventory[rock] = quantity; }
     const std::unordered_map<Rocks, int> &getInventory() const override { return m_inventory; }
-
-    bool onClick(sf::RenderWindow &window, sf::RenderTexture &renderTexture, sf::View &view, sf::Vector2f
-    mousePos) override;
 };
 
 } // zp

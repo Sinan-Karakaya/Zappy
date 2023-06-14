@@ -43,12 +43,3 @@ void zp::Rock::setDirection(zp::Direction dir)
     // @TODO: Change sprite using texture array
 }
 
-bool zp::Rock::onClick(sf::RenderWindow &window, sf::RenderTexture &renderTexture, sf::View &view, sf::Vector2f
-mousePos)
-{
-    (void)window;
-    (void)view;
-    (void)renderTexture;
-    (void)mousePos;
-    return false;
-}
