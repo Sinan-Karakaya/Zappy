@@ -62,8 +62,6 @@ int handle_callbacks(my_zappy_t *zappy)
             destroy_callback((callback_list_t *)zappy->callback_list, actual);
         } else
             tmp = actual->next;
-        if (actual->info->cmd)
-            destroy_cmd(actual->info->cmd);
     }
     return 0;
 }
