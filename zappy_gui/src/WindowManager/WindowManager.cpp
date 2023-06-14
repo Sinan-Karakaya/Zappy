@@ -223,22 +223,6 @@ void zp::WindowManager::drawControlPanel(const zp::Map &map)
             ImGui::Text("\tthystame: %d", ressources[Rocks::THYSTAME]);
             ImGui::EndTabItem();
         }
-        if (ImGui::BeginTabItem("Teams Panel")) {
-            ImGui::Text("Teams:");
-            auto teams = map.getTeams();
-            for (auto &team : teams) {
-                auto teamColor = zp::TeamManager::getTeamColor(team);
-                auto aliens = map.getAliens();
-                ImGui::PushStyleColor(ImGuiCol_Text, teamColor);
-                ImGui::Text("\t%s:", team.c_str());
-                ImGui::PopStyleColor();
-                for (auto alien : aliens) {
-                    auto al = alien.get();
-                    if (team == al->getTeamName())
-                        ImGui::Text("\t\tAlien %d", al->getId());
-                }
-            }
-        }
         ImGui::EndTabBar();
     }
     ImGui::End();
