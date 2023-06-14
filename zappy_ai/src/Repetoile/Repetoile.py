@@ -46,7 +46,7 @@ class Repetoile(Agent):
 
         @return: None
         """
-        if self.inventory["food"] <= 10:
+        if self.inventory["food"] <= 10 and self.state != "joining":
             self.state = "Searching food"
         else:
             self.state = "Broadcasting like a fool"
@@ -71,8 +71,9 @@ class Repetoile(Agent):
 
         @return: None
         """
-
+        
         self.broadcast("I'm born")
+        self.askServer("Fork")
         self.state = "Searching food"
 
     def broadcast(self, message: str):

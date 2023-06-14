@@ -5,6 +5,8 @@
 ## Agent
 ##
 
+import datetime
+
 from src.Server.Server import Server
 from src.Color.Color import (
     OKGREEN,
@@ -35,6 +37,7 @@ class Agent:
         self.server = server
         self.vision = []
         self.isDead = False
+        self.isElevating = False
         self.level = 0
         self.moveStack = []
         self.broadcastStack = []
@@ -55,6 +58,28 @@ class Agent:
                 "thystame": 1,
             },
         ]
+    
+    def __treatMessage(self, message: str):
+
+        if (message == "dead"):
+            self.isDead = True
+            exit(0)
+
+        if "message" in message:
+            self.broadcastStack.append(message)
+            return False
+        
+        if "Elevation underway" in message:
+            self.isElevating = True
+            return False
+
+        return True
+
+    def __getRealMessage(self, message: str):
+        response = message
+        while (not self.__treatMessage(response)):
+            response = self.server.getResponse()
+        return response
 
     def askServer(self, msg: str):
         """
@@ -65,18 +90,29 @@ class Agent:
 
         @return: The response from the server.
         """
+
+        now = datetime.datetime.now()
+        print("Current time is:", now.time(), end = " ")
         print("Sending: " + msg, end=" ")
         self.server.socket.sendall((msg + "\n").encode("ASCII"))
         response = self.server.getResponse()
-        if response == "dead\n":
-            self.isDead = True
-            exit(0)
+
+        while (response.count("\n") < 1):
+            response += self.server.getResponse()
+
+        response = self.__getRealMessage(response)        
+ 
         if "Incantation" in msg:
-            response = self.server.getResponse()
-        while "message" in response:
-            self.broadcastStack.append(response)
-            print(OKBLUE, "New message: " + response, end=ENDC)
-            response = self.server.getResponse()
+            if "Current level" in response:
+                self.level = int(response.split(" ")[2]) - 1
+                self.isElevating = False
+        else:
+            if "Current level" in response:
+                self.level = int(response.split(" ")[2]) - 1
+                self.isElevating = False
+                response = self.server.getResponse()
+                response = self.__getRealMessage(response)
+
         if "ok" in response:
             print(OKGREEN, "| Receive: " + response, end=ENDC)
         elif "ko" in response:
@@ -100,7 +136,7 @@ class Agent:
                 response_tab[i] = response_tab[i].split(" ")
                 self.inventory[response_tab[i][1]] = int(response_tab[i][2])
         except:
-            print("Error while parsing inventory")
+            print(WARNING, "Error while parsing inventory")
             print(response)
 
     def fillVisions(self):
@@ -250,16 +286,6 @@ class Agent:
                 return False
         return True
 
-    def canElevate(self):
-        """
-        Return true if its possible to Level Up.
-
-        @return: bool
-        """
-        if self.__verifyVision(self.__levelRequirements[self.level - 1]):
-            return True
-        return False
-
     def __prepareTile(self, rock_needed: dict):
         """
         Prepare the tile to level up. Clear the tile of all the rocks that are not needed.
@@ -276,15 +302,15 @@ class Agent:
             ):
                 if key != "player":
                     self.askServer("Set " + key)
-        for rock in self.vision[0]:
-            if (rock != "player" and rock != "food") and (
-                (rock not in self.__levelRequirements[self.level])
-                or (
-                    self.vision[0].count(rock)
-                    > self.__levelRequirements[self.level][rock]
-                )
-            ):
-                self.askServer("Take " + rock)
+        # for rock in self.vision[0]:
+        #     if (rock != "player" and rock != "food") and (
+        #         (rock not in self.__levelRequirements[self.level])
+        #         or (
+        #             self.vision[0].count(rock)
+        #             > self.__levelRequirements[self.level][rock]
+        #         )
+        #     ):
+        #         self.askServer("Take " + rock)
 
     def __gatherRocks(self):
         """
@@ -313,11 +339,32 @@ class Agent:
                 hasAllRock = False
                 break
         return (rock_needed, hasAllRock)
+    
+    def __checkIncantationLevel(self, message : str):
+        """
+        check the level require to join the incantation
+
+        @param message: The message to check
+        @type message: str
+
+        @return: bool
+        """
+        indexIncating = message.find("incanting")
+        if indexIncating != -1:
+            indexEnd = message.find("!", indexIncating)
+            stringLevel = message[indexIncating + 10:indexEnd]
+            print(stringLevel)
+            level = int(stringLevel)
+            if level == self.level:
+                return True
+        return False
 
     def joinIncantate(self):
-        lenBroadcast = len(self.broadcastStack)
         if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
-            self.broadcast("I'm joining the incantation")
+            if not self.__checkIncantationLevel(self.broadcastStack[-1]):
+                return False
+
+            self.broadcast("I'm joining the incantation") 
             direction = int(self.broadcastStack[-1][8])
             if direction == 3:
                 self.askServer("Left")
@@ -325,35 +372,63 @@ class Agent:
                 self.askServer("Right")
             else:
                 self.askServer("Forward")
+            return True
         else:
             self.broadcast("I'm incanting " + str(self.level) + "!")
+            return False
+    
+    def __getLastMessage(self):
+        """
+        get the last message of the broadcast stack
 
-                
-                
+        @return: str
+        """
+        if len(self.broadcastStack) > 0:
+            return self.broadcastStack[-1]
+        return ""
     def elevate(self):
         """
         Elevate the agent to the next level. gathering all rock and player
 
-
         @return: None
         """
+        hasJoin = False
         rock_needed, hasAllRock = self.__gatherRocks()
         self.fillVisions()
         if hasAllRock:
-            while (
-                self.vision[0].count("player")
-                < self.__levelRequirements[self.level]["player"]
-            ):
-                self.joinIncantate()
-                self.fillVisions()
-                self.fillInventory()
-                if self.inventory["food"] < 7:
-                    self.searchObject("food")
+            if (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
+                hasJoin = self.joinIncantate()
+            else:
+                if (self.level == 0 or "joining" in self.__getLastMessage()):
+                    self.broadcast("I'v started incantation")
+                    self.__prepareTile(rock_needed)
+                    response = self.askServer("Incantation")
+                else:
+                    print("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
+                    self.broadcast("I'v started incantation")
+                    self.__prepareTile(rock_needed)
+                    for i in range(0, 330):
+                        self.askServer("Inventory")
+                
 
-            self.__prepareTile(rock_needed)
-            response = self.askServer("Incantation")
-            if not "ko" in response:
-                self.level += 1
+            # self.joinIncantate()
+            # if ("started" in self.__getLastMessage()):
+            #     for i in range(0, 300):
+            #         self.askServer("Inventory")
+            # if (self.vision[0].count("player") == self.__levelRequirements[self.level]["player"]):
+            #     self.fillVisions()
+            # while (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
+            #     self.fillVisions()
+            #     self.fillInventory()
+            #     if self.inventory["food"] < 13:
+            #         self.searchObject("food")
+            #     hasJoin = self.joinIncantate()
+            # if (self.level == 0 or "joining" in self.__getLastMessage()):
+            #     self.broadcast("I'v started incantation")
+            #     self.__prepareTile(rock_needed)
+            #     response = self.askServer("Incantation")
+            #     if not "ko" in response:
+            #         self.level += 1
 
     def broadcast(self, message: str):
         ...
