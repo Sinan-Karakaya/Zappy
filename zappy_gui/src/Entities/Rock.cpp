@@ -30,8 +30,9 @@ void zp::Rock::draw(sf::RenderTexture &window)
     window.draw(m_sprite);
 }
 
-void zp::Rock::setTilePosition(int x, int y)
+void zp::Rock::setTilePosition(int x, int y, int mapHeight)
 {
+    (void)(mapHeight);
     m_tilePosition.x = x;
     m_tilePosition.y = y;
     // @TODO: set sprite pos etc

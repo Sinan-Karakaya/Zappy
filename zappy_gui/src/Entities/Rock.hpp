@@ -23,7 +23,7 @@ public:
     ~Rock() override = default;
 
     void draw(sf::RenderTexture &window) override;
-    void setTilePosition(int x, int y) override;
+    void setTilePosition(int x, int y, int mapHeight) override;
     void setDirection(Direction dir) override;
     int getId() const override { return m_id; }
     const std::string &getTeamName() const override { return m_teamName; }

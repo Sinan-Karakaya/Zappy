@@ -30,6 +30,7 @@ public:
     ~Tile() = default;
 
     void setRock(Rocks rock, int amount) { m_content[rock] = amount; }
+    std::array<int, NUM_OF_ROCKS> getRessources() const { return m_content; }
 
 private:
     std::array<int, NUM_OF_ROCKS> m_content;
