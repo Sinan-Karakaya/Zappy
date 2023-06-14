@@ -14,7 +14,7 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
     m_direction = dir;
     m_teamName = teamName;
     m_position.x = (m_tilePosition.x - m_tilePosition.y) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;
-    m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + WINDOW_HEIGHT / 4 -
+    m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + WINDOW_HEIGHT / 3 -
             ALIEN_HEIGHT / 4;
 
     if (!m_baseTexture.loadFromFile(ALIEN_PATH)) {
@@ -43,12 +43,12 @@ void zp::Alien::draw(sf::RenderTexture &window)
     window.draw(m_sprite);
 }
 
-void zp::Alien::setTilePosition(int x, int y)
+void zp::Alien::setTilePosition(int x, int y, int mapHeight)
 {
     m_tilePosition.x = x;
     m_tilePosition.y = y;
     m_position.x = (m_tilePosition.x - m_tilePosition.y) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;
-    m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + WINDOW_HEIGHT / 4 -
+    m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + mapHeight -
             ALIEN_HEIGHT / 4;
     m_sprite.setPosition(m_position.x, m_position.y);
 }

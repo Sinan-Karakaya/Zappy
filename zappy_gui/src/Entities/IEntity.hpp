@@ -41,7 +41,7 @@ public:
      * @param x between 0 and 30
      * @param y between 0 and 30
      */
-    virtual void setTilePosition(int x, int y) = 0;
+    virtual void setTilePosition(int x, int y, int mapHeight) = 0;
 
     /**
      * @brief Set the position of the entity on the window

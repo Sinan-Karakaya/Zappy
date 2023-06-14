@@ -177,7 +177,7 @@ void zp::NetworkManager::getPlayerPos(const std::vector<std::string> &tokens, Ma
 
     for (auto &alien : aliens) {
         if (alien->getId() == std::stoi(tokens[1])) {
-            alien->setTilePosition(std::stoi(tokens[2]) + 1, std::stoi(tokens[3]) + 1);
+            alien->setTilePosition(std::stoi(tokens[2]) + 1, std::stoi(tokens[3]) + 1, 1080 / (map.getSize().y / 10));
             alien->setDirection((zp::Direction) std::stoi(tokens[4]));
             return;
         }

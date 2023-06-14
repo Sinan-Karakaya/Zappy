@@ -20,7 +20,7 @@
 #define TILE_PATH "assets/sprites/floor_zappy.png"
 #define TILE_WIDTH_HALF 32
 #define TILE_HEIGHT_HALF 32
-#define TILE_ESCALATION 8
+#define TILE_ESCALATION 12
 
 namespace zp
 {
@@ -50,7 +50,7 @@ public:
      * @param y Must be between 0 and 30
      * @return std::shared_ptr<Tile>
      */
-    std::shared_ptr<Tile> getTile(int x, int y);
+    std::shared_ptr<Tile> getTile(int x, int y) const;
 
     /**
      * @brief Add an alien to the map
@@ -74,7 +74,7 @@ public:
      * @brief Returns all aliens on the map
      * @return
      */
-    std::vector<std::shared_ptr<zp::IEntity>> &getAliens();
+    std::vector<std::shared_ptr<zp::IEntity>> getAliens() const;
 
     /**
      * @brief Remove an alien from the map
@@ -86,13 +86,19 @@ public:
      * @brief Returns all rocks on the map
      * @return
      */
-    std::vector<std::shared_ptr<zp::IEntity>> &getRocks();
+    std::vector<std::shared_ptr<zp::IEntity>> getRocks() const;
+
+    /**
+     * @brief Returns the size of the map
+     * @return
+     */
+    sf::Vector2i getSize() const;
 
     /**
      * @brief Returns the teams
      * @return
      */
-    const std::vector<std::string> & getTeams() const;
+    const std::vector<std::string> getTeams() const;
 
     /**
      * @brief Returns the time unit modifier
