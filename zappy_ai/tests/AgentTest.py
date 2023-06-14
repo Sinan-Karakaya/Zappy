@@ -12,6 +12,8 @@ class TestAgent(unittest.TestCase):
         self.agent = Agent(Server("localhost", 4242))
         self.agent.server.connect()
         self.agent.server.getResponse()
+        self.agent.server.socket.sendall(("Team1" + "\n").encode("ASCII"))
+        self.agent.server.printResponse()
 
     def testDistanceToGoRight(self):
         dist = self.agent.distanceTo(7)
@@ -33,11 +35,11 @@ class TestAgent(unittest.TestCase):
 
     def testFillInventory(self):
         self.agent.fillInventory()
-        self.assertTrue(len(self.agent.inventory) > 0)
+        self.assertTrue(self.agent.inventory["food"] > 0)
 
     def testFillVisions(self):
         self.agent.fillVisions()
-        self.assertTrue(len(self.agent.vision) > 0)
+        self.assertTrue(len(self.agent.vision[0]) > 0)
 
     def testCanNotElevateNoRessources(self):
         self.agent.fillVisions()
@@ -59,6 +61,16 @@ class TestAgent(unittest.TestCase):
 
     def testCanElevateWithNoVision(self):
         self.assertFalse(self.agent.canElevate())
+
+    def testElevate(self):
+        self.agent.inventory["linemate"] = 25
+        self.agent.inventory["food"] = 25
+        self.agent.elevate()
+
+    def testSearchObject(self):
+        self.agent.searchObject("player")
+        self.agent.searchObject("deraumere")
+        self.agent.searchObject("linemate")
 
     def testWrongIndex(self):
         self.assertFalse(self.agent.distanceTo(0))

@@ -386,6 +386,7 @@ class Agent:
         if len(self.broadcastStack) > 0:
             return self.broadcastStack[-1]
         return ""
+
     def elevate(self):
         """
         Elevate the agent to the next level. gathering all rock and player
