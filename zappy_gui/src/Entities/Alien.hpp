@@ -11,7 +11,9 @@
 #include "Utils/Utils.hpp"
 #include "Utils/TeamManager.hpp"
 
+#define ELEVATION_PATH "assets/sprites/elevation.png"
 #define ALIEN_PATH "assets/sprites/zeologue.png"
+#define ALIEN_WIDTH 84
 #define ALIEN_HEIGHT 84
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
@@ -29,11 +31,18 @@ public:
     Alien(sf::Vector2i tilePos, Direction dir, const std::string &teamName, int id = -1);
     ~Alien() override = default;
 
+    void drawIncantation(sf::RenderTexture &window);
     void draw(sf::RenderTexture &window) override;
     void setTilePosition(int x, int y, int mapHeight) override;
     void setDirection(Direction dir) override;
     int getId() const override { return m_id; }
     const std::string &getTeamName() const override { return m_teamName; }
+
+private:
+    sf::Sprite m_elevation_sprite;
+    sf::Texture m_elevation_texture;
+    sf::IntRect m_elevation_rect;
+    sf::Clock m_clock;
 };
 
 } // zp
