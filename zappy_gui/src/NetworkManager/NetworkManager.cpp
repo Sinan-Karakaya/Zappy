@@ -125,7 +125,6 @@ void zp::NetworkManager::welcome(const std::vector<std::string> &tokens, Map &ma
 
 void zp::NetworkManager::getMapSize(const std::vector<std::string> &tokens, Map &map)
 {
-    spdlog::info("Map size: {} {}", tokens[1], tokens[2]);
     map.setSize(std::stoi(tokens[1]), std::stoi(tokens[2]));
 }
 
@@ -201,8 +200,6 @@ void zp::NetworkManager::timeUnitModification(const std::vector<std::string> &to
 void zp::NetworkManager::broadCast(const std::vector<std::string> &tokens, zp::Map &map)
 {
     (void)map;
-    spdlog::info("broadCast: {}", tokens[1]);
-
     std::string message = tokens[2];
     for (size_t i = 3; i < tokens.size(); i++)
         message += " " + tokens[i];
@@ -249,7 +246,6 @@ void zp::NetworkManager::setInventory(const std::vector <std::string> &tokens, z
     }
     for (size_t i = 4; i < tokens.size(); i++) {
         target->setRockQuantity((zp::Rocks)(i - 4), std::stoi(tokens[i]));
-        spdlog::info("Player {} has {} {}", tokens[1], tokens[i], i - 4);
     }
 }
 

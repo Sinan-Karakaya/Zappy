@@ -149,8 +149,8 @@ void zp::WindowManager::drawControlPanel(const zp::Map &map)
 
             ImGui::NewLine();
             ImGui::Text("Current time modifier: %d", map.getTimeUnitModifier());
-            static int timeModif = 5000;
-            ImGui::SliderInt("##", &timeModif, 2, 10000); ImGui::SameLine();
+            static int timeModif = 1000;
+            ImGui::SliderInt("##", &timeModif, 2, 2000); ImGui::SameLine();
             if (ImGui::Button("Update") && timeModif != 0) {
                 zp::NetworkManager::addMessage("sst " + std::to_string(timeModif) + "\n");
             }

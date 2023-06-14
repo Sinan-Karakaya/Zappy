@@ -7,40 +7,21 @@
 
 #include "Rock.hpp"
 
-zp::Rock::Rock(sf::Vector2i tilePos, zp::Direction dir, const std::string &teamName)
-{
-    (void)teamName;
-    (void)dir;
-    m_tilePosition = tilePos;
-    m_position.x = m_tilePosition.x * 32 * 2 + 32;
-    m_position.y = m_tilePosition.y * 32 * 2 + 32;
-    m_direction = EAST;
-    m_teamName = "rock";
-
-    if (!m_baseTexture.loadFromFile(TILE_PATH)) {
-        spdlog::error("Cannot load texture");
-        throw std::runtime_error("Cannot load texture");
-    }
-    m_sprite.setTexture(m_baseTexture);
-    m_sprite.setTextureRect(sf::IntRect(128, 0, 128, 128));
-}
-
 void zp::Rock::draw(sf::RenderTexture &window)
 {
     window.draw(m_sprite);
 }
 
-void zp::Rock::setTilePosition(int x, int y, int mapHeight)
+void zp::Rock::setData(sf::Vector2i mapSize, sf::Vector2i tilePos, int rockId, sf::Texture &rockTexture)
 {
-    (void)(mapHeight);
-    m_tilePosition.x = x;
-    m_tilePosition.y = y;
-    // @TODO: set sprite pos etc
+    m_mapSize = mapSize;
+    m_tilePosition = tilePos;
+    m_position.x = (m_tilePosition.x - m_tilePosition.y + 1) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;
+    m_position.y = (m_tilePosition.x + m_tilePosition.y + 1) * (TILE_HEIGHT_HALF - TILE_ESCALATION) + WINDOW_HEIGHT /
+            (mapSize.y / 10);
+    m_sprite.setTexture(rockTexture);
+    m_sprite.setColor(zp::RockManager::randomColor(rockId));
+    m_sprite.setScale(0.5, 0.5);
+    m_sprite.setRotation(180);
+    m_sprite.setPosition(m_position.x, m_position.y);
 }
-
-void zp::Rock::setDirection(zp::Direction dir)
-{
-    m_direction = dir;
-    // @TODO: Change sprite using texture array
-}
-

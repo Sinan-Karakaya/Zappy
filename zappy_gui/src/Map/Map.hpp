@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entities/IEntity.hpp"
+#include "Entities/Rock.hpp"
 #include "Tile.hpp"
 #include "Utils/TeamManager.hpp"
 
@@ -59,12 +60,6 @@ public:
     void addAlien(std::shared_ptr<zp::IEntity> alien);
 
     /**
-     * @brief Add a rock to the map
-     * @param rock
-     */
-    void addRock(std::shared_ptr<zp::IEntity> rock);
-
-    /**
      * @brief Add a team to the map
      * @param team
      */
@@ -81,12 +76,6 @@ public:
      * @param id id of the alien
      */
     void removeAlien(int id);
-
-    /**
-     * @brief Returns all rocks on the map
-     * @return
-     */
-    const std::vector<std::shared_ptr<zp::IEntity>> &getRocks() const;
 
     /**
      * @brief Returns the size of the map
@@ -121,9 +110,9 @@ private:
     sf::Vector2i m_size = {0, 0};
     sf::Texture m_tileTexture;
     sf::Sprite m_tileSprite;
+    std::array<sf::Texture, 7> m_rockTextures;
 
     std::vector<std::shared_ptr<Tile>> m_tiles;
-    std::vector<std::shared_ptr<zp::IEntity>> m_rocks;
     std::vector<std::shared_ptr<zp::IEntity>> m_aliens;
     std::vector<std::string> m_teams;
 

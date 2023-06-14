@@ -16,7 +16,7 @@
 #include <SFML/Window.hpp>
 #include <spdlog/spdlog.h>
 
-#include "Map/Tile.hpp"
+#include "Utils/RocksType.hpp"
 
 namespace zp
 {
