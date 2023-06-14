@@ -54,12 +54,12 @@ void zp::Map::setSize(int x, int y)
     }
 }
 
-std::shared_ptr<zp::Tile> zp::Map::getTile(int x, int y) const
+const std::shared_ptr<zp::Tile> &zp::Map::getTile(int x, int y) const
 {
     return m_tiles[y * m_size.y + x];
 }
 
-sf::Vector2i zp::Map::getSize() const
+const sf::Vector2i &zp::Map::getSize() const
 {
     return m_size;
 }
@@ -74,12 +74,12 @@ void zp::Map::addRock(std::shared_ptr<zp::IEntity> rock)
     m_rocks.push_back(rock);
 }
 
-std::vector<std::shared_ptr<zp::IEntity>> zp::Map::getAliens() const
+const std::vector<std::shared_ptr<zp::IEntity>> &zp::Map::getAliens() const
 {
     return m_aliens;
 }
 
-std::vector<std::shared_ptr<zp::IEntity>> zp::Map::getRocks() const
+const std::vector<std::shared_ptr<zp::IEntity>> &zp::Map::getRocks() const
 {
     return m_rocks;
 }
@@ -94,7 +94,7 @@ void zp::Map::removeAlien(int id)
     }
 }
 
-const std::vector<std::string> zp::Map::getTeams() const
+const std::vector<std::string> &zp::Map::getTeams() const
 {
     return m_teams;
 }
