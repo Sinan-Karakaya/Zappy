@@ -29,6 +29,7 @@ static player_t *init_player(int width, int height)
     new_player->last_tick = 0;
     new_player->is_action = false;
     new_player->is_alive = true;
+    new_player->is_incanting = false;
     return new_player;
 }
 

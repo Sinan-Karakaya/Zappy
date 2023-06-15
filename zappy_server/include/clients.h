@@ -56,7 +56,7 @@ typedef struct {
     size_t last_tick;
     size_t actual_tick;
     bool is_action;
-    bool is_incantation;
+    bool is_incanting;
     bool is_alive;
     bool is_egg;
 } player_t;
