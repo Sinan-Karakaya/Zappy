@@ -58,7 +58,6 @@ typedef struct {
     bool is_action;
     bool is_incanting;
     bool is_alive;
-    bool is_egg;
 } player_t;
 
 typedef struct command_s command_t;

@@ -59,4 +59,3 @@ int unlock_clients(my_zappy_t *zappy, int fd, bool succeed)
     }
     return 0;
 }
-

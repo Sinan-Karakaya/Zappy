@@ -8,7 +8,14 @@
 #include "zappy_server.h"
 #include <unistd.h>
 
-// faire le action_time + eat_timer
+static int init_player_bis(player_t *new_player)
+{
+    new_player->is_action = false;
+    new_player->is_incanting = false;
+    new_player->is_alive = true;
+    return 0;
+}
+
 static player_t *init_player(int width, int height)
 {
     player_t *new_player = calloc(1, sizeof(player_t));
@@ -27,9 +34,7 @@ static player_t *init_player(int width, int height)
     new_player->id = 0;
     new_player->actual_tick = 0;
     new_player->last_tick = 0;
-    new_player->is_action = false;
-    new_player->is_alive = true;
-    new_player->is_incanting = false;
+    init_player_bis(new_player);
     return new_player;
 }
 

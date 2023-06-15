@@ -168,7 +168,7 @@ int enw(my_zappy_t *zappy, egg_t *egg);
 /// @param zappy
 /// @param fd
 /// @return
-int ebo(my_zappy_t *zappy, int fd, int id_egg);
+int ebo(my_zappy_t *zappy, int id_egg);
 
 /// @brief death of an egg
 /// @param zappy

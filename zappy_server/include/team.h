@@ -22,6 +22,8 @@
         bool printable;
         ssize_t slots_available;
         size_t nb_eggs;
+        size_t actual_users;
+        size_t max_slots;
     } team_info_t;
 
     typedef struct team_s team_t;

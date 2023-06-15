@@ -21,5 +21,7 @@ team_info_t *init_teams_info(char *name, int team_id)
     info->nb_eggs = 0;
     info->printable = true;
     info->slots_available = 3;
+    info->actual_users = 0;
+    info->max_slots = 3;
     return info;
 }
