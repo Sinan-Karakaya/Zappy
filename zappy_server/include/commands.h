@@ -209,6 +209,11 @@ int check_alive(my_zappy_t *zappy, int fd);
 
 int incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
 int verify_incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
+int verify_all_values_incantation(my_zappy_t *zappy, int fd);
+int lock_client(my_zappy_t *zappy, int fd);
+int remove_resources_incantation(my_zappy_t *zappy, size_t x, size_t y,
+int lvl);
+int unlock_clients(my_zappy_t *zappy, int fd, bool succeed);
 
 int forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
 int verify_forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
