@@ -6,7 +6,8 @@
 ##
 
 import datetime
-
+from random import randint
+from src.Words.Words import words as words
 from src.Server.Server import Server
 from src.Color.Color import (
     OKGREEN,
@@ -41,6 +42,8 @@ class Agent:
         self.level = 0
         self.moveStack = []
         self.broadcastStack = []
+        self.incatationID = randint(0, 1000000000)
+        self.followID = None
         self.__levelRequirements = [
             {"player": 1, "linemate": 1},
             {"player": 2, "linemate": 1, "deraumere": 1, "sibur": 1},
@@ -60,8 +63,15 @@ class Agent:
         ]
     
     def __treatMessage(self, message: str):
+        """
+        Treats the message received from the server to avoid getting the wrong response.
 
-        if (message == "dead"):
+        @param message: The message to treat.
+        @type message: str
+
+        @return: True if the message is valid, False otherwise.
+        """
+        if ("dead" in message):
             self.isDead = True
             exit(0)
 
@@ -71,11 +81,20 @@ class Agent:
         
         if "Elevation underway" in message:
             self.isElevating = True
+            self.followID = None
             return False
 
         return True
 
-    def __getRealMessage(self, message: str):
+    def __getRealResponse(self, message: str):
+        """
+        Returns the real message from the server removing useless mesage like broadcast or death.
+        
+        @param message: The message to treat.
+        @type message: str
+        
+        @return: The real respone.
+        """
         response = message
         while (not self.__treatMessage(response)):
             response = self.server.getResponse()
@@ -98,9 +117,11 @@ class Agent:
         response = self.server.getResponse()
 
         while (response.count("\n") < 1):
-            response += self.server.getResponse()
+            currentResponse = self.server.getResponse()
+            currentResponse = self.__getRealResponse(currentResponse)
+            response += currentResponse
 
-        response = self.__getRealMessage(response)        
+        response = self.__getRealResponse(response)        
  
         if "Incantation" in msg:
             if "Current level" in response:
@@ -111,7 +132,7 @@ class Agent:
                 self.level = int(response.split(" ")[2]) - 1
                 self.isElevating = False
                 response = self.server.getResponse()
-                response = self.__getRealMessage(response)
+                response = self.__getRealResponse(response)
 
         if "ok" in response:
             print(OKGREEN, "| Receive: " + response, end=ENDC)
@@ -138,6 +159,8 @@ class Agent:
         except:
             print(WARNING, "Error while parsing inventory")
             print(response)
+            response = self.server.getResponse()
+            response = self.__getRealResponse(response)
 
     def fillVisions(self):
         """
@@ -269,23 +292,6 @@ class Agent:
         xToGo, direction = self.__getXandDirectionToGo(listIndex)
         return yToGo + xToGo
 
-    def __verifyVision(self, needed: dict):
-        """
-        Verify if the vision of the agent contains the needed resources.
-
-        @param needed: The resources needed.
-        @type needed: dict
-
-        @return: bool
-        """
-        self.fillVisions()
-        for key in needed:
-            if key not in self.vision[0]:
-                return False
-            if self.vision[0].count(key) < needed[key]:
-                return False
-        return True
-
     def __prepareTile(self, rock_needed: dict):
         """
         Prepare the tile to level up. Clear the tile of all the rocks that are not needed.
@@ -312,7 +318,7 @@ class Agent:
         #     ):
         #         self.askServer("Take " + rock)
 
-    def __gatherRocks(self):
+    def gatherRocks(self):
         """
         Gather all the rocks needed to level up.
 
@@ -349,22 +355,45 @@ class Agent:
 
         @return: bool
         """
-        indexIncating = message.find("incanting")
+        indexIncating = message.find(words.incanting)
         if indexIncating != -1:
-            indexEnd = message.find("!", indexIncating)
-            stringLevel = message[indexIncating + 10:indexEnd]
-            print(stringLevel)
+            indexEnd = message.find(" ", indexIncating + len(words.incanting) + 1)
+            stringLevel = message[indexIncating + len(words.incanting) + 1:indexEnd]
             level = int(stringLevel)
             if level == self.level:
                 return True
         return False
+    def __getFollowId(self, message : str):
+        """
+        get the id of the incantation
 
+        @param message: The message to check
+        @type message: str
+
+        @return: int
+        """
+        indexIncating = message.find(words.incanting)
+        print(message)
+        if indexIncating != -1:
+            indexEnd = message.find("!", indexIncating)
+            stringLevel = message[indexIncating + 11:indexEnd]
+            id = int(stringLevel)
+            return id
+        return None
+            
     def joinIncantate(self):
-        if len(self.broadcastStack) > 0 and "incanting" in self.broadcastStack[-1]:
+        if len(self.broadcastStack) > 0 and words.incanting in self.broadcastStack[-1]:
             if not self.__checkIncantationLevel(self.broadcastStack[-1]):
                 return False
+            
+            if self.followID == None:
+                self.followID = self.__getFollowId(self.broadcastStack[-1])
+                return False
 
-            self.broadcast("I'm joining the incantation") 
+            if self.followID != self.__getFollowId(self.broadcastStack[-1]):
+                return False
+
+            self.broadcast("I'm joining the incantation " + str(self.followID) + "!")
             direction = int(self.broadcastStack[-1][8])
             if direction == 3:
                 self.askServer("Left")
@@ -372,10 +401,9 @@ class Agent:
                 self.askServer("Right")
             else:
                 self.askServer("Forward")
-            return True
+           
         else:
-            self.broadcast("I'm incanting " + str(self.level) + "!")
-            return False
+            self.broadcast("I'm " + words.incanting + " " + str(self.level) + " " + str(self.incatationID) + "!")
     
     def __getLastMessage(self):
         """
@@ -394,7 +422,7 @@ class Agent:
         @return: None
         """
         hasJoin = False
-        rock_needed, hasAllRock = self.__gatherRocks()
+        rock_needed, hasAllRock = self.gatherRocks()
         self.fillVisions()
         if hasAllRock:
             if (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
@@ -405,12 +433,11 @@ class Agent:
                     self.__prepareTile(rock_needed)
                     response = self.askServer("Incantation")
                 else:
-                    print("WHYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY")
                     self.broadcast("I'v started incantation")
                     self.__prepareTile(rock_needed)
-                    for i in range(0, 330):
+                    for i in range(0, 314):
                         self.askServer("Inventory")
-                
+        return hasAllRock
 
             # self.joinIncantate()
             # if ("started" in self.__getLastMessage()):

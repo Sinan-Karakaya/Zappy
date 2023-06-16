@@ -46,7 +46,9 @@ class Repetoile(Agent):
 
         @return: None
         """
-        if self.inventory["food"] <= 10 and self.state != "joining":
+        if self.inventory["food"] <= 10 and self.state != "Joining":
+            self.state = "Searching food"
+        elif self.state == "Joining" and self.inventory["food"] < 6:
             self.state = "Searching food"
         else:
             self.state = "Broadcasting like a fool"
@@ -59,11 +61,12 @@ class Repetoile(Agent):
             self.state = "Searching rock"
 
         if self.state == "Searching rock":
-            self.elevate()
+            hasAllRock = self.elevate()
+            if hasAllRock:
+                self.state = "Joining"
 
-        # self.searchObject("food")
         self.fillInventory()
-        # print(self.inventory)
+        print("Curretly my state is: " + self.state)
 
     def birth(self):
         """
