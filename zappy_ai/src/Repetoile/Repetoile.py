@@ -32,7 +32,7 @@ class Repetoile(Agent):
                 ]
                 currentMessage = currentMessage.split(",")[1]
                 if not self.teamName in currentMessage:
-                    message = self.broadcastStack[i]
+                    message = currentMessage
                     break
             if message is None:
                 return
