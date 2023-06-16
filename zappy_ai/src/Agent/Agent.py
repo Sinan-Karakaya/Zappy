@@ -111,12 +111,12 @@ class Agent:
         @return: The message with the real size.
         """
 
-        while response.count("\n") < 1:
+        while message.count("\n") < 1:
             currentResponse = self.server.getResponse()
             currentResponse = self.__getRealResponse(currentResponse)
-            response += currentResponse
+            message += currentResponse
 
-        return response
+        return message
 
     def askServer(self, msg: str):
         """
