@@ -24,6 +24,8 @@ namespace zp
         ~RockManager() = delete;
 
         static sf::Color randomColor(int rockId);
+        static void setRockColor(int rockId, const sf::Color &color) { m_rockColors[rockId] = color; }
+        static const std::unordered_map<int, sf::Color> &getRockColors() { return m_rockColors; }
 
     private:
         inline static std::unordered_map<int, sf::Color> m_rockColors;

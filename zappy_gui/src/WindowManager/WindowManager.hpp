@@ -37,6 +37,17 @@ inline static const std::array<std::string, NUM_OF_ROCKS> g_rocksToString = {
     "Thystame"
 };
 
+inline static const std::array<std::string, 8> g_elevationGuide = {
+    "elevation players linemate deraumere sibur mendiane phiras thystame",
+    "1->2 1 1 0 0 0 0 0",
+    "2->3 2 1 1 1 0 0 0",
+    "3->4 2 2 0 1 0 2 0",
+    "4->5 4 1 1 2 0 1 0",
+    "5->6 4 1 2 1 3 0 0",
+    "6->7 6 1 2 3 0 1 0",
+    "7->8 6 2 2 2 2 2 1"
+};
+
 class WindowManager
 {
 public:
@@ -91,7 +102,25 @@ private:
     /**
      * @brief Draw the control panel
      */
+    void drawDetails(const Map &map);
+
+    /**
+     * @brief Draw the control panel
+     * @param map
+     */
     void drawControlPanel(const Map &map);
+
+    /**
+     * @brief Draw the tiles details
+     * @param map
+     */
+    void drawTilesDetails(const Map &map);
+
+    /**
+     * @brief Draw the players details
+     * @param map
+     */
+    void drawGuide(const Map &map);
 
     /**
      * @brief Draw the connection window depending on the state of isConnected

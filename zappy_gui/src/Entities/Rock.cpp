@@ -9,11 +9,15 @@
 
 void zp::Rock::draw(sf::RenderTexture &window)
 {
+    auto color = zp::RockManager::getRockColors().at(m_rockId);
+    if (color != m_sprite.getColor())
+        m_sprite.setColor(color);
     window.draw(m_sprite);
 }
 
 void zp::Rock::setData(sf::Vector2i mapSize, sf::Vector2i tilePos, int rockId, sf::Texture &rockTexture)
 {
+    m_rockId = rockId;
     m_mapSize = mapSize;
     m_tilePosition = tilePos;
     m_position.x = (m_tilePosition.x - m_tilePosition.y + 1) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;

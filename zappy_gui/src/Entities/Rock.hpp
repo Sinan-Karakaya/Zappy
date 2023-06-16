@@ -47,6 +47,7 @@ private:
     sf::Vector2i m_mapSize = {0, 0};
     sf::Vector2f m_position = {0, 0};
     sf::Sprite m_sprite;
+    int m_rockId = 0;
 };
 
 } // zp
