@@ -91,6 +91,7 @@ void zp::WindowManager::drawImGui(const zp::Map &map, const zp::Chat &chat)
 void zp::WindowManager::drawChat(const zp::Chat &chat, zp::Map &map)
 {
     auto messages = chat.getMessages();
+    std::reverse(messages.begin(), messages.end());
     ImGui::Begin("Chat");
     ImGui::BeginChild("Chat Messages", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
 
@@ -109,6 +110,7 @@ void zp::WindowManager::drawChat(const zp::Chat &chat, zp::Map &map)
             ImGui::TextWrapped("%s: %s", message.first.c_str(), message.second.c_str());
         }
     }
+    ImGui::SetScrollHereY(1.0f);
     ImGui::EndChild();
     ImGui::End();
 }

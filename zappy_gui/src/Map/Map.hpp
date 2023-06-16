@@ -60,6 +60,12 @@ public:
     void addAlien(std::shared_ptr<zp::IEntity> alien);
 
     /**
+     * @brief Add an egg to the map
+     * @param egg
+     */
+    void addEgg(std::shared_ptr<zp::IEntity> egg);
+
+    /**
      * @brief Add a team to the map
      * @param team
      */
@@ -72,10 +78,22 @@ public:
     const std::vector<std::shared_ptr<zp::IEntity>> &getAliens() const;
 
     /**
+     * @brief Returns all eggs on the map
+     * @return
+     */
+    const std::vector<std::shared_ptr<zp::IEntity>> &getEggs() const;
+
+    /**
      * @brief Remove an alien from the map
      * @param id id of the alien
      */
     void removeAlien(int id);
+
+    /**
+     * @brief Remove an egg from the map
+     * @param id id of the egg
+     */
+    void removeEgg(int id);
 
     /**
      * @brief Returns the size of the map
@@ -114,6 +132,7 @@ private:
 
     std::vector<std::shared_ptr<Tile>> m_tiles;
     std::vector<std::shared_ptr<zp::IEntity>> m_aliens;
+    std::vector<std::shared_ptr<zp::IEntity>> m_eggs;
     std::vector<std::string> m_teams;
 
     int m_timeUnitModifier = 1;

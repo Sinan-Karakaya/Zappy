@@ -41,6 +41,9 @@ void zp::Map::drawMap(sf::RenderTexture &window)
     for (auto &alien : m_aliens) {
         alien->draw(window);
     }
+    for (auto &egg : m_eggs) {
+        egg->draw(window);
+    }
 }
 
 void zp::Map::setSize(int x, int y)
@@ -99,8 +102,29 @@ void zp::Map::addTeam(const std::string &team)
 void zp::Map::clearAll()
 {
     m_aliens.clear();
+    m_eggs.clear();
     m_teams.clear();
     m_tiles.clear();
     m_size = {0, 0};
     m_timeUnitModifier = 1;
+}
+
+void zp::Map::addEgg(std::shared_ptr<zp::IEntity> egg)
+{
+    m_eggs.push_back(egg);
+}
+
+const std::vector<std::shared_ptr<zp::IEntity>> &zp::Map::getEggs() const
+{
+    return m_eggs;
+}
+
+void zp::Map::removeEgg(int id)
+{
+    for (auto it = m_eggs.begin(); it != m_eggs.end(); it++) {
+        if ((*it)->getId() == id) {
+            m_eggs.erase(it);
+            return;
+        }
+    }
 }

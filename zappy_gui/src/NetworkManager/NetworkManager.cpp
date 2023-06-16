@@ -20,9 +20,16 @@ zp::NetworkManager::NetworkManager(Chat &chat, bool &isConnected)
     m_commands["ppo"] = std::bind(&NetworkManager::getPlayerPos, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pbc"] = std::bind(&NetworkManager::broadCast, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pgt"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["suc"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["sbp"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pdr"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["plv"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pin"] = std::bind(&NetworkManager::setInventory, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pex"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pdi"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["enw"] = std::bind(&NetworkManager::eggLaid, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["edi"] = std::bind(&NetworkManager::removeEgg, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["ebo"] = std::bind(&NetworkManager::eggHatched, this, std::placeholders::_1, std::placeholders::_2);
 }
 
 zp::NetworkManager::~NetworkManager()
@@ -161,6 +168,7 @@ void zp::NetworkManager::getNewPlayer(const std::vector<std::string> &tokens, Ma
         std::shared_ptr<Alien> newAlien = std::make_shared<Alien>(
                 sf::Vector2i(std::stoi(tokens[2]), std::stoi(tokens[3])),
                 (zp::Direction) std::stoi(tokens[4]), tokens[6], std::stoi(tokens[1]));
+        spdlog::info("New player: {}", tokens[1]);
         map.addAlien(newAlien);
     } catch (const std::exception &e) {
         spdlog::error("Exception thrown on alien creation", e.what());
@@ -256,4 +264,61 @@ void zp::NetworkManager::disconnect(Map &map, Chat &chat)
     m_messageQueue.clear();
     map.clearAll();
     chat.clearMessages();
+}
+
+void zp::NetworkManager::eggLaid(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 5) {
+        spdlog::warn("Received invalid number of tokens for enw");
+        return;
+    }
+
+    spdlog::info("Egg laid by player {}", tokens[1]);
+    auto aliens = map.getAliens();
+    std::shared_ptr<IEntity> laider = nullptr;
+    for (auto &alien : aliens) {
+        if (alien->getId() == std::stoi(tokens[1])) {
+            laider = alien;
+            break;
+        }
+    }
+    if (!laider) {
+        spdlog::warn("Received egg laid for unknown player");
+        return;
+    }
+    sf::Vector2i tilePos = sf::Vector2i(std::stoi(tokens[3]), std::stoi(tokens[4]));
+    std::shared_ptr<Egg> egg = std::make_shared<Egg>(tilePos, WEST, laider->getTeamName(), std::stoi(tokens[1]));
+    egg->setTilePosition(tilePos.x, tilePos.y, 1080 / (map.getSize().y / 10));
+    map.addEgg(egg);
+}
+
+void zp::NetworkManager::removeEgg(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 2) {
+        spdlog::warn("Received invalid number of tokens for eht");
+        return;
+    }
+    map.removeEgg(std::stoi(tokens[1]));
+}
+
+void zp::NetworkManager::eggHatched(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 2) {
+        spdlog::warn("Received invalid number of tokens for eht");
+        return;
+    }
+    auto eggs = map.getEggs();
+    std::shared_ptr<IEntity>  eggTarget = nullptr;
+    for (auto &egg : eggs) {
+        if (egg->getId() == std::stoi(tokens[1])) {
+            eggTarget = egg;
+            break;
+        }
+    }
+    if (!eggTarget) {
+        spdlog::warn("Received egg hatched for unknown egg");
+        return;
+    }
+    map.removeEgg(std::stoi(tokens[1]));
+
 }
