@@ -21,6 +21,7 @@ from src.Color.Color import (
     UNDERLINE,
     OKBLUE,
 )
+from src.Color.Color import coloredPrint
 
 
 class Agent:
@@ -100,6 +101,23 @@ class Agent:
             response = self.server.getResponse()
         return response
 
+    def __bufferManager(self, message: str):
+        """
+        Get the real message even if the server send it with misplace /n.
+
+        @param message: The message to treat.
+        @type message: str
+
+        @return: The message with the real size.
+        """
+
+        while (response.count("\n") < 1):
+            currentResponse = self.server.getResponse()
+            currentResponse = self.__getRealResponse(currentResponse)
+            response += currentResponse
+
+        return response
+
     def askServer(self, msg: str):
         """
         Sends a message to the server and returns the response.
@@ -114,13 +132,9 @@ class Agent:
         print("Current time is:", now.time(), end = " ")
         print("Sending: " + msg, end=" ")
         self.server.socket.sendall((msg + "\n").encode("ASCII"))
+
         response = self.server.getResponse()
-
-        while (response.count("\n") < 1):
-            currentResponse = self.server.getResponse()
-            currentResponse = self.__getRealResponse(currentResponse)
-            response += currentResponse
-
+        response = self.__bufferManager(response)
         response = self.__getRealResponse(response)        
  
         if "Incantation" in msg:
@@ -133,13 +147,8 @@ class Agent:
                 self.isElevating = False
                 response = self.server.getResponse()
                 response = self.__getRealResponse(response)
+        coloredPrint(response)
 
-        if "ok" in response:
-            print(OKGREEN, "| Receive: " + response, end=ENDC)
-        elif "ko" in response:
-            print(WARNING, "| Receive: " + response, end=ENDC)
-        else:
-            print(OKCYAN, "| Receive: " + response, end=ENDC)
         return response
 
     def fillInventory(self):
@@ -308,15 +317,6 @@ class Agent:
             ):
                 if key != "player":
                     self.askServer("Set " + key)
-        # for rock in self.vision[0]:
-        #     if (rock != "player" and rock != "food") and (
-        #         (rock not in self.__levelRequirements[self.level])
-        #         or (
-        #             self.vision[0].count(rock)
-        #             > self.__levelRequirements[self.level][rock]
-        #         )
-        #     ):
-        #         self.askServer("Take " + rock)
 
     def gatherRocks(self):
         """
@@ -382,6 +382,11 @@ class Agent:
         return None
             
     def joinIncantate(self):
+        """
+        Manage the meet of different agent with the same level to level up
+
+        @return: None
+        """
         if len(self.broadcastStack) > 0 and words.incanting in self.broadcastStack[-1]:
             if not self.__checkIncantationLevel(self.broadcastStack[-1]):
                 return False
@@ -439,24 +444,6 @@ class Agent:
                         self.askServer("Inventory")
         return hasAllRock
 
-            # self.joinIncantate()
-            # if ("started" in self.__getLastMessage()):
-            #     for i in range(0, 300):
-            #         self.askServer("Inventory")
-            # if (self.vision[0].count("player") == self.__levelRequirements[self.level]["player"]):
-            #     self.fillVisions()
-            # while (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
-            #     self.fillVisions()
-            #     self.fillInventory()
-            #     if self.inventory["food"] < 13:
-            #         self.searchObject("food")
-            #     hasJoin = self.joinIncantate()
-            # if (self.level == 0 or "joining" in self.__getLastMessage()):
-            #     self.broadcast("I'v started incantation")
-            #     self.__prepareTile(rock_needed)
-            #     response = self.askServer("Incantation")
-            #     if not "ko" in response:
-            #         self.level += 1
 
     def broadcast(self, message: str):
         ...
@@ -471,7 +458,8 @@ class Agent:
         """
         Run the agent.
 
-        @return: None"""
+        @return: None
+        """
         self.birth()
         while not self.isDead:
             self.live()
