@@ -62,7 +62,7 @@ class Agent:
                 "thystame": 1,
             },
         ]
-    
+
     def __treatMessage(self, message: str):
         """
         Treats the message received from the server to avoid getting the wrong response.
@@ -72,14 +72,14 @@ class Agent:
 
         @return: True if the message is valid, False otherwise.
         """
-        if ("dead" in message):
+        if "dead" in message:
             self.isDead = True
             exit(0)
 
         if "message" in message:
             self.broadcastStack.append(message)
             return False
-        
+
         if "Elevation underway" in message:
             self.isElevating = True
             self.followID = None
@@ -90,14 +90,14 @@ class Agent:
     def __getRealResponse(self, message: str):
         """
         Returns the real message from the server removing useless mesage like broadcast or death.
-        
+
         @param message: The message to treat.
         @type message: str
-        
+
         @return: The real respone.
         """
         response = message
-        while (not self.__treatMessage(response)):
+        while not self.__treatMessage(response):
             response = self.server.getResponse()
         return response
 
@@ -111,7 +111,7 @@ class Agent:
         @return: The message with the real size.
         """
 
-        while (response.count("\n") < 1):
+        while response.count("\n") < 1:
             currentResponse = self.server.getResponse()
             currentResponse = self.__getRealResponse(currentResponse)
             response += currentResponse
@@ -129,14 +129,14 @@ class Agent:
         """
 
         now = datetime.datetime.now()
-        print("Current time is:", now.time(), end = " ")
+        print("Current time is:", now.time(), end=" ")
         print("Sending: " + msg, end=" ")
         self.server.socket.sendall((msg + "\n").encode("ASCII"))
 
         response = self.server.getResponse()
         response = self.__bufferManager(response)
-        response = self.__getRealResponse(response)        
- 
+        response = self.__getRealResponse(response)
+
         if "Incantation" in msg:
             if "Current level" in response:
                 self.level = int(response.split(" ")[2]) - 1
@@ -345,8 +345,8 @@ class Agent:
                 hasAllRock = False
                 break
         return (rock_needed, hasAllRock)
-    
-    def __checkIncantationLevel(self, message : str):
+
+    def __checkIncantationLevel(self, message: str):
         """
         check the level require to join the incantation
 
@@ -358,12 +358,13 @@ class Agent:
         indexIncating = message.find(words.incanting)
         if indexIncating != -1:
             indexEnd = message.find(" ", indexIncating + len(words.incanting) + 1)
-            stringLevel = message[indexIncating + len(words.incanting) + 1:indexEnd]
+            stringLevel = message[indexIncating + len(words.incanting) + 1 : indexEnd]
             level = int(stringLevel)
             if level == self.level:
                 return True
         return False
-    def __getFollowId(self, message : str):
+
+    def __getFollowId(self, message: str):
         """
         get the id of the incantation
 
@@ -376,11 +377,11 @@ class Agent:
         print(message)
         if indexIncating != -1:
             indexEnd = message.find("!", indexIncating)
-            stringLevel = message[indexIncating + 11:indexEnd]
+            stringLevel = message[indexIncating + 11 : indexEnd]
             id = int(stringLevel)
             return id
         return None
-            
+
     def joinIncantate(self):
         """
         Manage the meet of different agent with the same level to level up
@@ -390,7 +391,7 @@ class Agent:
         if len(self.broadcastStack) > 0 and words.incanting in self.broadcastStack[-1]:
             if not self.__checkIncantationLevel(self.broadcastStack[-1]):
                 return False
-            
+
             if self.followID == None:
                 self.followID = self.__getFollowId(self.broadcastStack[-1])
                 return False
@@ -406,10 +407,18 @@ class Agent:
                 self.askServer("Right")
             else:
                 self.askServer("Forward")
-           
+
         else:
-            self.broadcast("I'm " + words.incanting + " " + str(self.level) + " " + str(self.incatationID) + "!")
-    
+            self.broadcast(
+                "I'm "
+                + words.incanting
+                + " "
+                + str(self.level)
+                + " "
+                + str(self.incatationID)
+                + "!"
+            )
+
     def __getLastMessage(self):
         """
         get the last message of the broadcast stack
@@ -430,10 +439,13 @@ class Agent:
         rock_needed, hasAllRock = self.gatherRocks()
         self.fillVisions()
         if hasAllRock:
-            if (self.vision[0].count("player") < self.__levelRequirements[self.level]["player"]):
+            if (
+                self.vision[0].count("player")
+                < self.__levelRequirements[self.level]["player"]
+            ):
                 hasJoin = self.joinIncantate()
             else:
-                if (self.level == 0 or "joining" in self.__getLastMessage()):
+                if self.level == 0 or "joining" in self.__getLastMessage():
                     self.broadcast("I'v started incantation")
                     self.__prepareTile(rock_needed)
                     response = self.askServer("Incantation")
@@ -443,7 +455,6 @@ class Agent:
                     for i in range(0, 314):
                         self.askServer("Inventory")
         return hasAllRock
-
 
     def broadcast(self, message: str):
         ...

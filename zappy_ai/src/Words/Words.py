@@ -5,5 +5,6 @@
 ## Words
 ##
 
+
 class words:
     incanting = "ameno"

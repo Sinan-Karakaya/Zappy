@@ -74,7 +74,7 @@ class Repetoile(Agent):
 
         @return: None
         """
-        
+
         self.broadcast("I'm born")
         self.askServer("Fork")
         self.state = "Searching food"

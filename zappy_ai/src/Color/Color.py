@@ -16,7 +16,7 @@ BOLD = "\033[1m"
 UNDERLINE = "\033[4m"
 
 
-def coloredPrint(response : str):
+def coloredPrint(response: str):
     """
     Print the response with a color depending on the response
     """
