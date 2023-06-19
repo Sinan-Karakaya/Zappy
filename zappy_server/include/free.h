@@ -20,4 +20,14 @@
     /// @return 0 if success, 84 if error
     size_t free_parsing(parsing_t *parsing);
 
+    /// @brief free all the client info struct
+    /// @param client
+    void destroy_client_info(client_info_t *client);
+
+    /// @brief free the team struct
+    /// @param team
+    void destroy_struct_team(team_t *team);
+
+    void destroy_cmd(cmd_t *cmd);
+
 #endif /* !FREE_H_ */

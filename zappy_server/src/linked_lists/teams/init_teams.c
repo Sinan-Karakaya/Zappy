@@ -18,7 +18,10 @@ team_info_t *init_teams_info(char *name, int team_id)
     info->team_id = team_id;
     info->client_list = (id_list_t *)init_list();
     info->nb_clients = 0;
+    info->nb_eggs = 0;
     info->printable = true;
     info->slots_available = 3;
+    info->actual_users = 0;
+    info->max_slots = 3;
     return info;
 }

@@ -15,6 +15,7 @@ int pdr(my_zappy_t *zappy, int fd, enum ressources ressource)
     if (zappy == NULL)
         return 0;
     asprintf(&result, "pdr %d %d\n", fd, ressource);
-    send_message(fd, result);
+    send_to_graphics(zappy, result);
+    free(result);
     return 0;
 }

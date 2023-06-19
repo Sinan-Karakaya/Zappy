@@ -15,6 +15,8 @@
     #include "team.h"
     #include "map.h"
     #include "parsing.h"
+    #include "my_time.h"
+    #include "egg.h"
 
     #include <stdio.h>
     #include <stdlib.h>
@@ -24,7 +26,6 @@
     #include <stdbool.h>
     #include <stdlib.h>
     #include <string.h>
-    #include <time.h>
 
     #define NUSED __attribute__((unused))
 
@@ -36,12 +37,21 @@
     #define UNKNOWN_PARAMETER "sbp\n"
     #define DEATH "dead\n"
 
+    typedef struct {
+        char **args;
+        char **result;
+    } cmd_t;
+
     typedef struct my_zappy_s {
         socket_t *server;
         team_list_t *team_list;
         client_list_t *client_list;
+        list_t *callback_list;
+        egg_list_t *egg_list;
         size_t frequency;
         map_t *map;
+        my_time_t *time;
+        bool is_end;
     } my_zappy_t;
 
     typedef struct fd_setters_s {
@@ -65,9 +75,9 @@
     /// @brief handle the commands from the client
     /// @param zappy the zappy struct
     /// @param client_fd the fd of the client
-    /// @param args the args of the command
+    /// @param cmd the args of the command
     /// @return 0 if success, 84 if error
-    int handle_commands(my_zappy_t *zappy, int client_fd, char **args);
+    int handle_commands(my_zappy_t *zappy, int client_fd, cmd_t *cmd);
 
     /// @brief set the fd of the server and the clients
     /// @param server the socket of the server
@@ -104,10 +114,52 @@
     /// @return 1 if success, 84 if error
     int send_message_error(int fd, char *message);
 
+    /// @brief send a message to all graphical clients
+    /// @param zappy
+    /// @param message
+    /// @return 0 if success, 84 if error
+    int send_to_graphics(my_zappy_t *zappy, char *message);
+
     bool is_running(int sig);
     void sigint_handler(int sig);
 
     // Connections
+
+    /// @brief accept a client
+    /// @param zappy the zappy struct
+    /// @return 0 if success, 84 if error
     int accept_client(my_zappy_t *zappy);
+
+    // Time
+
+    /// @brief get the actual time
+    /// @param zappy the zappy struct
+    /// @param time the time struct
+    void get_actual_time(my_zappy_t *zappy, my_time_t *time);
+
+    /// @brief refresh the time per tick
+    /// @param zappy the zappy struct
+    void refresh_time_per_tick(my_zappy_t *zappy);
+
+    // Commands
+
+    /// @brief make all clients eat
+    /// @param zappy the zappy struct
+    /// @return 0 if success, 84 if error
+    int eat_all_client(my_zappy_t *zappy);
+
+    /// @brief exec the command
+    /// @param client
+    /// @param cmd
+    /// @param zappy
+    /// @param client_fd
+    /// @return 0 if success, 84 if error
+    int exec_command(client_t *client, cmd_t *cmd,
+        my_zappy_t *zappy, int client_fd);
+
+    /// @brief check if one team has won
+    /// @param zappy the zappy struct
+    /// @return 0 if success, 84 if error
+    int check_victory(my_zappy_t *zappy);
 
 #endif /* !Zappy_Server_H_ */

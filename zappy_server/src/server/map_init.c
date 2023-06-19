@@ -56,13 +56,13 @@ static tiles_t **init_tiles(size_t x, size_t y)
 
     if (!tile)
         return NULL;
-    for (size_t i = 0; i < x; i++) {
-        tile[i] = calloc(y, sizeof(tiles_t));
+    for (size_t i = 0; i < y; i++) {
+        tile[i] = calloc(x, sizeof(tiles_t));
         if (!tile[i])
             return NULL;
     }
-    for (size_t i = 0; i < x; i++)
-        for (size_t j = 0; j < y; j++)
+    for (size_t i = 0; i < y; i++)
+        for (size_t j = 0; j < x; j++)
             tile[i][j].players = (id_list_t *)init_list();
     fill_map_part1(tile, x, y);
     fill_map_part2(tile, x, y);
