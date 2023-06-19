@@ -38,13 +38,18 @@ option(IMGUI_SFML_IMGUI_DEMO "Build imgui_demo.cpp" OFF)
 FetchContent_MakeAvailable(imgui-sfml)
 
 FetchContent_Declare(
+    fmt
+    GIT_REPOSITORY https://github.com/fmtlib/fmt.git
+    GIT_TAG 10.0.0
+)
+FetchContent_MakeAvailable(fmt)
+
+FetchContent_Declare(
         spdlog
         GIT_REPOSITORY https://github.com/gabime/spdlog.git
         GIT_TAG v1.11.0
 )
 FetchContent_MakeAvailable(spdlog)
-
-find_package(fmt REQUIRED)
 
 # Linking
 target_link_libraries(zappy_gui PRIVATE ${SFML_LIBRARIES} sfml-network spdlog::spdlog fmt::fmt)
