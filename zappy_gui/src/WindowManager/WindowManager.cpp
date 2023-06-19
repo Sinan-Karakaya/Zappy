@@ -298,7 +298,7 @@ void zp::WindowManager::drawGuide(const zp::Map &map)
 void zp::WindowManager::drawConnection()
 {
     static char ip[16] = "127.0.0.1";
-    static int port = 4242;
+    static int port = m_port.empty() ? 0 : std::stoi(m_port);
 
     ImGui::Begin("Connection");
     ImGui::InputText("IP", ip, 16);

@@ -23,13 +23,9 @@ int zp::GetOpt::parseOpt(int ac, char **av, std::string &ip, std::string &port)
             port = std::string(optarg);
         else if (opt == 'h')
             ip = std::string(optarg);
-        else {
-            printHelp();
-            return 1;
-        }
     }
-    for (; optind < ac; optind++) {
-        if (std::string(av[optind]) == "-help") {
+    for (int i = 0; av[i]; i++) {
+        if (std::string(av[i]) == "-help") {
             printHelp();
             return 1;
         }
