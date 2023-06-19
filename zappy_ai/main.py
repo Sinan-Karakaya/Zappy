@@ -9,6 +9,7 @@
 from src.Parameters.Parameters import Parameters
 from src.Server.Server import Server
 from src.Repetoile.Repetoile import Repetoile
+from src.Graphics.Graphics import Graphics
 
 
 def main():
@@ -26,7 +27,11 @@ def main():
     server.socket.sendall((args.name + "\n").encode("ASCII"))
     server.printResponse()
 
-    myAgent.run()
+    if (args.graphical):
+        myWindow = Graphics(myAgent)
+        myWindow.runGraphics()
+    else:
+        myAgent.run()
 
     server.socket.close()
 

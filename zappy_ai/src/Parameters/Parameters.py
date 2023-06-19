@@ -13,6 +13,7 @@ class Parameters:
         self.port = ""
         self.host = "localhost"
         self.name = ""
+        self.graphical = False
 
     def displayHelp(self):
         """
@@ -27,7 +28,7 @@ class Parameters:
         """
         This function checks if the parameters are correct and if not, displays the help message.
         """
-        if len(sys.argv) != 7:
+        if len(sys.argv) < 7 or len(sys.argv) > 8:
             self.displayHelp()
             return 84
 
@@ -38,6 +39,8 @@ class Parameters:
                 self.host = str(sys.argv[sys.argv.index(arg) + 1])
             if arg == "-n":
                 self.name = str(sys.argv[sys.argv.index(arg) + 1])
+            if arg == "-g":
+                self.graphical = True
 
         if len(self.port) == 0 or len(self.host) == 0 or len(self.name) == 0:
             self.displayHelp()
