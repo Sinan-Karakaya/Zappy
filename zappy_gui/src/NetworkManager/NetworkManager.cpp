@@ -20,11 +20,18 @@ zp::NetworkManager::NetworkManager(Chat &chat, bool &isConnected)
     m_commands["ppo"] = std::bind(&NetworkManager::getPlayerPos, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pbc"] = std::bind(&NetworkManager::broadCast, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pgt"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
-    m_commands["pin"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["suc"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["sbp"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pdr"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["plv"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pin"] = std::bind(&NetworkManager::setInventory, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pex"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pdi"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pic"] = std::bind(&NetworkManager::getIncantationStart, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pie"] = std::bind(&NetworkManager::getIncantationEnd, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["enw"] = std::bind(&NetworkManager::eggLaid, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["edi"] = std::bind(&NetworkManager::removeEgg, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["ebo"] = std::bind(&NetworkManager::eggHatched, this, std::placeholders::_1, std::placeholders::_2);
 }
 
 zp::NetworkManager::~NetworkManager()
@@ -108,6 +115,8 @@ void zp::NetworkManager::updatePlayers(std::unique_ptr<Map> &map)
     for (auto &alien : aliens) {
         std::string request = "ppo " + std::to_string(alien->getId()) + "\n";
         m_socket.send(request);
+        request = "pin " + std::to_string(alien->getId()) + "\n";
+        m_socket.send(request);
     }
 }
 
@@ -125,7 +134,6 @@ void zp::NetworkManager::welcome(const std::vector<std::string> &tokens, Map &ma
 
 void zp::NetworkManager::getMapSize(const std::vector<std::string> &tokens, Map &map)
 {
-    spdlog::info("Map size: {} {}", tokens[1], tokens[2]);
     map.setSize(std::stoi(tokens[1]), std::stoi(tokens[2]));
 }
 
@@ -162,6 +170,7 @@ void zp::NetworkManager::getNewPlayer(const std::vector<std::string> &tokens, Ma
         std::shared_ptr<Alien> newAlien = std::make_shared<Alien>(
                 sf::Vector2i(std::stoi(tokens[2]), std::stoi(tokens[3])),
                 (zp::Direction) std::stoi(tokens[4]), tokens[6], std::stoi(tokens[1]));
+        spdlog::info("New player: {}", tokens[1]);
         map.addAlien(newAlien);
     } catch (const std::exception &e) {
         spdlog::error("Exception thrown on alien creation", e.what());
@@ -201,7 +210,7 @@ void zp::NetworkManager::timeUnitModification(const std::vector<std::string> &to
 void zp::NetworkManager::broadCast(const std::vector<std::string> &tokens, zp::Map &map)
 {
     (void)map;
-
+ 
     std::string message = tokens[2];
     for (size_t i = 3; i < tokens.size(); i++)
         message += " " + tokens[i];
@@ -224,6 +233,30 @@ void zp::NetworkManager::removePlayer(const std::vector<std::string> &tokens, zp
             map.removeAlien(std::stoi(tokens[1]));
             return;
         }
+    }
+}
+
+void zp::NetworkManager::setInventory(const std::vector <std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 11) {
+        spdlog::warn("Received invalid number of tokens for pin");
+        return;
+    }
+    auto players = map.getAliens();
+    std::shared_ptr<IEntity> target = nullptr;
+
+    for (auto &player : players) {
+        if (player->getId() == std::stoi(tokens[1])) {
+            target = player;
+            break;
+        }
+    }
+    if (target == nullptr) {
+        spdlog::warn("Received inventory for unknown player");
+        return;
+    }
+    for (size_t i = 4; i < tokens.size(); i++) {
+        target->setRockQuantity((zp::Rocks)(i - 4), std::stoi(tokens[i]));
     }
 }
 
@@ -262,4 +295,59 @@ void zp::NetworkManager::getIncantationEnd(const std::vector<std::string> &token
         if (myPos == alienPos)
             static_cast<zp::Alien *>(alien.get())->setIncanting(false);
     }
+
+void zp::NetworkManager::eggLaid(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 5) {
+        spdlog::warn("Received invalid number of tokens for enw");
+        return;
+    }
+
+    spdlog::info("Egg laid by player {}", tokens[1]);
+    auto aliens = map.getAliens();
+    std::shared_ptr<IEntity> laider = nullptr;
+    for (auto &alien : aliens) {
+        if (alien->getId() == std::stoi(tokens[1])) {
+            laider = alien;
+            break;
+        }
+    }
+    if (!laider) {
+        spdlog::warn("Received egg laid for unknown player");
+        return;
+    }
+    sf::Vector2i tilePos = sf::Vector2i(std::stoi(tokens[3]), std::stoi(tokens[4]));
+    std::shared_ptr<Egg> egg = std::make_shared<Egg>(tilePos, WEST, laider->getTeamName(), std::stoi(tokens[1]));
+    egg->setTilePosition(tilePos.x, tilePos.y, 1080 / (map.getSize().y / 10));
+    map.addEgg(egg);
+}
+
+void zp::NetworkManager::removeEgg(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 2) {
+        spdlog::warn("Received invalid number of tokens for eht");
+        return;
+    }
+    map.removeEgg(std::stoi(tokens[1]));
+}
+
+void zp::NetworkManager::eggHatched(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    if (tokens.size() != 2) {
+        spdlog::warn("Received invalid number of tokens for eht");
+        return;
+    }
+    auto eggs = map.getEggs();
+    std::shared_ptr<IEntity>  eggTarget = nullptr;
+    for (auto &egg : eggs) {
+        if (egg->getId() == std::stoi(tokens[1])) {
+            eggTarget = egg;
+            break;
+        }
+    }
+    if (!eggTarget) {
+        spdlog::warn("Received egg hatched for unknown egg");
+        return;
+    }
+    map.removeEgg(std::stoi(tokens[1]));
 }

@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <spdlog/spdlog.h>
+
 #include "IEntity.hpp"
 #include "Utils/Utils.hpp"
 #include "Utils/TeamManager.hpp"
@@ -46,8 +48,10 @@ private:
     sf::Texture m_elevation_texture;
     sf::IntRect m_elevation_rect;
     sf::Clock m_clock;
-
     bool m_incanting;
+
+    void setRockQuantity(Rocks rock, int quantity) override { m_inventory[rock] = quantity; }
+    const std::unordered_map<Rocks, int> &getInventory() const override { return m_inventory; }
 };
 
 } // zp

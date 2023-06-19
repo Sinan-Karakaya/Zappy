@@ -50,6 +50,7 @@ void zp::WindowManager::update(std::unique_ptr<zp::Map> &map, std::unique_ptr<zp
 void zp::WindowManager::handleEvents()
 {
     sf::Event event;
+
     while (m_window.pollEvent(event)) {
         ImGui::SFML::ProcessEvent(event);
         if (event.type == sf::Event::Closed)
@@ -79,7 +80,9 @@ void zp::WindowManager::drawImGui(const zp::Map &map, const zp::Chat &chat)
     if (m_isConnected) {
         drawChat(chat, const_cast<zp::Map &>(map));
         drawGame();
-        drawControlPanel(map);
+        drawDetails(map);
+        if (m_showInventory)
+            drawInventory(const_cast<zp::Map &>(map));
     } else {
         drawConnection();
     }
@@ -88,6 +91,7 @@ void zp::WindowManager::drawImGui(const zp::Map &map, const zp::Chat &chat)
 void zp::WindowManager::drawChat(const zp::Chat &chat, zp::Map &map)
 {
     auto messages = chat.getMessages();
+    std::reverse(messages.begin(), messages.end());
     ImGui::Begin("Chat");
     ImGui::BeginChild("Chat Messages", ImVec2(0, -ImGui::GetFrameHeightWithSpacing()));
 
@@ -106,6 +110,7 @@ void zp::WindowManager::drawChat(const zp::Chat &chat, zp::Map &map)
             ImGui::TextWrapped("%s: %s", message.first.c_str(), message.second.c_str());
         }
     }
+    ImGui::SetScrollHereY(1.0f);
     ImGui::EndChild();
     ImGui::End();
 }
@@ -121,117 +126,179 @@ void zp::WindowManager::drawGame()
     ImGui::PopStyleVar();
 }
 
-void zp::WindowManager::drawControlPanel(const zp::Map &map)
+void zp::WindowManager::drawDetails(const zp::Map &map)
 {
     ImGui::Begin("Details");
     if (ImGui::BeginTabBar("Panels")) {
-        if (ImGui::BeginTabItem("Control Panel")) {
-            ImGui::Text("Connected to %s:%s", m_ip.c_str(), m_port.c_str()); ImGui::SameLine();
-            if (ImGui::Button("Disconnect"))
-                ImGui::OpenPopup("Disconnect?");
-
-            ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-            ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-            ImGui::SetNextWindowSize(ImVec2(90, 65));
-            if (ImGui::BeginPopupModal("Disconnect?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
-                if (ImGui::Button("Yes")) {
-                    zp::NetworkManager::addMessage("quit\n");
-                    ImGui::CloseCurrentPopup();
-                }
-                ImGui::SameLine();
-                if (ImGui::Button("No"))
-                    ImGui::CloseCurrentPopup();
-                ImGui::EndPopup();
-            }
-
-            ImGui::NewLine();
-            ImGui::Text("Current time modifier: %d", map.getTimeUnitModifier());
-            static int timeModif = 5000;
-            ImGui::SliderInt("##", &timeModif, 2, 10000); ImGui::SameLine();
-            if (ImGui::Button("Update") && timeModif != 0) {
-                zp::NetworkManager::addMessage("sst " + std::to_string(timeModif) + "\n");
-            }
-
-            ImGui::NewLine();
-            ImGui::Text("Teams:");
-            auto teams = map.getTeams();
-            for (auto &team : teams) {
-                auto teamColor = zp::TeamManager::getTeamColor(team);
-                ImVec4 newColor = teamColor;
-                std::string labelName = team + " color";
-
-                ImGui::ColorEdit3(labelName.c_str(), (float*)&newColor, ImGuiColorEditFlags_NoInputs |
-                ImGuiColorEditFlags_NoLabel);
-                if (newColor != teamColor)
-                    zp::TeamManager::setTeamColor(team, newColor);
-                ImGui::SameLine();
-
-                ImGui::PushStyleColor(ImGuiCol_Text, teamColor);
-                ImGui::Text("%s", team.c_str());
-                ImGui::PopStyleColor();
-            }
-            ImGui::EndTabItem();
-        }
-        if (ImGui::BeginTabItem("Tiles Panel")) {
-            ImGui::Text("Tile Coordinates:");
-
-            std::vector<std::string> xPos;
-            std::vector<std::string> yPos;
-            static std::size_t x_current_idx = 0;
-            static std::size_t y_current_idx = 0;
-
-            for (int i = 0; i < map.getSize().x; i++)
-                xPos.push_back(std::to_string(i));
-            for (int i = 0; i < map.getSize().y; i++)
-                yPos.push_back(std::to_string(i));
-            
-            std::string x_combo_preview_value = xPos[x_current_idx];
-            if (ImGui::BeginCombo("X position", x_combo_preview_value.c_str())) {
-                for (std::size_t n = 0; n < xPos.size(); n++) {
-                    const bool is_selected = (x_current_idx == n);
-                    if (ImGui::Selectable(xPos[n].c_str(), is_selected))
-                        x_current_idx = n;
-                    if (is_selected)
-                        ImGui::SetItemDefaultFocus();
-                }
-                ImGui::EndCombo();
-            }
-
-            std::string y_combo_preview_value = yPos[y_current_idx];
-            if (ImGui::BeginCombo("Y position", y_combo_preview_value.c_str())) {
-                for (std::size_t n = 0; n < yPos.size(); n++) {
-                    const bool is_selected = (y_current_idx == n);
-                    if (ImGui::Selectable(yPos[n].c_str(), is_selected))
-                        y_current_idx = n;
-                    if (is_selected)
-                        ImGui::SetItemDefaultFocus();
-                }
-                ImGui::EndCombo();
-            }
-
-            ImGui::NewLine();
-            ImGui::Text("Ressources:");
-            auto tile = map.getTile(std::stoi(xPos[x_current_idx]), std::stoi(yPos[y_current_idx]));
-            auto ressources = tile.get()->getRessources();
-
-            ImGui::Text("\tfood: %d", ressources[Rocks::FOOD]);
-            ImGui::Text("\tlinemate: %d", ressources[Rocks::LINEMATE]);
-            ImGui::Text("\teraumere: %d", ressources[Rocks::DERAUMERE]);
-            ImGui::Text("\tsibur: %d", ressources[Rocks::SIBUR]);
-            ImGui::Text("\tmendiane: %d", ressources[Rocks::MENDIANE]);
-            ImGui::Text("\tphiras: %d", ressources[Rocks::PHIRAS]);
-            ImGui::Text("\tthystame: %d", ressources[Rocks::THYSTAME]);
-            ImGui::EndTabItem();
-        }
+        drawControlPanel(map);
+        drawTilesDetails(map);
+        drawGuide(map);
         ImGui::EndTabBar();
     }
     ImGui::End();
 }
 
+void zp::WindowManager::drawControlPanel(const zp::Map &map)
+{
+    if (ImGui::BeginTabItem("Control Panel")) {
+        ImGui::Text("Connected to %s:%s", m_ip.c_str(), m_port.c_str()); ImGui::SameLine();
+        if (ImGui::Button("Disconnect"))
+            ImGui::OpenPopup("Disconnect?");
+
+        ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+        ImGui::SetNextWindowSize(ImVec2(90, 65));
+        if (ImGui::BeginPopupModal("Disconnect?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+            if (ImGui::Button("Yes")) {
+                zp::NetworkManager::addMessage("quit\n");
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("No"))
+                ImGui::CloseCurrentPopup();
+            ImGui::EndPopup();
+        }
+
+        ImGui::NewLine();
+        ImGui::Text("Current time modifier: %d", map.getTimeUnitModifier());
+        static int timeModif = 1000;
+        ImGui::SliderInt("##", &timeModif, 2, 2000); ImGui::SameLine();
+        if (ImGui::Button("Update") && timeModif != 0) {
+            zp::NetworkManager::addMessage("sst " + std::to_string(timeModif) + "\n");
+        }
+
+        ImGui::NewLine();
+        ImGui::Text("Teams:");
+        auto teams = map.getTeams();
+        for (auto &team : teams) {
+            auto teamColor = zp::TeamManager::getTeamColor(team);
+            ImVec4 newColor = teamColor;
+            std::string labelName = team + " color";
+
+            ImGui::ColorEdit3(labelName.c_str(), (float*)&newColor, ImGuiColorEditFlags_NoInputs |
+                                                                    ImGuiColorEditFlags_NoLabel);
+            if (newColor != teamColor)
+                zp::TeamManager::setTeamColor(team, newColor);
+            ImGui::SameLine();
+
+            ImGui::PushStyleColor(ImGuiCol_Text, teamColor);
+            ImGui::Text("%s", team.c_str());
+            ImGui::PopStyleColor();
+        }
+        if (ImGui::Button("Show inventories")) {
+            m_showInventory = true;
+        }
+        ImGui::EndTabItem();
+    }
+}
+
+void zp::WindowManager::drawTilesDetails(const zp::Map &map)
+{
+    if (ImGui::BeginTabItem("Tiles Panel")) {
+        ImGui::Text("Tile Coordinates:");
+
+        std::vector<std::string> xPos;
+        std::vector<std::string> yPos;
+        static std::size_t x_current_idx = 0;
+        static std::size_t y_current_idx = 0;
+
+        for (int i = 0; i < map.getSize().x; i++)
+            xPos.push_back(std::to_string(i));
+        for (int i = 0; i < map.getSize().y; i++)
+            yPos.push_back(std::to_string(i));
+
+        std::string x_combo_preview_value = xPos[x_current_idx];
+        if (ImGui::BeginCombo("X position", x_combo_preview_value.c_str())) {
+            for (std::size_t n = 0; n < xPos.size(); n++) {
+                const bool is_selected = (x_current_idx == n);
+                if (ImGui::Selectable(xPos[n].c_str(), is_selected))
+                    x_current_idx = n;
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
+
+        std::string y_combo_preview_value = yPos[y_current_idx];
+        if (ImGui::BeginCombo("Y position", y_combo_preview_value.c_str())) {
+            for (std::size_t n = 0; n < yPos.size(); n++) {
+                const bool is_selected = (y_current_idx == n);
+                if (ImGui::Selectable(yPos[n].c_str(), is_selected))
+                    y_current_idx = n;
+                if (is_selected)
+                    ImGui::SetItemDefaultFocus();
+            }
+            ImGui::EndCombo();
+        }
+
+        ImGui::NewLine();
+        ImGui::Text("Ressources:");
+        auto tile = map.getTile(std::stoi(xPos[x_current_idx]), std::stoi(yPos[y_current_idx]));
+        auto ressources = tile.get()->getRessources();
+
+        ImGui::Text("\tfood: %d", ressources[Rocks::FOOD]);
+        ImGui::Text("\tlinemate: %d", ressources[Rocks::LINEMATE]);
+        ImGui::Text("\teraumere: %d", ressources[Rocks::DERAUMERE]);
+        ImGui::Text("\tsibur: %d", ressources[Rocks::SIBUR]);
+        ImGui::Text("\tmendiane: %d", ressources[Rocks::MENDIANE]);
+        ImGui::Text("\tphiras: %d", ressources[Rocks::PHIRAS]);
+        ImGui::Text("\tthystame: %d", ressources[Rocks::THYSTAME]);
+        ImGui::EndTabItem();
+    }
+}
+
+void zp::WindowManager::drawGuide(const zp::Map &map)
+{
+    (void)map;
+    if (ImGui::BeginTabItem("Guides")) {
+        ImGui::Text("Elevation Ritual Guide");
+        if (ImGui::BeginTable("Ritual Guide", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings |
+        ImGuiTableFlags_Borders)) {
+
+            const auto headers = zp::Utils::split(g_elevationGuide[0], ' ');
+            for (auto &header : *headers) {
+                ImGui::TableSetupColumn(header.c_str());
+            }
+            ImGui::TableHeadersRow();
+
+            for (int idx = 0; auto &guide : g_elevationGuide) {
+                if (idx == 0) {
+                    ++idx;
+                    continue;
+                }
+                const auto tokens = zp::Utils::split(guide, ' ');
+                for (auto &elem : *tokens) {
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%s", elem.c_str());
+                }
+            }
+            ImGui::EndTable();
+        }
+
+        auto rockColors = zp::RockManager::getRockColors();
+        ImGui::Text("Rocks Guide");
+        for (int idx = 0; auto &rock : g_rocksToString) {
+            auto rockColor = rockColors[idx];
+            ImVec4 newColor = rockColor;
+            ImGui::PushStyleColor(ImGuiCol_Text, rockColor);
+            ImGui::ColorEdit3(g_rocksToString[idx].c_str(), (float *)&newColor, ImGuiColorEditFlags_NoInputs |
+            ImGuiColorEditFlags_NoLabel);
+            ImGui::SameLine();
+            ImGui::Text("%s", rock.c_str());
+            ImGui::PopStyleColor();
+            if (newColor != rockColor)
+                zp::RockManager::setRockColor(idx, newColor);
+            idx++;
+        }
+
+        ImGui::EndTabItem();
+    }
+}
+
 void zp::WindowManager::drawConnection()
 {
     static char ip[16] = "127.0.0.1";
-    static int port = 4242;
+    static int port = m_port.empty() ? 0 : std::stoi(m_port);
 
     ImGui::Begin("Connection");
     ImGui::InputText("IP", ip, 16);
@@ -304,4 +371,41 @@ void zp::WindowManager::setStyle()
 bool zp::WindowManager::isOpen()
 {
     return m_window.isOpen();
+}
+
+void zp::WindowManager::drawInventory(Map &map)
+{
+    ImGui::SetNextWindowSize(ImVec2(500, 500), ImGuiCond_FirstUseEver);
+    ImGui::Begin("Inventories", &m_showInventory);
+    auto players = map.getAliens();
+    auto teams = map.getTeams();
+    for (auto &team : teams) {
+        auto teamColor = zp::TeamManager::getTeamColor(team);
+
+        ImGui::PushStyleColor(ImGuiCol_Text, teamColor);
+        if (ImGui::TreeNode(team.c_str())) {
+            for (auto &player : players) {
+                if (player->getTeamName() != team)
+                    continue;
+                if (ImGui::TreeNode(std::to_string(player->getId()).c_str())) {
+                    if (ImGui::BeginTable(std::to_string(player->getId()).c_str(), 2, ImGuiTableFlags_Resizable |
+                    ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {
+                        auto inventory = player->getInventory();
+                        for (auto &item : inventory) {
+                            ImGui::TableNextRow();
+                            ImGui::TableNextColumn();
+                            ImGui::Text("%s", g_rocksToString[item.first].c_str());
+                            ImGui::TableNextColumn();
+                            ImGui::Text("%d", item.second);
+                        }
+                        ImGui::EndTable();
+                    }
+                    ImGui::TreePop();
+                }
+            }
+            ImGui::TreePop();
+        }
+        ImGui::PopStyleColor();
+    }
+    ImGui::End();
 }

@@ -14,6 +14,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entities/IEntity.hpp"
+#include "Entities/Rock.hpp"
 #include "Tile.hpp"
 #include "Utils/TeamManager.hpp"
 
@@ -59,10 +60,10 @@ public:
     void addAlien(std::shared_ptr<zp::IEntity> alien);
 
     /**
-     * @brief Add a rock to the map
-     * @param rock
+     * @brief Add an egg to the map
+     * @param egg
      */
-    void addRock(std::shared_ptr<zp::IEntity> rock);
+    void addEgg(std::shared_ptr<zp::IEntity> egg);
 
     /**
      * @brief Add a team to the map
@@ -77,16 +78,22 @@ public:
     const std::vector<std::shared_ptr<zp::IEntity>> &getAliens() const;
 
     /**
+     * @brief Returns all eggs on the map
+     * @return
+     */
+    const std::vector<std::shared_ptr<zp::IEntity>> &getEggs() const;
+
+    /**
      * @brief Remove an alien from the map
      * @param id id of the alien
      */
     void removeAlien(int id);
 
     /**
-     * @brief Returns all rocks on the map
-     * @return
+     * @brief Remove an egg from the map
+     * @param id id of the egg
      */
-    const std::vector<std::shared_ptr<zp::IEntity>> &getRocks() const;
+    void removeEgg(int id);
 
     /**
      * @brief Returns the size of the map
@@ -121,10 +128,11 @@ private:
     sf::Vector2i m_size = {0, 0};
     sf::Texture m_tileTexture;
     sf::Sprite m_tileSprite;
+    std::array<sf::Texture, 7> m_rockTextures;
 
     std::vector<std::shared_ptr<Tile>> m_tiles;
-    std::vector<std::shared_ptr<zp::IEntity>> m_rocks;
     std::vector<std::shared_ptr<zp::IEntity>> m_aliens;
+    std::vector<std::shared_ptr<zp::IEntity>> m_eggs;
     std::vector<std::string> m_teams;
 
     int m_timeUnitModifier = 1;

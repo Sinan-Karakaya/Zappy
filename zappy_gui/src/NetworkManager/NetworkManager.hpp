@@ -21,6 +21,7 @@
 #include "Utils/Utils.hpp"
 #include "Map/Map.hpp"
 #include "Entities/Alien.hpp"
+#include "Entities/Egg.hpp"
 #include "Socket/Socket.hpp"
 #include "Chat/Chat.hpp"
 
@@ -154,6 +155,34 @@ private:
      * @param map map to update
      */
     void removePlayer(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle incoming inventory
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void setInventory(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle eggs being laid
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void eggLaid(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle eggs death
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void removeEgg(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle eggs hatching
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void eggHatched(const std::vector<std::string> &tokens, Map &map);
 
     /**
      * @brief For commands I don't care about for now
