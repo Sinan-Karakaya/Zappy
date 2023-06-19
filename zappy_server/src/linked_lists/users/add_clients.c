@@ -33,7 +33,7 @@ void list_add_client(client_list_t *list, client_info_t *info)
     if (info == NULL)
         return;
     if (list->first == NULL) {
-        tmp = calloc(1, sizeof(client_t));
+        tmp = malloc(sizeof(client_t));
         if (tmp == NULL)
             return;
         tmp->info = info;

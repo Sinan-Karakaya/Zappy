@@ -5,7 +5,7 @@
 ** ppo
 */
 
-#include "zappy_server.h"
+#include "free.h"
 #include "commands.h"
 #include <ctype.h>
 
@@ -21,22 +21,24 @@ static char *get_info_player(my_zappy_t *zappy, int id)
         return NULL;
     asprintf(&result, "ppo %ld %d %d %d\n", client->player->id,
         client->player->x, client->player->y, client->player->direction);
+    destroy_client_info(client);
     return result;
 }
 
-int ppo(my_zappy_t *zappy, int fd, char **args)
+int ppo(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
 {
     char *result = NULL;
 
-    if (zappy == NULL || args == NULL)
+    if (zappy == NULL || cmd->args == NULL)
         return 0;
-    if (count_args(args) != 2)
-        return send_message(fd, "ko\n");
-    if (atoi(args[1]) <= 0)
-        return send_message(fd, "ko\n");
-    result = get_info_player(zappy, atoi(args[1]));
+    if (count_args(cmd->args) != 2)
+        return add_cmd(cmd, "ko\n");
+    if (atoi(cmd->args[1]) <= 0)
+        return add_cmd(cmd, "ko\n");
+    result = get_info_player(zappy, atoi(cmd->args[1]));
     if (result == NULL)
-        return send_message(fd, "ko\n");
-    send_message(fd, result);
+        return add_cmd(cmd, "ko\n");
+    add_cmd(cmd, result);
+    free(result);
     return 0;
 }
