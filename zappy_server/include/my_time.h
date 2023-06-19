@@ -24,6 +24,9 @@
         size_t tick_delay;
     } time_vector_t;
 
+    /// @brief init the time
+    /// @param frequency the frequency of the server
+    /// @return the time
     my_time_t *init_time(size_t frequency);
 
 #endif /* !TIME_H_ */

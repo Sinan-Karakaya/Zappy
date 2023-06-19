@@ -81,7 +81,16 @@
     /// @return the duplicated array
     char **dup_array(char **array);
 
+    /// @brief get the direction of a client
+    /// @param client the client
+    /// @param other the other client
+    /// @return the direction
     size_t get_direction(client_t *client, client_t *other);
+
+    /// @brief get the direction based on the orientation of a client
+    /// @param client the client
+    /// @param other the other client
+    /// @return the direction
     size_t get_real_direction(size_t orientation, size_t direction);
 
 #endif /* !UTILS_H_ */

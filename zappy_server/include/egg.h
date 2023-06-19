@@ -29,8 +29,6 @@
         egg_t *last;
     } egg_list_t;
 
-
-
 /// @brief destroy egg in the list
 /// @param list the list of eggs
 /// @param egg the egg to destroy

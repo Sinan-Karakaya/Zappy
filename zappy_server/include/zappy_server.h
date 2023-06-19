@@ -114,25 +114,52 @@
     /// @return 1 if success, 84 if error
     int send_message_error(int fd, char *message);
 
+    /// @brief send a message to all graphical clients
+    /// @param zappy
+    /// @param message
+    /// @return 0 if success, 84 if error
     int send_to_graphics(my_zappy_t *zappy, char *message);
 
     bool is_running(int sig);
     void sigint_handler(int sig);
 
     // Connections
+
+    /// @brief accept a client
+    /// @param zappy the zappy struct
+    /// @return 0 if success, 84 if error
     int accept_client(my_zappy_t *zappy);
 
     // Time
+
+    /// @brief get the actual time
+    /// @param zappy the zappy struct
+    /// @param time the time struct
     void get_actual_time(my_zappy_t *zappy, my_time_t *time);
+
+    /// @brief refresh the time per tick
+    /// @param zappy the zappy struct
     void refresh_time_per_tick(my_zappy_t *zappy);
 
     // Commands
+
+    /// @brief make all clients eat
+    /// @param zappy the zappy struct
+    /// @return 0 if success, 84 if error
     int eat_all_client(my_zappy_t *zappy);
 
+    /// @brief exec the command
+    /// @param client
+    /// @param cmd
+    /// @param zappy
+    /// @param client_fd
+    /// @return 0 if success, 84 if error
     int exec_command(client_t *client, cmd_t *cmd,
         my_zappy_t *zappy, int client_fd);
 
+    /// @brief check if one team has won
+    /// @param zappy the zappy struct
+    /// @return 0 if success, 84 if error
     int check_victory(my_zappy_t *zappy);
-
 
 #endif /* !Zappy_Server_H_ */

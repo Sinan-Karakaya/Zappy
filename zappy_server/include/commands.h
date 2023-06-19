@@ -205,46 +205,204 @@ int sbp(my_zappy_t *zappy, int fd);
 PROTOCOLE IA
 */
 
+/// @brief check if the client is alive
+/// @param zappy
+/// @param fd
+/// @return 0 if the function succeed, 84 otherwise
 int check_alive(my_zappy_t *zappy, int fd);
 
+
+/// @brief incantation function
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+
+/// @brief the callback function for the incantation
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief check all values for the incantation
+/// @param zappy
+/// @param fd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_all_values_incantation(my_zappy_t *zappy, int fd);
+
+
+/// @brief freeze all the clients on the tile for the incantation
+/// @param zappy
+/// @param fd
+/// @return 0 if the function succeed, 84 otherwise
 int lock_client(my_zappy_t *zappy, int fd);
+
+
+/// @brief remove the resources for the incantation
+/// @param zappy
+/// @param x
+/// @param y
+/// @param lvl
+/// @return 0 if the function succeed, 84 otherwise
 int remove_resources_incantation(my_zappy_t *zappy, size_t x, size_t y,
 int lvl);
+
+/// @brief unlock all the clients on the tile for the incantation
+/// @param zappy
+/// @param fd
+/// @param succeed
+/// @return 0 if the function succeed, 84 otherwise
 int unlock_clients(my_zappy_t *zappy, int fd, bool succeed);
 
+/// @brief move the player to where he is looking
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief  the callback function for the forward
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_forward(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief hatch an egg on the tile of the player
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int fork_cmd(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the fork
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_fork(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief eject all the players of the tile
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int eject(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the eject
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_eject(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+
+/// @brief broadcast a message to all the clients
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the broadcast
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief send the inventory of the player
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int inventory(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the inventory
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_inventory(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+
+/// @brief take an object on the tile of the player
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int take(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the take
+/// @param zappy
+/// @param fd
+/// @param cmd
 int verify_take(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief set an object on the tile of the player
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int set(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the set
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_set(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief turn the player to the right
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int right(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the right
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_right(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief look around the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int look(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the look
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_look(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief turn the player to the left
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int left(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief the callback function for the left
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int verify_left(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief send the numbers of players connected to the server
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
 int connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 #endif /* !COMMANDS_H_ */
