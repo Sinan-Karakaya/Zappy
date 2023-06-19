@@ -11,19 +11,11 @@
 static void set_id_client(client_list_t *client_list,
     client_info_t *client_info, map_t *map)
 {
-    client_t *tmp = client_list->first;
-    size_t id_tmp = 0;
-
     if (!client_list || !client_info)
         return;
-    while (tmp) {
-        if (tmp->info->player->id > id_tmp)
-            id_tmp = tmp->info->player->id;
-        tmp = tmp->next;
-    }
-    client_info->player->id = id_tmp + 1;
+    client_info->player->id = client_info->fd;
     list_add_id(map->tiles[client_info->player->y] \
-        [client_info->player->x].players, client_info->player->id);
+        [client_info->player->x].players, client_info->fd);
 }
 
 int accept_client(my_zappy_t *zappy)
@@ -39,8 +31,8 @@ int accept_client(my_zappy_t *zappy)
         (struct sockaddr *)&address, &addrlen);
         if (fd_actual == -1)
             return 84;
-        dprintf(1, "Connection from %s:%d\n", inet_ntoa(address.sin_addr),
-        ntohs(zappy->server->address.sin_port));
+        printf("%s: Client %d connected from %s:%d\n", SERVER_GREEN, fd_actual,
+        inet_ntoa(address.sin_addr), ntohs(zappy->server->address.sin_port));
         client_info = init_clients_info(fd_actual, zappy->map->x,
             zappy->map->y);
         set_id_client(zappy->client_list, client_info, zappy->map);

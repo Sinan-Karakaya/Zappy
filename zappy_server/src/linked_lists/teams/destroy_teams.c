@@ -5,7 +5,7 @@
 ** destroy_teams
 */
 
-#include "team.h"
+#include "free.h"
 #include <stdlib.h>
 
 static size_t destroy_team_info(team_t *team)
