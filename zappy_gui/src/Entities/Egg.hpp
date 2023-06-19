@@ -1,20 +1,19 @@
 /*
 ** EPITECH PROJECT, 2023
-** src/Entities
+** zappy_gui
 ** File description:
-** Alien
+** Egg
 */
 
 #pragma once
-
-#include <spdlog/spdlog.h>
 
 #include "IEntity.hpp"
 #include "Utils/Utils.hpp"
 #include "Utils/TeamManager.hpp"
 
-#define ALIEN_PATH "assets/sprites/zeologue.png"
-#define ALIEN_HEIGHT 84
+#define EGG_PATH "assets/sprites/egg.png"
+#define EGG_HEIGHT 95
+#define EGG_WIDTH 105
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
 #define TILE_WIDTH_HALF 32
@@ -23,13 +22,13 @@
 namespace zp
 {
 
-class Alien : public IEntity
+class Egg : public IEntity
 {
 public:
-    Alien() = default;
-    Alien(const Alien &alien) = default;
-    Alien(sf::Vector2i tilePos, Direction dir, const std::string &teamName, int id = -1);
-    ~Alien() override = default;
+    Egg() = default;
+    Egg(const Egg &egg) = default;
+    Egg(sf::Vector2i tilePos, Direction dir, const std::string &teamName, int id = -1);
+    ~Egg() override = default;
 
     void draw(sf::RenderTexture &window) override;
     void setTilePosition(int x, int y, int mapHeight) override;
