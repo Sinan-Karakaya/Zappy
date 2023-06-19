@@ -9,6 +9,7 @@
 
 zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &teamName, int id)
 {
+    m_incanting = false;
     m_id = id;
     m_tilePosition = tilePos;
     m_direction = dir;
@@ -66,7 +67,8 @@ void zp::Alien::draw(sf::RenderTexture &window)
         m_sprite.setColor(color);
         m_elevation_sprite.setColor(color);
     }
-    drawIncantation(window);
+    if (m_incanting == true)
+        drawIncantation(window);
     window.draw(m_sprite);
 }
 
@@ -85,4 +87,9 @@ void zp::Alien::setDirection(zp::Direction dir)
 {
     m_direction = dir;
     m_sprite.setTexture(m_textures[dir]);
+}
+
+void zp::Alien::setIncanting(bool incanting)
+{
+    m_incanting = incanting;
 }

@@ -37,12 +37,17 @@ public:
     void setDirection(Direction dir) override;
     int getId() const override { return m_id; }
     const std::string &getTeamName() const override { return m_teamName; }
+    const sf::Vector2i &getPosition() const { return m_position; }
+    const sf::Vector2i &getTilePosition() const { return m_tilePosition; }
+    void setIncanting(bool incanting);
 
 private:
     sf::Sprite m_elevation_sprite;
     sf::Texture m_elevation_texture;
     sf::IntRect m_elevation_rect;
     sf::Clock m_clock;
+
+    bool m_incanting;
 };
 
 } // zp
