@@ -83,7 +83,8 @@ int exec_command(client_t *client, cmd_t *cmd, my_zappy_t *zappy, int client_fd)
     if (client->info->player->is_alive == false)
         return 0;
     if (client->info->lst_cmd->first != NULL &&
-        client->info->player->is_action == false)
+        client->info->player->is_action == false &&
+        client->info->player->is_incanting == false)
         cmd = init_cmd(client->info->lst_cmd->first->args);
     if (get_command_list(client, cmd) == false)
         return 0;
