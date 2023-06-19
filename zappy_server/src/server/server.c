@@ -80,7 +80,7 @@ int create_server(parsing_t *parsing)
         return 84;
     signal(SIGINT, sigint_handler);
     srand(time(NULL));
-    while (is_running(0)) {
+    while (is_running(0) || !zappy->is_end) {
         set_fds(zappy->server, zappy->client_list);
         fd_max = calculate_fd_max(zappy);
         if (select(fd_max + 1, &zappy->server->rset, &zappy->server->wset,

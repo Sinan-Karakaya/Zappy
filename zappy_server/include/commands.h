@@ -178,9 +178,9 @@ int edi(my_zappy_t *zappy, int id_egg);
 
 /// @brief end of an egg
 /// @param zappy
-/// @param fd
+/// @param team_name
 /// @return
-int seg(my_zappy_t *zappy, int fd);
+int seg(my_zappy_t *zappy, char *team_name);
 
 /// @brief send message from the server
 /// @param zappy

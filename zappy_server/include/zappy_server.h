@@ -51,6 +51,7 @@
         size_t frequency;
         map_t *map;
         my_time_t *time;
+        bool is_end;
     } my_zappy_t;
 
     typedef struct fd_setters_s {
@@ -130,5 +131,8 @@
 
     int exec_command(client_t *client, cmd_t *cmd,
         my_zappy_t *zappy, int client_fd);
+
+    int check_victory(my_zappy_t *zappy);
+
 
 #endif /* !Zappy_Server_H_ */

@@ -70,5 +70,6 @@ int incantation(my_zappy_t *zappy, int fd, NUSED cmd_t *cmd)
     client->info->player->y, client->info->player->lvl);
     send_incantation_clients(zappy, client, true);
     unlock_clients(zappy, fd, true);
+    check_victory(zappy);
     return 0;
 }

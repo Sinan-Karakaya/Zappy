@@ -49,6 +49,7 @@ static int init_zappy_bis(my_zappy_t *zappy, parsing_t *parsing)
     zappy->egg_list = (egg_list_t *)init_list();
     if (!zappy->egg_list)
         return 84;
+    zappy->is_end = false;
     return 0;
 }
 
