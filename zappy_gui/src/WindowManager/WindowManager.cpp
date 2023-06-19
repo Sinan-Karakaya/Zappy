@@ -253,7 +253,7 @@ void zp::WindowManager::drawGuide(const zp::Map &map)
     if (ImGui::BeginTabItem("Guides")) {
         ImGui::Text("Elevation Ritual Guide");
         if (ImGui::BeginTable("Ritual Guide", 8, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings |
-        ImGuiTableFlags_Borders | ImGuiTableFlags_ScrollX | ImGuiTableFlags_NoHostExtendY)) {
+        ImGuiTableFlags_Borders)) {
 
             const auto headers = zp::Utils::split(g_elevationGuide[0], ' ');
             for (auto &header : *headers) {
