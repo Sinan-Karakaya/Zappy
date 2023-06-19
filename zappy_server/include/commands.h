@@ -422,4 +422,19 @@ int verify_left(my_zappy_t *zappy, int fd, cmd_t *cmd);
 /// @return 0 if the function succeed, 84 otherwise
 int connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+
+// Commands utils
+
+/// @brief send the position of the player to the graphics
+/// @param zappy
+/// @param client
+/// @return 0 if the function succeed, 84 otherwise
+int send_pos_to_graphics(my_zappy_t *zappy, client_t *client);
+
+/// @brief send the inventory of the player to the graphics
+/// @param zappy
+/// @param client
+/// @return 0 if the function succeed, 84 otherwise
+int send_inventory_to_graphics(my_zappy_t *zappy, client_t *client);
+
 #endif /* !COMMANDS_H_ */

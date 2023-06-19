@@ -80,5 +80,6 @@ int forward(my_zappy_t *zappy, int fd, cmd_t *cmd)
     list_add_id(
     zappy->map->tiles[client->info->player->y][client->info->player->x].players,
     client->info->player->id);
+    send_pos_to_graphics(zappy, client);
     return add_cmd(cmd, "ok\n");
 }
