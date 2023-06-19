@@ -24,10 +24,10 @@ int broadcast(my_zappy_t *zappy, int fd, cmd_t *cmd)
     send_message(fd, "ok\n");
     pbc(zappy, fd, cmd->args[1]);
     for (client_t *tmp = zappy->client_list->first; tmp; tmp = tmp->next) {
-        if (tmp != client) {
+        if (tmp != client && tmp->info->team_id != TEAM_ID_GRAPHIC) {
             asprintf(&msg, "message %ld, %s\n",
             get_real_direction(tmp->info->player->direction,
-            get_direction(tmp, client)), cmd->args[1]);
+            get_direction(client, tmp)), cmd->args[1]);
             send_message(tmp->info->fd, msg);
             free(msg);
         }
