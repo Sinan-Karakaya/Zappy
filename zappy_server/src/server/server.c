@@ -18,8 +18,9 @@ static char *read_input(int fd)
     char buffer[1024] = {0};
 
     while (true) {
-        if (strlen(buffer) >= 2 && buffer[strlen(buffer) - 2] == '\r'
+        if ((strlen(buffer) >= 2 && buffer[strlen(buffer) - 2] == '\r'
         && buffer[strlen(buffer) - 1] == '\n')
+        || (strlen(buffer) >= 1 && buffer[strlen(buffer) - 1] == '\n'))
             break;
         read(fd, buffer + strlen(buffer), 1);
     }
