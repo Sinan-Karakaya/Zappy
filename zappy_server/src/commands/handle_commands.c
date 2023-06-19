@@ -10,22 +10,7 @@
 #include "commands.h"
 #include "utils.h"
 
-commands_t commands[] = {
-    /*
-        PROTOCOL GRAPHIC
-    */
-    {"msz", &msz}, // OK
-    {"bct", &bct}, // OK
-    {"mct", &mct}, // OK
-    {"tna", &tna}, // OK
-    {"ppo", &ppo}, // OK
-    {"plv", &plv}, // OK
-    {"pin", &pin}, // OK
-    {"sgt", &sgt}, // OK
-    {"sst", &sst}, // OK
-    /*
-        PROTOCOL AI
-    */
+commands_t commands_ai[] = {
     {"Forward", &verify_forward},
     {"Right", &verify_right},
     {"Left", &verify_left},
@@ -38,6 +23,19 @@ commands_t commands[] = {
     {"Take", &verify_take},
     {"Set", &verify_set},
     {"Incantation", &verify_incantation},
+    {NULL, NULL}
+};
+
+commands_t commands_graphic[] = {
+    {"msz", &msz}, // OK
+    {"bct", &bct}, // OK
+    {"mct", &mct}, // OK
+    {"tna", &tna}, // OK
+    {"ppo", &ppo}, // OK
+    {"plv", &plv}, // OK
+    {"pin", &pin}, // OK
+    {"sgt", &sgt}, // OK
+    {"sst", &sst}, // OK
     {NULL, NULL}
 };
 
@@ -88,10 +86,10 @@ int exec_command(client_t *client, cmd_t *cmd, my_zappy_t *zappy, int client_fd)
         cmd = init_cmd(client->info->lst_cmd->first->args);
     if (get_command_list(client, cmd) == false)
         return 0;
-    for (size_t i = 0; commands[i].command != NULL; i++) {
-        if (strcmp(commands[i].command, cmd->args[0]) == 0) {
+    for (size_t i = 0; commands_ai[i].command != NULL; i++) {
+        if (strcmp(commands_ai[i].command, cmd->args[0]) == 0) {
             client->info->player->is_action = true;
-            commands[i].func(zappy, client_fd, cmd);
+            commands_ai[i].func(zappy, client_fd, cmd);
             return 0;
         }
     }
@@ -103,10 +101,10 @@ static int exec_graphic_command(client_t *client, cmd_t *cmd,
 {
     if (client->info->player->is_alive == false)
         return 0;
-    for (size_t i = 0; commands[i].command != NULL; i++) {
-        if (strcmp(commands[i].command, cmd->args[0]) == 0) {
+    for (size_t i = 0; commands_graphic[i].command != NULL; i++) {
+        if (strcmp(commands_graphic[i].command, cmd->args[0]) == 0) {
             client->info->player->is_action = true;
-            commands[i].func(zappy, client_fd, cmd);
+            commands_graphic[i].func(zappy, client_fd, cmd);
             return 0;
         }
     }
