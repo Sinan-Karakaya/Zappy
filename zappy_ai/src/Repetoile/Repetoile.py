@@ -11,47 +11,15 @@ from random import randint
 
 
 class Repetoile(Agent):
-    def __init__(self, teamName):
-        super().__init__()
+    def __init__(self, teamName, server):
+        super().__init__(server)
         self.teamName = teamName
+        print("Team name: " + self.teamName)
         self.state = "Searching food"
 
-    def searchObject(self, server: Server, object: str):
-        """
-        Search for an object in the vision of the agent and move to it if it is found.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
-
-        @return: None
-        """
-        indexObject = -1
-        minDistance = -1
-
-        self.fillVisions(server)
-        for tile, index in zip(self.vision, range(0, len(self.vision))):
-            if object in tile:
-                distance = self.distanceTo(index)
-                if minDistance == -1 or distance < minDistance:
-                    indexObject = index
-                    minDistance = distance
-
-        if indexObject == 0:
-            self.askServer(server, "Take " + object)
-        elif indexObject != -1:
-            self.fillMoveStack(indexObject)
-            while len(self.moveStack) > 0:
-                print(self.askServer(server, self.moveStack.pop()))
-            self.askServer(server, "Take " + object)
-        else:
-            self.askServer(server, "Forward")
-
-    def repeat(self, server: Server):
+    def repeat(self):
         """
         Repeat a message from the broadcast stack if the message is not from the same team.
-
-        @param server: The server object used to communicate with the server.
-        @type server: Server
 
         @return: None
         """
@@ -64,55 +32,63 @@ class Repetoile(Agent):
                 ]
                 currentMessage = currentMessage.split(",")[1]
                 if not self.teamName in currentMessage:
-                    message = self.broadcastStack[i]
+                    message = currentMessage
                     break
             if message is None:
                 return
 
             message = message.split(",")[1]
-            self.askServer(server, "Broadcast " + message)
+            self.askServer("Broadcast " + message)
 
-    def live(self, server: Server):
+    def live(self):
         """
         The main function of the agent. It is called every turn.
 
-        @param server: The server object used to communicate with the server.
-        @type server: Server
-
         @return: None
         """
-        # if self.inventory["food"] <= 10:
-        #     self.state = "Searching food"
-        # else:
-        #     self.state = "Broadcasting like a fool"
+        if self.inventory["food"] <= 10 and self.state != "Joining":
+            self.state = "Searching food"
+        elif self.state == "Joining" and self.inventory["food"] < 6:
+            self.state = "Searching food"
+        else:
+            self.state = "Broadcasting like a fool"
 
-        # if self.state == "Searching food":
-        #     self.searchObject(server, "food")
+        if self.state == "Searching food":
+            self.searchObject("food")
 
-        # if self.state == "Broadcasting like a fool":
-        #     self.repeat(server)
-        #     self.state = "Searching rock"
+        if self.state == "Broadcasting like a fool":
+            self.repeat()
+            self.state = "Searching rock"
 
-        # if self.state == "Searching rock":
-        #     self.searchObject(server, "linemate")
-        #     if (self.inventory["linemate"] > 0):
-        #         self.askServer(server, "Set linemate")
-        #         self.fillVisions(server)
-        #         self.canElevate(server)
-        #         self.askServer(server, "Incantation")
+        if self.state == "Searching rock":
+            hasAllRock = self.elevate()
+            if hasAllRock:
+                self.state = "Joining"
 
-        self.searchObject(server, "food")
-        self.fillInventory(server)
-        # print(self.inventory)
+        self.fillInventory()
+        print("Curretly my state is: " + self.state)
 
-    def birth(self, server: Server):
+    def birth(self):
         """
         Call when the agent is born.
 
+        @return: None
+        """
+
+        self.broadcast("I'm born")
+        self.askServer("Fork")
+        self.state = "Searching food"
+
+    def broadcast(self, message: str):
+        """
+        Call when the agent need to comunicat so it can use is language.
+
         @param server: The server object used to communicate with the server.
         @type server: Server
 
+        @param message: The message to send.
+        @type message: str
+
         @return: None
         """
-        self.askServer(server, "Broadcast " + self.teamName + " I'm born !"),
-        self.state = "Searching food"
+        self.askServer("Broadcast " + self.teamName + " " + message),
