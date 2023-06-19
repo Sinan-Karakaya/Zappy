@@ -47,8 +47,6 @@ static int add_command_list(client_t *client, cmd_t *cmd)
 
     if (client == NULL || cmd == NULL)
         return 84;
-    if (client->info->team_id == TEAM_ID_GRAPHIC)
-        return 0;
     if (client->info->lst_cmd->first == NULL) {
         tmp = init_lst_commands(cmd->args);
         list_add_command(client->info->lst_cmd, tmp);
@@ -82,6 +80,8 @@ int exec_command(client_t *client, cmd_t *cmd, my_zappy_t *zappy, int client_fd)
 {
     if (client->info->player->is_alive == false)
         return 0;
+    if (client->info->team_id == TEAM_ID_GRAPHIC)
+        return 0;
     if (client->info->lst_cmd->first != NULL &&
         client->info->player->is_action == false &&
         client->info->player->is_incanting == false)
@@ -98,12 +98,29 @@ int exec_command(client_t *client, cmd_t *cmd, my_zappy_t *zappy, int client_fd)
     return 1;
 }
 
+static int exec_graphic_command(client_t *client, cmd_t *cmd,
+    my_zappy_t *zappy, int client_fd)
+{
+    if (client->info->player->is_alive == false)
+        return 0;
+    for (size_t i = 0; commands[i].command != NULL; i++) {
+        if (strcmp(commands[i].command, cmd->args[0]) == 0) {
+            client->info->player->is_action = true;
+            commands[i].func(zappy, client_fd, cmd);
+            return 0;
+        }
+    }
+    return 0;
+}
+
 int handle_commands(my_zappy_t *zappy, int client_fd, cmd_t *cmd)
 {
     client_t *client = get_client_by_fd(zappy->client_list, client_fd);
 
     if (!zappy || !cmd || !cmd->args || !client)
         return 0;
+    if (client->info->team_id == TEAM_ID_GRAPHIC)
+        return exec_graphic_command(client, cmd, zappy, client_fd);
     if (client->info->team_id == -1)
         return set_team(zappy, client_fd, cmd);
     add_command_list(client, cmd);
