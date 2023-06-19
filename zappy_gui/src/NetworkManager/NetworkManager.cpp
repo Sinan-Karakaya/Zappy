@@ -295,6 +295,7 @@ void zp::NetworkManager::getIncantationEnd(const std::vector<std::string> &token
         if (myPos == alienPos)
             static_cast<zp::Alien *>(alien.get())->setIncanting(false);
     }
+}
 
 void zp::NetworkManager::eggLaid(const std::vector<std::string> &tokens, zp::Map &map)
 {
