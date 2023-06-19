@@ -28,9 +28,30 @@
         size_t ressources[7];
     } incantation_t;
 
+/// @brief set the team of the player
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if ok, 84 if error
 int set_team(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief add a command to the list
+/// @param cmd
+/// @param str
+/// @return 0 if ok, 84 if error
 int add_cmd(cmd_t *cmd, char *str);
+
+
+/// @brief init the cmd struct
+/// @param args the args
+/// @return the cmd struct
 cmd_t *init_cmd(char **args);
+
+
+/// @brief send a message to all the players
+/// @param cmd
+/// @param fd
+/// @return 0 if ok, 84 if error
 int send_all_message(cmd_t *cmd, int fd);
 
 /*
@@ -211,14 +232,12 @@ PROTOCOLE IA
 /// @return 0 if the function succeed, 84 otherwise
 int check_alive(my_zappy_t *zappy, int fd);
 
-
 /// @brief incantation function
 /// @param zappy
 /// @param fd
 /// @param cmd
 /// @return 0 if the function succeed, 84 otherwise
 int incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
-
 
 /// @brief the callback function for the incantation
 /// @param zappy
@@ -233,13 +252,11 @@ int verify_incantation(my_zappy_t *zappy, int fd, cmd_t *cmd);
 /// @return 0 if the function succeed, 84 otherwise
 int verify_all_values_incantation(my_zappy_t *zappy, int fd);
 
-
 /// @brief freeze all the clients on the tile for the incantation
 /// @param zappy
 /// @param fd
 /// @return 0 if the function succeed, 84 otherwise
 int lock_client(my_zappy_t *zappy, int fd);
-
 
 /// @brief remove the resources for the incantation
 /// @param zappy

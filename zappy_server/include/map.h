@@ -38,6 +38,10 @@ typedef struct {
         int y;
     } vector_t;
 
+    /// @brief init the map
+    /// @param x the x
+    /// @param y the y
+    /// @return the map
     map_t *init_map(size_t x, size_t y);
 
     /// @brief get coordinates
