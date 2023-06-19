@@ -16,5 +16,6 @@ int smg(my_zappy_t *zappy, int fd, char *message)
         return 84;
     asprintf(&result, "smg %s\n", message);
     send_message(fd, result);
+    free(result);
     return 0;
 }

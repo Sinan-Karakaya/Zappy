@@ -53,13 +53,31 @@ typedef struct {
     size_t lvl;
     double action_time;
     size_t id;
-    double eat_timer;
+    size_t last_tick;
+    size_t actual_tick;
+    bool is_action;
+    bool is_incanting;
+    bool is_alive;
 } player_t;
+
+typedef struct command_s command_t;
+typedef struct command_s {
+    char **args;
+    command_t *next;
+    command_t *prev;
+} command_t;
+
+typedef struct {
+    size_t size;
+    command_t *first;
+    command_t *last;
+} lst_commands_t;
 
 typedef struct client_info_s {
     int fd;
     int user_id;
     int team_id;
+    lst_commands_t *lst_cmd;
     player_t *player;
 } client_info_t;
 
@@ -125,5 +143,15 @@ int destroy_client_in_list(client_list_t *list, int fd);
 /// @param list the list of id
 /// @param id the id to remove
 int remove_id_in_list(id_list_t *list, int id);
+
+command_t *init_lst_commands(char **args);
+size_t pop_front_cmd(lst_commands_t *list);
+void list_add_command(lst_commands_t *command_list, command_t *command);
+int print_debug(client_t *client, char **cmd);
+
+/// @brief destroy a command list
+/// @param list
+/// @return
+size_t destroy_command_list(lst_commands_t *list);
 
 #endif /* !CLIENTS_H_ */

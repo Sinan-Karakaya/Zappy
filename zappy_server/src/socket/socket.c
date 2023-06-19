@@ -6,6 +6,7 @@
 */
 
 #include "socket.h"
+#include "utils.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -53,7 +54,7 @@ socket_t *create_socket(int port)
     if (listen(my_socket->sockfd, 10) < 0)
         return my_error(my_socket, "listen failed");
     my_socket->addrlen = sizeof(my_socket->address);
-    printf("Server started on port %d\n", port);
+    printf("%s: Started on port %d\n", SERVER_GREEN, port);
     return my_socket;
 }
 

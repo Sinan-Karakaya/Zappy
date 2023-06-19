@@ -8,15 +8,16 @@
 #include "zappy_server.h"
 #include "commands.h"
 
-int sgt(my_zappy_t *zappy, int fd, char **args)
+int sgt(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
 {
     char *result = NULL;
 
-    if (zappy == NULL || args == NULL)
+    if (zappy == NULL || cmd->args == NULL)
         return 84;
-    if (count_args(args) != 1)
+    if (count_args(cmd->args) != 1)
         return 84;
     asprintf(&result, "sgt %ld\n", zappy->frequency);
-    send_message(fd, result);
+    add_cmd(cmd, result);
+    free(result);
     return 0;
 }
