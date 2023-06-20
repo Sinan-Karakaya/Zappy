@@ -15,7 +15,7 @@ zp::Egg::Egg(sf::Vector2i tilePos, zp::Direction dir, const std::string &teamNam
     m_teamName = teamName;
     m_position.x = (m_tilePosition.x - m_tilePosition.y) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;
     m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + WINDOW_HEIGHT / 3 -
-                   EGG_HEIGHT / 4;
+                   EGG_HEIGHT / 8;
 
     if (!m_baseTexture.loadFromFile(EGG_PATH)) {
         spdlog::error("Cannot load texture");
@@ -25,8 +25,8 @@ zp::Egg::Egg(sf::Vector2i tilePos, zp::Direction dir, const std::string &teamNam
     m_sprite.setPosition(m_position.x, m_position.y);
     m_sprite.setColor(zp::TeamManager::getTeamColor(teamName));
     m_sprite.setRotation(180);
-    m_sprite.setScale(0.5, 0.5);
-    m_sprite.setOrigin(EGG_WIDTH / 2, EGG_HEIGHT / 2);
+    m_sprite.setScale(0.25, 0.25);
+    m_sprite.setOrigin(EGG_WIDTH / 4, EGG_HEIGHT / 4);
     m_sprite.setPosition(m_position.x, m_position.y);
 }
 
@@ -44,7 +44,7 @@ void zp::Egg::setTilePosition(int x, int y, int mapHeight)
     m_tilePosition.y = y;
     m_position.x = (m_tilePosition.x - m_tilePosition.y) * TILE_WIDTH_HALF + WINDOW_WIDTH / 2 + 48;
     m_position.y = (m_tilePosition.x + m_tilePosition.y) * (TILE_WIDTH_HALF - TILE_ESCALATION) + mapHeight -
-                   EGG_HEIGHT / 4;
+                   EGG_HEIGHT / 8;
     m_sprite.setPosition(m_position.x, m_position.y);
 }
 
