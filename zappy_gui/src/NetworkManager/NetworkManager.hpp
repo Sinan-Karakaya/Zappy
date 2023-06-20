@@ -81,12 +81,6 @@ private:
     void updatePlayers(std::unique_ptr<Map> &map);
 
     /**
-     * @brief Update the rocks on the map
-     * @param map Map on which the rocks should be updated
-     */
-    void updateRocks(std::unique_ptr<Map> &map);
-
-    /**
      * @brief Handle the welcome command, send "GRAPHIC" to the server
      * @param tokens Vector of the response
      * @param map map to updateq

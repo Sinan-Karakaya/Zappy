@@ -81,7 +81,6 @@ void zp::NetworkManager::update(std::unique_ptr<Map> &map)
         if (m_socket.isReadyToWrite()) {
             updateMap(map);
             updatePlayers(map);
-            updateRocks(map);
             for (auto &message : m_messageQueue) {
                 if (message == "quit\n") {
                     disconnect(*map, m_chat);
@@ -116,11 +115,6 @@ void zp::NetworkManager::updatePlayers(std::unique_ptr<Map> &map)
         request = "pin " + std::to_string(alien->getId()) + "\n";
         m_socket.send(request);
     }
-}
-
-void zp::NetworkManager::updateRocks(std::unique_ptr<Map> &map)
-{
-    (void)map;
 }
 
 void zp::NetworkManager::welcome(const std::vector<std::string> &tokens, Map &map)
