@@ -40,8 +40,6 @@
         int value;
     } key_value_t;
 
-
-
     // Utils
 
     /// @brief count the number of args
