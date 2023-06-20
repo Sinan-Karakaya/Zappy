@@ -5,7 +5,16 @@ import pygame
 
 
 class Graphics:
-    def displayText(self, text, x, y):
+    def displayText(self, text : str, x : int, y : int):
+        """
+        Display text on the pygame window at a given position
+        
+        @param text: The text to display
+        @param x: The x position of the text
+        @param y: The y position of the text
+
+        @return: None
+        """
         font = pygame.font.Font(None, 36)
 
         # Render the text onto a surface
@@ -37,7 +46,25 @@ class Graphics:
         self.inventory = pygame.Surface((115, 80))
         self.inventory.blit(self.texture, (0, 0), (316, 293, 115, 80))
 
+    def displayInventory(self):
+        """
+        Display the inventory of the agent
+
+        @return: None
+        """
+        self.displayText(str(self.agent.inventory["linemate"]), 0, 284)
+        self.displayText(str(self.agent.inventory["deraumere"]), 83, 284)
+        self.displayText(str(self.agent.inventory["sibur"]), 165, 284)
+        self.displayText(str(self.agent.inventory["mendiane"]), 0, 364)
+        self.displayText(str(self.agent.inventory["phiras"]), 83, 364)
+        self.displayText(str(self.agent.inventory["thystame"]), 165, 364)
+
     def runGraphics(self):
+        """
+        run the graphics
+
+        @return: None
+        """
         self.agent.birth()
         # Run the game loop
         while True:
@@ -59,14 +86,7 @@ class Graphics:
                 pygame.transform.scale(self.inventory, (230, 160)), (0, 284)
             )
 
-            self.displayText(str(self.agent.inventory["linemate"]), 0, 284)
-            self.displayText(str(self.agent.inventory["deraumere"]), 83, 284)
-            self.displayText(str(self.agent.inventory["sibur"]), 165, 284)
-
-            self.displayText(str(self.agent.inventory["mendiane"]), 0, 364)
-            self.displayText(str(self.agent.inventory["phiras"]), 83, 364)
-            self.displayText(str(self.agent.inventory["thystame"]), 165, 364)
-
+            self.displayInventory()
             self.displayText(self.state, 0, 444)
 
             pygame.display.update()

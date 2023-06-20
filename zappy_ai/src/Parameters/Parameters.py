@@ -23,6 +23,7 @@ class Parameters:
         print("\tport\tis the port number")
         print("\tname\tis the name of the team")
         print("\tmachine\tis the name of the machine; localhost by default")
+        print("\t[-g]\tis the graphical option not obligatory")
 
     def checkParameters(self):
         """
