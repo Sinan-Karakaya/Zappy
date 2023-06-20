@@ -27,7 +27,7 @@ def main():
     server.socket.sendall((args.name + "\n").encode("ASCII"))
     server.printResponse()
 
-    if (args.graphical):
+    if args.graphical:
         myWindow = Graphics(myAgent)
         myWindow.runGraphics()
     else:

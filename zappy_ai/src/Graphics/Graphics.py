@@ -1,4 +1,7 @@
+import os
+os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
+
 
 class Graphics:
     def displayText(self, text, x, y):
@@ -14,7 +17,7 @@ class Graphics:
         self.state = "This agent dont use state machine"
         self.agent = agent
 
-         # Initialize Pygame
+        # Initialize Pygame
         pygame.init()
 
         # Set the window size
@@ -34,7 +37,6 @@ class Graphics:
         self.inventory.blit(self.texture, (0, 0), (316, 293, 115, 80))
 
     def runGraphics(self):
-
         self.agent.birth()
         # Run the game loop
         while True:
@@ -52,8 +54,10 @@ class Graphics:
 
             # Update the screen
             self.screen.blit(pygame.transform.scale(self.profile, (284, 284)), (0, 0))
-            self.screen.blit(pygame.transform.scale(self.inventory, (230, 160)), (0, 284))
-            
+            self.screen.blit(
+                pygame.transform.scale(self.inventory, (230, 160)), (0, 284)
+            )
+
             self.displayText(str(self.agent.inventory["linemate"]), 0, 284)
             self.displayText(str(self.agent.inventory["deraumere"]), 83, 284)
             self.displayText(str(self.agent.inventory["sibur"]), 165, 284)
@@ -64,7 +68,5 @@ class Graphics:
 
             self.displayText(self.state, 0, 444)
 
-
             pygame.display.update()
             # Create a font object
-            

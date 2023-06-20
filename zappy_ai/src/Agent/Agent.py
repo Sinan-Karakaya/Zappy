@@ -360,7 +360,7 @@ class Agent:
             indexEnd = message.find(" ", indexIncating + len(words.incanting) + 1)
             stringLevel = message[indexIncating + len(words.incanting) + 1 : indexEnd]
             level = int(stringLevel)
-            if level == self.level:
+            if level == self.level + 1:
                 return True
         return False
 
@@ -413,7 +413,7 @@ class Agent:
                 "I'm "
                 + words.incanting
                 + " "
-                + str(self.level)
+                + str(self.level + 1)
                 + " "
                 + str(self.incatationID)
                 + "!"
