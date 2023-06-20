@@ -30,6 +30,7 @@ zp::NetworkManager::NetworkManager(Chat &chat, bool &isConnected)
     m_commands["enw"] = std::bind(&NetworkManager::eggLaid, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["edi"] = std::bind(&NetworkManager::removeEgg, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["ebo"] = std::bind(&NetworkManager::eggHatched, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["seg"] = std::bind(&NetworkManager::endGame, this, std::placeholders::_1, std::placeholders::_2);
 }
 
 zp::NetworkManager::~NetworkManager()
@@ -315,4 +316,12 @@ void zp::NetworkManager::eggHatched(const std::vector<std::string> &tokens, zp::
     }
     map.removeEgg(std::stoi(tokens[1]));
 
+}
+
+void zp::NetworkManager::endGame(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    (void)tokens;
+    (void)map;
+    zp::GameManager::stateGame(tokens[1]);
+    zp::NetworkManager::addMessage("quit");
 }

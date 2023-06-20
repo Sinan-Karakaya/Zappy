@@ -20,6 +20,7 @@
 #include "WindowManagerException.hpp"
 #include "NetworkManager/NetworkManager.hpp"
 #include "Map/Map.hpp"
+#include "Utils/GameManager.hpp"
 
 #define BACKGROUND_PATH "assets/sprites/background.png"
 #define FONT_PATH "assets/fonts/Roboto-Medium.ttf"

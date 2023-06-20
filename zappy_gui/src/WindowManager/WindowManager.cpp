@@ -309,6 +309,15 @@ void zp::WindowManager::drawConnection()
         m_port = std::to_string(port);
     }
     ImGui::End();
+
+    auto gameStats = zp::GameManager::isEndGame();
+    if (gameStats.first) {
+        ImGui::Begin("Winner Status");
+        ImGui::PushStyleColor(ImGuiCol_Text, zp::TeamManager::getTeamColor(gameStats.second));
+        ImGui::Text("%s won the game!", gameStats.second.c_str());
+        ImGui::PopStyleColor();
+        ImGui::End();
+    }
 }
 
 void zp::WindowManager::render()

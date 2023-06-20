@@ -19,6 +19,7 @@
 #include <SFML/Network.hpp>
 
 #include "Utils/Utils.hpp"
+#include "Utils/GameManager.hpp"
 #include "Map/Map.hpp"
 #include "Entities/Alien.hpp"
 #include "Entities/Egg.hpp"
@@ -177,6 +178,13 @@ private:
      * @param map map to update
      */
     void eggHatched(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief End the current game
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void endGame(const std::vector<std::string> &tokens, Map &map);
 
     /**
      * @brief For commands I don't care about for now
