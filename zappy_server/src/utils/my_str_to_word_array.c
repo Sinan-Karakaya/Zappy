@@ -76,7 +76,7 @@ char **my_str_to_word_array(char *str, char *separators)
     for (size_t i = 0; str[i]; i++) {
         while (check_separators(str[i], separators) == 0 && str[i] != '\0')
             i++;
-        result[j] = calloc(sizeof(char), (word_size(str, i, separators) + 2));
+        result[j] = calloc((word_size(str, i, separators) + 2), sizeof(char));
         if (!result[j])
             return NULL;
         i = replace_character(str, separators, result[j], i);
@@ -84,6 +84,5 @@ char **my_str_to_word_array(char *str, char *separators)
         if (i >= strlen(str))
             break;
     }
-    result[j] = NULL;
     return result;
 }

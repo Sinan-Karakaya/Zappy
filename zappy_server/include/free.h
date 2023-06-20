@@ -24,10 +24,32 @@
     /// @param client
     void destroy_client_info(client_info_t *client);
 
+    /// @brief free the team_list struct
+    /// @param team_list
+    void free_team_list(team_list_t *team_list);
+
+    /// @brief free the cmd struct
+    /// @param cmd
+    void destroy_cmd(cmd_t *cmd);
+
+    /// @brief free the client_list struct
+    /// @param client_list
+    void free_client_list(client_list_t *client_list);
+
+    /// @brief free the egg_list struct
+    /// @param egg_list
+    void free_egg_list(egg_list_t *egg_list);
+
     /// @brief free the team struct
     /// @param team
     void destroy_struct_team(team_t *team);
 
-    void destroy_cmd(cmd_t *cmd);
+    /// @brief free the map struct
+    /// @param map
+    void destroy_map(map_t *map);
+
+    /// @brief free the client_info struct
+    /// @param info
+    void destroy_client_info(client_info_t *info);
 
 #endif /* !FREE_H_ */

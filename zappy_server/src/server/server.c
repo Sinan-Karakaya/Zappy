@@ -30,7 +30,7 @@ static char *read_input(int fd)
 static int read_loop(my_zappy_t *zappy, int fd)
 {
     char *buffer = NULL;
-    cmd_t *cmd = calloc(1, sizeof(cmd_t));
+    cmd_t *cmd = NULL;
     client_t *client = get_client_by_fd(zappy->client_list, fd);
 
     if (FD_ISSET(fd, &zappy->server->rset)) {
@@ -81,7 +81,9 @@ int create_server(parsing_t *parsing)
         return 84;
     signal(SIGINT, sigint_handler);
     srand(time(NULL));
-    while (is_running(0) || !zappy->is_end) {
+    while (is_running(0)) {
+        if (zappy->is_end)
+            break;
         set_fds(zappy->server, zappy->client_list);
         fd_max = calculate_fd_max(zappy);
         if (select(fd_max + 1, &zappy->server->rset, &zappy->server->wset,
@@ -89,8 +91,7 @@ int create_server(parsing_t *parsing)
             break;
         if (accept_client(zappy) == 84)
             return 84;
-        read_cmd(zappy);
-        time_manager(zappy);
+        read_cmd(zappy), time_manager(zappy);
     } signal(SIGINT, SIG_DFL);
     return free_zappy(zappy);
 }
