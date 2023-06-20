@@ -57,9 +57,7 @@ All the AI, no matter what Agent they have, will share these features/commands, 
     | Name               | Description                                                                            |
     | ------------------ | -------------------------------------------------------------------------------------- |
     | Trantorian :alien: | Live a life of a basic *Trantorian* without particularities.                           |
-    | Blocker 🧱          | Gather with other *Blockers* to block the access of places.                            |
-    | Répétoile :star:   | Repeat **"Broadcast Hi!"** command to block the communications to other *Trantorians*. |
-    | Pusher :fist:      | His unique goal is to push anyone who is on his way.                                   |
+    | Répétoile :star:   | Repeat of other team to block the communications to other *Trantorians*.               |
 
     </br>
 
