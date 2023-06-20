@@ -219,6 +219,8 @@ class Agent:
         """
         caseCenter = 0
         currentOdd = 0
+        if listIndex == 0 or listIndex == 1:
+            return (0, None)
         y = self.__getYtoGo(listIndex)
         for i in range(0, y):
             currentOdd += 2
@@ -299,6 +301,7 @@ class Agent:
         """
         yToGo = self.__getYtoGo(listIndex)
         xToGo, direction = self.__getXandDirectionToGo(listIndex)
+        print("list_index: " + str(listIndex) + "yToGo : " + str(yToGo) + " xToGo : " + str(xToGo))
         return yToGo + xToGo
 
     def __prepareTile(self, rock_needed: dict):
