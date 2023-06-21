@@ -162,4 +162,10 @@
     /// @return 0 if success, 84 if error
     int check_victory(my_zappy_t *zappy);
 
+    /// @brief disconnect a player
+    /// @param zappy the zappy struct
+    /// @param fd the fd of the client
+    /// @return 0 if success, 84 if error
+    int disconnect_player(my_zappy_t *zappy, int fd);
+
 #endif /* !Zappy_Server_H_ */

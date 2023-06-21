@@ -16,13 +16,16 @@
 static char *read_input(int fd)
 {
     char buffer[1024] = {0};
+    size_t size = 0;
 
     while (true) {
         if ((strlen(buffer) >= 2 && buffer[strlen(buffer) - 2] == '\r'
         && buffer[strlen(buffer) - 1] == '\n')
         || (strlen(buffer) >= 1 && buffer[strlen(buffer) - 1] == '\n'))
             break;
-        read(fd, buffer + strlen(buffer), 1);
+        size = read(fd, buffer + strlen(buffer), 1);
+        if (size == 0)
+            return NULL;
     }
     return strdup(buffer);
 }
@@ -35,7 +38,7 @@ static int read_loop(my_zappy_t *zappy, int fd)
 
     if (FD_ISSET(fd, &zappy->server->rset)) {
         if (!(buffer = read_input(fd)))
-            return 84;
+            return disconnect_player(zappy, fd);
     } if (FD_ISSET(fd, &zappy->server->wset)) {
         if (buffer) {
             cmd = init_cmd(get_command(buffer));
@@ -53,15 +56,17 @@ static int read_loop(my_zappy_t *zappy, int fd)
 
 static int read_cmd(my_zappy_t *zappy)
 {
+    client_t *actual = NULL;
     client_t *tmp = NULL;
 
     if (!zappy || !zappy->client_list)
         return 84;
     eat_all_client(zappy);
-    tmp = zappy->client_list->first;
-    while (tmp != NULL) {
-        read_loop(zappy, tmp->info->fd);
-        tmp = tmp->next;
+    actual = zappy->client_list->first;
+    while (actual != NULL) {
+        tmp = actual->next;
+        read_loop(zappy, actual->info->fd);
+        actual = tmp;
     }
     return 0;
 }
