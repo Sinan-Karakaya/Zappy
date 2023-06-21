@@ -141,12 +141,16 @@ class Agent:
             if "Current level" in response:
                 self.level = int(response.split(" ")[2]) - 1
                 self.isElevating = False
+                self.incatationID = randint(0, 1000000000)
+                self.followID = None
         else:
             if "Current level" in response:
                 self.level = int(response.split(" ")[2]) - 1
                 self.isElevating = False
                 response = self.server.getResponse()
                 response = self.__getRealResponse(response)
+                self.incatationID = randint(0, 1000000000)
+                self.followID = None
         coloredPrint(response)
 
         return response
@@ -382,6 +386,13 @@ class Agent:
             return id
         return None
 
+    def searchWord(self, word: str):
+        for i in range(10):
+            if len(self.broadcastStack) > i:
+                if word in self.broadcastStack[-i]:
+                    return True
+        return False
+
     def canUseMessage(self, message: str):
         ...
 
@@ -391,7 +402,7 @@ class Agent:
 
         @return: None
         """
-        if len(self.broadcastStack) > 0 and words.incanting in self.broadcastStack[-1]:
+        if len(self.broadcastStack) > 0 and self.searchWord(words.incanting):
             if not self.__checkIncantationLevel(self.broadcastStack[-1]):
                 return False
 

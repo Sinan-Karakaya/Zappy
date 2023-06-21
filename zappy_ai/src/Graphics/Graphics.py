@@ -38,13 +38,16 @@ class Graphics:
 
         # Load the texture
         self.texture = pygame.image.load("src/Graphics/assets/ui_atlas.png")
+        self.alien = pygame.image.load("src/Graphics/assets/alien.png")
+        self.minerals = {"thystame": pygame.image.load("src/Graphics/assets/minerals/thystame.png"), 
+                         "phiras": pygame.image.load("src/Graphics/assets/minerals/phiras.png"),
+                         "mendiane": pygame.image.load("src/Graphics/assets/minerals/mendiane.png"),
+                         "sibur": pygame.image.load("src/Graphics/assets/minerals/sibur.png"),
+                         "deraumere": pygame.image.load("src/Graphics/assets/minerals/deraumere.png"),
+                         "linemate": pygame.image.load("src/Graphics/assets/minerals/linemate.png"),
+                         "food": pygame.image.load("src/Graphics/assets/minerals/food.png")}
+        self.bakcground = pygame.image.load("src/Graphics/assets/background.png")
 
-        # Load the sub texture
-        self.profile = pygame.Surface((142, 142))
-        self.profile.blit(self.texture, (0, 0), (708, 286, 142, 142))
-
-        self.inventory = pygame.Surface((115, 80))
-        self.inventory.blit(self.texture, (0, 0), (316, 293, 115, 80))
 
     def displayInventory(self):
         """
@@ -52,12 +55,65 @@ class Graphics:
 
         @return: None
         """
-        self.displayText(str(self.agent.inventory["linemate"]), 0, 284)
-        self.displayText(str(self.agent.inventory["deraumere"]), 83, 284)
-        self.displayText(str(self.agent.inventory["sibur"]), 165, 284)
-        self.displayText(str(self.agent.inventory["mendiane"]), 0, 364)
-        self.displayText(str(self.agent.inventory["phiras"]), 83, 364)
-        self.displayText(str(self.agent.inventory["thystame"]), 165, 364)
+
+        self.screen.blit(pygame.transform.scale(self.minerals["linemate"], (48, 48)), (82, 282))
+        self.displayText(str(self.agent.inventory["linemate"]), 132, 315)
+
+        self.screen.blit(pygame.transform.scale(self.minerals["deraumere"], (48, 48)), (165, 282))
+        self.displayText(str(self.agent.inventory["deraumere"]), 210, 315)
+
+        self.screen.blit(pygame.transform.scale(self.minerals["sibur"], (48, 48)), (245, 282))
+        self.displayText(str(self.agent.inventory["sibur"]), 285, 315)
+
+        self.screen.blit(pygame.transform.scale(self.minerals["mendiane"], (48, 48)), (82, 362))
+        self.displayText(str(self.agent.inventory["mendiane"]), 132, 395)
+
+        self.screen.blit(pygame.transform.scale(self.minerals["phiras"], (48, 48)), (165, 362))
+        self.displayText(str(self.agent.inventory["phiras"]), 210, 395)
+
+        self.screen.blit(pygame.transform.scale(self.minerals["thystame"], (48, 48)), (245, 362))
+        self.displayText(str(self.agent.inventory["thystame"]), 285, 395)
+
+    def to2d(self, x, y, z):
+        return_x = x / z
+        return_y = y / z
+        return (return_x, return_y)
+    
+    def getDirection(self, direction : str):
+        if direction == "Left":
+            return -1
+        elif direction == "Right":
+            return 1
+        else:
+            return 0
+        
+    def displayVision(self):
+        ##draw a purple rectangle
+        pygame.draw.rect(self.screen, (255, 0, 255), pygame.Rect(0, 600, 600, 200))
+        x_3d = 0
+        z_3d = 0
+        direction = 0
+        print(self.agent.vision)
+
+        for i in range(len(self.agent.vision) - 1, -1, -1):
+            z_3d = self.agent._Agent__getYtoGo(i) + 0.5
+            x_3d, direction = self.agent._Agent__getXandDirectionToGo(i)
+            direction = self.getDirection(direction)
+
+            x, y = self.to2d(x_3d * 300 * direction , 0, z_3d)
+            x += 300
+            y += 600
+            print(self.agent.vision[i])
+            print(x, y)
+            index = 0
+            materialAlreadyDraw = []
+            for material in self.agent.vision[i]:
+                materialAlreadyDraw.append(material)
+                if material != "player" and material != '' or material not in materialAlreadyDraw:
+                    self.screen.blit(pygame.transform.scale(self.minerals[material], (48 / z_3d, 48 / z_3d )), (x + index * (8 / z_3d), y))
+                    index += 1
+            
+
 
     def runGraphics(self):
         """
@@ -65,10 +121,12 @@ class Graphics:
 
         @return: None
         """
+        
         self.agent.birth()
         # Run the game loop
         while True:
             self.screen.fill((0, 0, 0))
+            self.screen.blit(self.bakcground, (0, 0))
             self.agent.live()
             try:
                 self.state = self.agent.state
@@ -81,13 +139,12 @@ class Graphics:
                     quit()
 
             # Update the screen
-            self.screen.blit(pygame.transform.scale(self.profile, (284, 284)), (0, 0))
-            self.screen.blit(
-                pygame.transform.scale(self.inventory, (230, 160)), (0, 284)
-            )
+            self.screen.blit(self.texture, (0, 0))
 
             self.displayInventory()
-            self.displayText(self.state, 0, 444)
+            self.displayText(self.state, 235, 32)
 
+            self.screen.blit(self.alien, (50, 22))
+
+            self.displayVision()
             pygame.display.update()
-            # Create a font object

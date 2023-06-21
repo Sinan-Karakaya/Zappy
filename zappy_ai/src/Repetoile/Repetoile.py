@@ -92,16 +92,12 @@ class Repetoile(Agent):
         return False
 
     def canUseMessage(self, message: str):
-        print(WARNING, "I wa here", message)
         try:
             messageId = message.split(":")[1]
             if self.checkMessageId(int(messageId)):
-                print(WARNING, "Impostor")
                 return False
-            print(WARNING, "I'm not the impostor 1 ")
             return True
         except:
-            print(WARNING, "I'm not the impostor 2")
             return False
 
     def broadcast(self, message: str):
