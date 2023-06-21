@@ -43,7 +43,6 @@ tests_run: $(OBJ_BIS)
 	@gcc -o unit_tests $(SRC_BIS) $(SRC_TESTS) $(CFLAGS) $(LD_FLAGS) \
 	--coverage -lcriterion
 	./unit_tests
-	make fclean
 
 re:	fclean all
 

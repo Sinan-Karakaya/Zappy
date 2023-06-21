@@ -31,7 +31,6 @@ static char *get_full_map(my_zappy_t *zappy)
     return tmp;
 }
 
-
 int mct(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
 {
     char *temp = NULL;

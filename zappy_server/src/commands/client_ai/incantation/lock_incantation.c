@@ -19,6 +19,8 @@ int lock_client(my_zappy_t *zappy, int fd)
     for (my_id_t *tmp = zappy->map->tiles[client->info->player->y]
     [client->info->player->x].players->first; tmp; tmp = tmp->next) {
         other = get_client_by_fd(zappy->client_list, tmp->id);
+        if (!other)
+            continue;
         if (other == client || other->info->player->is_incanting == false)
             continue;
         if (other->info->player->lvl == client->info->player->lvl)
@@ -52,6 +54,8 @@ int unlock_clients(my_zappy_t *zappy, int fd, bool succeed)
     for (my_id_t *tmp = zappy->map->tiles[client->info->player->y]
     [client->info->player->x].players->first; tmp; tmp = tmp->next) {
         other = get_client_by_fd(zappy->client_list, tmp->id);
+        if (!other)
+            continue;
         if (other == client || other->info->player->is_incanting == false)
             continue;
         if (other->info->player->lvl == client->info->player->lvl)

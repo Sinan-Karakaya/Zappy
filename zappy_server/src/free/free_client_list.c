@@ -7,6 +7,13 @@
 
 #include "free.h"
 
+static void free_args(char **args)
+{
+    for (size_t i = 0; args[i]; i++)
+        free(args[i]);
+    free(args);
+}
+
 static void free_commands(command_t *command)
 {
     command_t *next_cmd = NULL;
@@ -14,9 +21,7 @@ static void free_commands(command_t *command)
     while (command) {
         next_cmd = command->next;
         if (command->args) {
-            for (size_t i = 0; command->args[i]; i++)
-                free(command->args[i]);
-            free(command->args);
+            free_args(command->args);
         }
         free(command);
         command = next_cmd;

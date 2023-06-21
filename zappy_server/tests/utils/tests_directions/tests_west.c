@@ -5,7 +5,6 @@
 ** tests_direction
 */
 
-
 #include <criterion/criterion.h>
 #include "utils.h"
 
