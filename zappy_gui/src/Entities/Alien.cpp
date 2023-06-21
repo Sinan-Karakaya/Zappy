@@ -21,6 +21,7 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
         spdlog::error("Cannot load texture");
         throw std::runtime_error("Cannot load texture");
     }
+    m_baseTexture.setSmooth(true);
     m_textures[Direction::NONE].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(0, 0, 84, 84));
     m_textures[Direction::NORTH].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(0, 0, 84, 84));
     m_textures[Direction::WEST].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(84, 0, 84, 84));

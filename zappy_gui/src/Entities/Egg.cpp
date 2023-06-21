@@ -21,6 +21,7 @@ zp::Egg::Egg(sf::Vector2i tilePos, zp::Direction dir, const std::string &teamNam
         spdlog::error("Cannot load texture");
         throw std::runtime_error("Cannot load texture");
     }
+    m_baseTexture.setSmooth(true);
     m_sprite.setTexture(m_baseTexture);
     m_sprite.setPosition(m_position.x, m_position.y);
     m_sprite.setColor(zp::TeamManager::getTeamColor(teamName));

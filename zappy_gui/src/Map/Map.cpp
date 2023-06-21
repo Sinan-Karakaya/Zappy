@@ -14,6 +14,7 @@ zp::Map::Map(int x, int y) : m_size(x, y)
         spdlog::error("Could not load texture");
         throw std::runtime_error("Could not load texture");
     }
+    m_tileTexture.setSmooth(true);
     for (int i = 0; i < 7; i++) {
         m_rockTextures[i].loadFromImage(m_tileTexture.copyToImage(), sf::IntRect((i + 1) * 128, 0, 128, 128));
     }

@@ -14,7 +14,7 @@ std::string &port, bool &isConnected)
     spdlog::info("Initializing WindowManager");
     m_window.create(sf::VideoMode(size.x, size.y), title, sf::Style::Default | sf::Style::Resize);
     m_window.setFramerateLimit(60);
-    m_window.setKeyRepeatEnabled(false);
+    m_window.setKeyRepeatEnabled(true);
     if (!m_gameTexture.create(2000, 2000))
         throw zp::WindowManagerException("Failed to create game texture");
     m_gameSprite.setTexture(m_gameTexture.getTexture());
@@ -25,6 +25,7 @@ std::string &port, bool &isConnected)
     setStyle();
     if (!m_backgroundTexture.loadFromFile(BACKGROUND_PATH))
         throw zp::WindowManagerException("Failed to load background texture");
+    m_backgroundTexture.setSmooth(true);
     m_backgroundSprite.setTexture(m_backgroundTexture);
     m_gameView.setSize(2000, 2000);
     m_gameView.setCenter(m_gameView.getSize().x / 2, m_gameView.getSize().y / 2);
@@ -56,19 +57,38 @@ void zp::WindowManager::handleEvents()
         if (event.type == sf::Event::Closed)
             m_window.close();
         if (event.type == sf::Event::KeyPressed) {
-            if (event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Q)
+            if ((event.key.code == sf::Keyboard::Left || event.key.code == sf::Keyboard::Q)
+            && m_viewPos.x > 0) {
                 m_gameView.move(-10, 0);
-            if (event.key.code == sf::Keyboard::Right || event.key.code == sf::Keyboard::D)
+                m_viewPos.x -= 10;
+            } if ((event.key.code == sf::Keyboard::Right || event.key.code == sf::Keyboard::D)
+            && m_viewPos.x + 1000 < 1000) {
                 m_gameView.move(10, 0);
-            if (event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Z)
-                m_gameView.move(0, -10);
-            if (event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S)
+                m_viewPos.x += 10;
+            } if ((event.key.code == sf::Keyboard::Up || event.key.code == sf::Keyboard::Z)
+            && m_viewPos.y + 1000 < 1000) {
                 m_gameView.move(0, 10);
-            if (event.mouseWheelScroll.delta > 0)
+                m_viewPos.y += 10;
+            } if ((event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S)
+            && m_viewPos.y > 0) {
+                m_gameView.move(0, -10);
+                m_viewPos.y -= 10;
+            }
+        } if (event.type == sf::Event::MouseWheelScrolled) {
+            if (event.mouseWheelScroll.delta > 0 && m_zoom > MIN_ZOOM) {
                 m_gameView.zoom(0.9);
-            if (event.mouseWheelScroll.delta < 0)
+                m_zoom *= 0.9;
+            } if (event.mouseWheelScroll.delta < 0 && m_zoom < MAX_ZOOM) {
                 m_gameView.zoom(1.1);
+                m_zoom *= 1.1;
+            }
         }
+        if (m_zoom < MIN_ZOOM)
+            m_zoom = MIN_ZOOM;
+//        auto center = m_gameView.getCenter();
+//        m_viewPos = {center.x - m_gameView.getSize().x / 2, center.y - m_gameView.getSize().y / 2};
+        m_gameTexture.setView(m_gameView);
+
     }
 }
 
@@ -120,7 +140,8 @@ void zp::WindowManager::drawGame()
     m_gameSprite.setTexture(m_gameTexture.getTexture());
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    ImGui::Begin("Game", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+    ImGui::Begin("Game", nullptr, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse |
+    ImGuiWindowFlags_NoResize);
     ImGui::Image(m_gameSprite);
     ImGui::End();
     ImGui::PopStyleVar();
