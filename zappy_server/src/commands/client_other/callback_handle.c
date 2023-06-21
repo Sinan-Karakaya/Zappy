@@ -24,6 +24,7 @@ commands_time_t cmds_time[] = {
     {"Take", &take, 7},
     {"Set", &set, 7},
     {"Incantation", &incantation, 7},
+    {"Connect_nbr", &connect_nbr, 0},
     {NULL, NULL, 0}
 };
 

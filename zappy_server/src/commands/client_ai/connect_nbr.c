@@ -8,6 +8,12 @@
 #include "zappy_server.h"
 #include "commands.h"
 
+int verify_connect_nbr(my_zappy_t *zappy, int fd, NUSED cmd_t *cmd)
+{
+    add_to_callback(zappy, fd, cmd);
+    return 0;
+}
+
 int connect_nbr(my_zappy_t *zappy, int fd, NUSED cmd_t *cmd)
 {
     client_t *client = get_client_by_fd(zappy->client_list, fd);
@@ -17,6 +23,6 @@ int connect_nbr(my_zappy_t *zappy, int fd, NUSED cmd_t *cmd)
     if (!zappy || !client || !team)
         return 84;
     asprintf(&msg, "%ld\n", team->info->slots_available);
-    add_cmd(cmd, msg);
+    send_message(fd, msg);
     return 0;
 }

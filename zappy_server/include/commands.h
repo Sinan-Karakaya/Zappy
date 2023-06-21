@@ -422,6 +422,12 @@ int verify_left(my_zappy_t *zappy, int fd, cmd_t *cmd);
 /// @return 0 if the function succeed, 84 otherwise
 int connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief callback function for the connect_nbr
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int verify_connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
 // Commands utils
 

@@ -17,7 +17,7 @@ commands_t commands_ai[] = {
     {"Look", &verify_look},
     {"Inventory", &verify_inventory},
     {"Broadcast", &verify_broadcast},
-    {"Connect_nbr", &connect_nbr},
+    {"Connect_nbr", &verify_connect_nbr},
     {"Fork", &verify_fork},
     {"Eject", &verify_eject},
     {"Take", &verify_take},
