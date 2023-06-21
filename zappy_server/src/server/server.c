@@ -32,13 +32,13 @@ static int read_loop(my_zappy_t *zappy, int fd)
     char *buffer = NULL;
     cmd_t *cmd = NULL;
     client_t *client = get_client_by_fd(zappy->client_list, fd);
-
+    char **tmp = NULL;
     if (FD_ISSET(fd, &zappy->server->rset)) {
         if (!(buffer = read_input(fd)))
             return 84;
     } if (FD_ISSET(fd, &zappy->server->wset)) {
         if (buffer) {
-            cmd = init_cmd(get_command(buffer));
+            tmp = get_command(buffer), cmd = init_cmd(tmp);
             handle_commands(zappy, fd, cmd);
             send_all_message(cmd, fd);
         } if (!client || !zappy)
@@ -47,7 +47,7 @@ static int read_loop(my_zappy_t *zappy, int fd)
             send_message(fd, "ko\n");
     } if (buffer)
         free(buffer);
-    destroy_cmd(cmd);
+    destroy_cmd(cmd), free_array(tmp);
     return false;
 }
 
