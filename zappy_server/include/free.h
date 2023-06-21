@@ -52,4 +52,8 @@
     /// @param info
     void destroy_client_info(client_info_t *info);
 
+    /// @brief free char **
+    /// @param array
+    void free_array(char **array);
+
 #endif /* !FREE_H_ */
