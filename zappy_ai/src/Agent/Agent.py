@@ -382,6 +382,9 @@ class Agent:
             return id
         return None
 
+    def canUseMessage(self, message: str):
+        ...
+
     def joinIncantate(self):
         """
         Manage the meet of different agent with the same level to level up
@@ -397,6 +400,9 @@ class Agent:
                 return False
 
             if self.followID != self.__getFollowId(self.broadcastStack[-1]):
+                return False
+            
+            if not self.canUseMessage(self.broadcastStack[-1]):
                 return False
 
             self.broadcast("I'm joining the incantation " + str(self.followID) + "!")

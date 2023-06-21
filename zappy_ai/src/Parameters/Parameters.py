@@ -18,16 +18,20 @@ class Parameters:
     def displayHelp(self):
         """
         This function displays the usage of the program.
+
+        @return: None
         """
         print("USAGE: ./zappy_ai -p port -n name -h machine")
         print("\tport\tis the port number")
         print("\tname\tis the name of the team")
         print("\tmachine\tis the name of the machine; localhost by default")
-        print("\t[-g]\tis the graphical option not obligatory")
+        print("\t[-g]\t to enable graphical mode")
 
     def checkParameters(self):
         """
         This function checks if the parameters are correct and if not, displays the help message.
+
+        @return: 84 if the parameters are incorrect, 0 otherwise
         """
         if len(sys.argv) < 7 or len(sys.argv) > 8:
             self.displayHelp()

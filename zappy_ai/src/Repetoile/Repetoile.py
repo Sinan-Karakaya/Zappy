@@ -8,12 +8,14 @@
 from src.Agent.Agent import Agent
 from src.Server.Server import Server
 from random import randint
+from src.Color.Color import WARNING
 
 
 class Repetoile(Agent):
     def __init__(self, teamName, server):
         super().__init__(server)
         self.teamName = teamName
+        self.idStack = []
         print("Team name: " + self.teamName)
         self.state = "Searching food"
 
@@ -37,8 +39,10 @@ class Repetoile(Agent):
             if message is None:
                 return
 
-            message = message.split(",")[1]
-            self.askServer("Broadcast " + message)
+            try:
+                self.askServer("Broadcast " + message)
+            except:
+                ...
 
     def live(self):
         """
@@ -51,21 +55,18 @@ class Repetoile(Agent):
         elif self.state == "Joining" and self.inventory["food"] < 6:
             self.state = "Searching food"
         else:
-            self.state = "Broadcasting like a fool"
-
-        if self.state == "Searching food":
-            self.searchObject("food")
-
-        if self.state == "Broadcasting like a fool":
-            self.repeat()
             self.state = "Searching rock"
 
         if self.state == "Searching rock":
             hasAllRock = self.elevate()
             if hasAllRock:
                 self.state = "Joining"
+        
+        if self.state == "Searching food":
+            self.searchObject("food")
 
         self.fillInventory()
+        self.repeat()
         print("Curretly my state is: " + self.state)
 
     def birth(self):
@@ -79,9 +80,33 @@ class Repetoile(Agent):
         self.askServer("Fork")
         self.state = "Searching food"
 
+    def checkMessageId(self, id : int):
+        for message in self.broadcastStack:
+            try:
+                if id == message.split(":")[1]:
+                    return True
+                elif id in self.idStack:
+                    return True
+            except:
+                ...
+        return False
+
+    def canUseMessage(self, message: str):
+        print(WARNING, "I wa here", message)
+        try:
+            messageId = message.split(":")[1]
+            if self.checkMessageId(int(messageId)):
+                print(WARNING, "Impostor")
+                return False
+            print(WARNING, "I'm not the impostor 1 ")
+            return True
+        except:
+            print(WARNING, "I'm not the impostor 2")
+            return False
+
     def broadcast(self, message: str):
         """
-        Call when the agent need to comunicat so it can use is language.
+        Call when the agent need to communicate so it can use is language.
 
         @param server: The server object used to communicate with the server.
         @type server: Server
@@ -91,4 +116,7 @@ class Repetoile(Agent):
 
         @return: None
         """
-        self.askServer("Broadcast " + self.teamName + " " + message),
+        messageId = randint(0, 2147483646)
+        self.idStack.append(messageId)
+        self.askServer("Broadcast " + self.teamName + " " + message + ":" + str(messageId))
+
