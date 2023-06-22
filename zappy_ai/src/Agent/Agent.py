@@ -301,7 +301,6 @@ class Agent:
         """
         yToGo = self.__getYtoGo(listIndex)
         xToGo, direction = self.__getXandDirectionToGo(listIndex)
-        print("list_index: " + str(listIndex) + "yToGo : " + str(yToGo) + " xToGo : " + str(xToGo))
         return yToGo + xToGo
 
     def __prepareTile(self, rock_needed: dict):
