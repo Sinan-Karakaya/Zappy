@@ -72,7 +72,7 @@ class TestAgent(unittest.TestCase):
     #     self.agent.fillVisions()
     #     self.assertTrue(len(self.agent.vision[0]) > 0)
 
-    # def testCanNotElevateNoRessources(self):
+    # def testCanNotElevateNoRessources(sindexelf):
     #     self.agent.fillVisions()
     #     self.assertTrue(len(self.agent.vision) > 0)
     #     self.assertFalse(self.agent.canElevate())
