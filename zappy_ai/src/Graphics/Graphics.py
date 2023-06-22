@@ -108,10 +108,13 @@ class Graphics:
             index = 0
             materialAlreadyDraw = []
             for material in self.agent.vision[i]:
-                materialAlreadyDraw.append(material)
-                if material != "player" and material != '' or material not in materialAlreadyDraw:
-                    self.screen.blit(pygame.transform.scale(self.minerals[material], (48 / z_3d, 48 / z_3d )), (x + index * (8 / z_3d), y))
+                if material != "player" and material != '' and material not in materialAlreadyDraw:
+                    size = 48 / z_3d
+
+                    self.screen.blit(pygame.transform.scale(self.minerals[material], (size, size)), (x + index * (8 / z_3d) - size / 2, y + size / 2))
                     index += 1
+                materialAlreadyDraw.append(material)
+                
             
 
 
@@ -144,7 +147,7 @@ class Graphics:
             self.displayInventory()
             self.displayText(self.state, 235, 32)
 
-            self.screen.blit(self.alien, (50, 22))
+            self.screen.blit(self.alien, (45, 22))
 
             self.displayVision()
             pygame.display.update()
