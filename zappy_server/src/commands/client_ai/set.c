@@ -23,8 +23,8 @@ static int do_set(my_zappy_t *zappy, client_t *client, size_t i)
 {
     if (client->info->player->inventory[foodmap[i].value] > 0) {
         client->info->player->inventory[foodmap[i].value] -= 1;
-        zappy->map->tiles[client->info->player->x]
-        [client->info->player->y].inventory[foodmap[i].value] += 1;
+        zappy->map->tiles[client->info->player->y]
+        [client->info->player->x].inventory[foodmap[i].value] += 1;
         pdr(zappy, client->info->fd, foodmap[i].value);
         return 1;
     } else

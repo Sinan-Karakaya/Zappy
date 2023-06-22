@@ -27,7 +27,7 @@ int tna(my_zappy_t *zappy, NUSED int fd, cmd_t *cmd)
         asprintf(&temp, "%stna %s\n", result, tmp->info->name);
         free(result);
         result = temp, tmp = tmp->next;
-    } add_cmd(cmd, result), destroy_struct_team(tmp);
+    } add_cmd(cmd, result);
     free(result);
     return 0;
 }

@@ -22,11 +22,11 @@ static key_value_t foodmap[] = {
 
 static int do_take(my_zappy_t *zappy, client_t *client, size_t i)
 {
-    if (zappy->map->tiles[client->info->player->x]
-        [client->info->player->y].inventory[foodmap[i].value] > 0) {
+    if (zappy->map->tiles[client->info->player->y]
+        [client->info->player->x].inventory[foodmap[i].value] > 0) {
         client->info->player->inventory[foodmap[i].value] += 1;
-        zappy->map->tiles[client->info->player->x]
-        [client->info->player->y].inventory[foodmap[i].value] -= 1;
+        zappy->map->tiles[client->info->player->y]
+        [client->info->player->x].inventory[foodmap[i].value] -= 1;
         pgt(zappy, client->info->fd, foodmap[i].value);
         return 1;
     } else

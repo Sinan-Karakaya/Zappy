@@ -19,7 +19,6 @@ static char *get_info_player(my_zappy_t *zappy, int id)
     if (client == NULL)
         return NULL;
     asprintf(&result, "plv %d %ld\n", client->fd, client->player->lvl);
-    destroy_client_info(client);
     return result;
 }
 
