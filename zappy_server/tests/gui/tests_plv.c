@@ -11,7 +11,7 @@
 
 Test (plv, plv)
 {
-    char *args[] = {"mct", NULL};
+    char *args[] = {"plv", NULL};
     cmd_t *cmd = init_cmd(args);
     my_zappy_t *zappy = malloc(sizeof(my_zappy_t));
     zappy->map = init_map(10, 10);

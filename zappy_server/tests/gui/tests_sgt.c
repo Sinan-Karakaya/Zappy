@@ -2,43 +2,48 @@
 ** EPITECH PROJECT, 2023
 ** zappy_server
 ** File description:
-** tests_check_alive
+** tests_sgt
 */
 
 #include <criterion/criterion.h>
 #include "utils.h"
 #include "commands.h"
 
-Test (Check_alive, Check_alive)
+Test (sgt, sgt)
 {
-    char *args[] = {"Eject", NULL};
+    char *args[] = {"sgt", NULL};
     cmd_t *cmd = init_cmd(args);
     my_zappy_t *zappy = malloc(sizeof(my_zappy_t));
     zappy->map = init_map(10, 10);
+    zappy->egg_list = (egg_list_t *)init_list();
 
     zappy->team_list = (team_list_t *)init_list();
     team_info_t *team = init_teams_info("Team1", 1);
     list_add_teams(zappy->team_list, team);
-    zappy->team_list->first->info->client_list = (id_list_t *)init_list();
 
     client_info_t *info = init_clients_info(1, 10, 10);
     zappy->client_list = (client_list_t *)init_list();
     list_add_client(zappy->client_list, info);
 
-    list_add_id(zappy->team_list->first->info->client_list, 1);
-    info->team_id = 1;
+    info->team_id = 0;
+    zappy->frequency = 2;
     zappy->client_list->first->info->player->direction = NORTH;
+    zappy->client_list->last->info->player->direction = NORTH;
 
     zappy->client_list->first->info->player->x = 9;
     zappy->client_list->first->info->player->y = 9;
-    zappy->client_list->first->info->player->is_alive = false;
 
-    check_alive(zappy, 1);
+    cmd->args = malloc(sizeof(char *) * 2);
+    cmd->args[0] = strdup("sgt");
+    cmd->args[1] = NULL;
+    sgt(zappy, 1, cmd);
 
     destroy_client_in_list(zappy->client_list, 1);
     free(zappy->client_list);
     free(zappy->map);
     free(zappy);
+    for (size_t i = 0; cmd->args[i]; i++)
+        free(cmd->args[i]);
     free(cmd->args);
     free(cmd);
 }
