@@ -46,6 +46,7 @@ class Graphics:
                          "deraumere": pygame.image.load("src/Graphics/assets/minerals/deraumere.png"),
                          "linemate": pygame.image.load("src/Graphics/assets/minerals/linemate.png"),
                          "food": pygame.image.load("src/Graphics/assets/minerals/food.png")}
+        self.ground = pygame.image.load("src/Graphics/assets/ground.png")
         self.bakcground = pygame.image.load("src/Graphics/assets/background.png")
 
 
@@ -89,11 +90,10 @@ class Graphics:
         
     def displayVision(self):
         ##draw a purple rectangle
-        pygame.draw.rect(self.screen, (255, 0, 255), pygame.Rect(0, 600, 600, 200))
+        self.screen.blit(pygame.transform.scale(self.ground, (600, 200)), (0, 600))
         x_3d = 0
         z_3d = 0
         direction = 0
-        print(self.agent.vision)
 
         for i in range(len(self.agent.vision) - 1, -1, -1):
             z_3d = self.agent._Agent__getYtoGo(i) + 0.5
@@ -103,8 +103,6 @@ class Graphics:
             x, y = self.to2d(x_3d * 300 * direction , 0, z_3d)
             x += 300
             y += 600
-            print(self.agent.vision[i])
-            print(x, y)
             index = 0
             materialAlreadyDraw = []
             for material in self.agent.vision[i]:

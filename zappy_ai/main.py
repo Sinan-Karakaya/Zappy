@@ -20,7 +20,6 @@ def main():
 
     server = Server(args.host, int(args.port))
     server.connect()
-
     myAgent = Repetoile(args.name, server)
 
     server.printResponse()

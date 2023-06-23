@@ -129,7 +129,7 @@ class Agent:
         """
 
         now = datetime.datetime.now()
-        print("Current time is:", now.time(), end=" ")
+        print("[" + str(now.time()) + "]", end=" ")
         print("Sending: " + msg, end=" ")
         self.server.socket.sendall((msg + "\n").encode("ASCII"))
 
