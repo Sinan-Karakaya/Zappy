@@ -18,6 +18,8 @@
 
 #include "Utils/RocksType.hpp"
 
+#define FONT_PATH "assets/fonts/Roboto-Medium.ttf"
+
 namespace zp
 {
 
@@ -86,6 +88,8 @@ protected:
     sf::Sprite m_sprite;
     sf::Vector2i m_position;
     sf::Vector2i m_tilePosition;
+    sf::Font m_font;
+    sf::Text m_text;
     Direction m_direction = Direction::WEST;
 
     std::unordered_map<Rocks, int> m_inventory;

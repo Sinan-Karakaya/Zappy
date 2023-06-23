@@ -20,10 +20,14 @@
 #include "WindowManagerException.hpp"
 #include "NetworkManager/NetworkManager.hpp"
 #include "Map/Map.hpp"
+#include "Utils/GameManager.hpp"
 
 #define BACKGROUND_PATH "assets/sprites/background.png"
 #define FONT_PATH "assets/fonts/Roboto-Medium.ttf"
 #define FONT_SIZE 16.0f
+
+#define MAX_ZOOM 1.0f
+#define MIN_ZOOM 0.5f
 
 namespace zp {
 
@@ -141,6 +145,8 @@ private:
     sf::Texture m_backgroundTexture;
     sf::Sprite m_backgroundSprite;
     sf::View m_gameView;
+    float m_zoom = 1.0f;
+    sf::Vector2f m_viewPos = {0.0f, 0.0f};
 
     std::string m_ip;
     std::string m_port;
