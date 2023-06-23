@@ -14,7 +14,7 @@ class Parameters:
         self.host = "localhost"
         self.name = ""
         self.graphical = False
-        self.onServer = False
+        self.random = False
 
     def displayHelp(self):
         """
@@ -27,6 +27,7 @@ class Parameters:
         print("\tname\tis the name of the team")
         print("\tmachine\tis the name of the machine; localhost by default")
         print("\t[-g]\t to enable graphical mode")
+        print("\t[-r]\t to enable random selection of ai")
 
     def nbOfParametersRequired(self):
         """
@@ -34,11 +35,14 @@ class Parameters:
 
         @return: int the number of parameters required
         """
+        count = 7
         for arg in sys.argv:
             if arg == "-g":
-                return 8
-        return 7
-    
+                count += 1
+            if arg == "-r":
+                count += 1
+        return count
+
     def checkHost(self, host: str):
         """
         This function checks if the host is correct.
@@ -62,6 +66,7 @@ class Parameters:
                 return False
 
         return True
+
     def checkParameters(self):
         """
         This function checks if the parameters are correct and if not, displays the help message.
@@ -92,6 +97,8 @@ class Parameters:
                     self.name = str(sys.argv[sys.argv.index(arg) + 1])
                 if arg == "-g":
                     self.graphical = True
+                if arg == "-r":
+                    self.random = True
 
             if len(self.port) == 0 or len(self.host) == 0 or len(self.name) == 0:
                 self.displayHelp()

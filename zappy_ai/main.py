@@ -9,7 +9,9 @@
 from src.Parameters.Parameters import Parameters
 from src.Server.Server import Server
 from src.Repetoile.Repetoile import Repetoile
+from src.Basic.Basic import Basic
 from src.Graphics.Graphics import Graphics
+from random import randint
 
 
 def main():
@@ -20,7 +22,15 @@ def main():
 
     server = Server(args.host, int(args.port))
     server.connect()
-    myAgent = Repetoile(args.name, server)
+
+    if args.random:
+        id = randint(0, 2)
+        if id == 0:
+            myAgent = Basic(args.name, server)
+        else:
+            myAgent = Repetoile(args.name, server)
+    else:
+        myAgent = Repetoile(args.name, server)
 
     server.printResponse()
     server.socket.sendall((args.name + "\n").encode("ASCII"))

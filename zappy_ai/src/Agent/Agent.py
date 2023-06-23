@@ -414,7 +414,7 @@ class Agent:
 
             if self.followID != self.__getFollowId(self.broadcastStack[-1]):
                 return False
-            
+
             if not self.canUseMessage(self.broadcastStack[-1]):
                 return False
 

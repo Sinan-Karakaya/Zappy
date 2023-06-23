@@ -1,6 +1,7 @@
 import unittest
 import os
 import sys
+
 # import coverage
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -35,10 +36,9 @@ class TestAgent(unittest.TestCase):
         with self.assertRaises(SystemExit) as cm:
             self.agent._Agent__treatMessage("dead")
         self.assertEqual(cm.exception.code, 0)
-        
+
         result = self.agent._Agent__treatMessage("Otherwise")
         self.assertEqual(result, True)
-    
 
     def testDistanceToGoRight(self):
         dist = self.agent.distanceTo(7)
@@ -114,6 +114,6 @@ if __name__ == "__main__":
     # cov = coverage.Coverage()
     # cov.start()
     unittest.main()
-    
+
     # cov.stop()
     # cov.report()
