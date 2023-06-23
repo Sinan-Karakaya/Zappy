@@ -67,7 +67,7 @@ void zp::Alien::draw(sf::RenderTexture &window)
         m_sprite.setColor(color);
         m_elevation_sprite.setColor(color);
     }
-    if (m_incanting == true)
+    if (m_incanting)
         drawIncantation(window);
     window.draw(m_sprite);
 }
