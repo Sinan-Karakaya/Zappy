@@ -21,7 +21,7 @@ int lock_client(my_zappy_t *zappy, int fd)
         other = get_client_by_fd(zappy->client_list, tmp->id);
         if (!other)
             continue;
-        if (other == client || other->info->player->is_incanting == false)
+        if (other == client || other->info->player->is_incanting == true)
             continue;
         if (other->info->player->lvl == client->info->player->lvl)
             other->info->player->is_incanting = true;
@@ -58,7 +58,7 @@ int unlock_clients(my_zappy_t *zappy, int fd, bool succeed)
             continue;
         if (other == client || other->info->player->is_incanting == false)
             continue;
-        if (other->info->player->lvl == client->info->player->lvl)
+        if (other->info->player->lvl == client->info->player->lvl - 1)
             level_up_client(zappy, other, succeed);
     }
     return 0;

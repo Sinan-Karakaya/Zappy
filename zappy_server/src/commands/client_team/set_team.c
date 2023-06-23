@@ -11,6 +11,8 @@
 static int send_message_graphic(NUSED my_zappy_t *zappy,
     client_t *client, cmd_t *cmd)
 {
+    remove_id_in_list(zappy->map->tiles[client->info->player->y]
+    [client->info->player->x].players, client->info->fd);
     if (cmd->args[0])
         free(cmd->args[0]);
     cmd->args[0] = strdup("msz");

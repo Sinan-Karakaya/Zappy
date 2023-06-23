@@ -394,6 +394,35 @@ int verify_right(my_zappy_t *zappy, int fd, cmd_t *cmd);
 /// @return 0 if the function succeed, 84 otherwise
 int look(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief look on the top the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_up(client_t *client, map_t *map, cmd_t *cmd);
+
+/// @brief look on the right of the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_right(client_t *client, map_t *map, cmd_t *cmd);
+
+/// @brief look down the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_down(client_t *client, map_t *map, cmd_t *cmd);
+
+/// @brief look on the left of the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_left(client_t *client, map_t *map, cmd_t *cmd);
+
+
 /// @brief the callback function for the look
 /// @param zappy
 /// @param fd

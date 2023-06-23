@@ -168,4 +168,11 @@
     /// @return 0 if success, 84 if error
     int disconnect_player(my_zappy_t *zappy, int fd);
 
+    /// @brief print in the console the debug message
+    /// @param zappy the zappy struct
+    /// @param client the client
+    /// @param cmd the command
+    /// @return 0 if suceed or 84 if error
+    int print_debug(my_zappy_t *zappy, client_t *client, char **cmd);
+
 #endif /* !Zappy_Server_H_ */

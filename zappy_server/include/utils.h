@@ -18,6 +18,10 @@
     #define SERVER_BLUE "\033[0;34m[SERVER]\033[0m"
     #define SERVER_MAGENTA "\033[0;35m[SERVER]\033[0m"
 
+    #define TEAM_BLUE "\033[0;34m[TEAM]\033[0m"
+    #define CLIENT_RED "\033[0;31m[CLIENT]\033[0m"
+    #define TEAM_GRAPHIC "\033[0;35m[GUI]\033[0m"
+
     enum DIRECTION {
         SAME,
         N,

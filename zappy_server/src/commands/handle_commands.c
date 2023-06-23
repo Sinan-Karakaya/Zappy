@@ -117,12 +117,12 @@ int handle_commands(my_zappy_t *zappy, int client_fd, cmd_t *cmd)
 
     if (!zappy || !cmd || !cmd->args || !client)
         return 0;
+    if (cmd && cmd->args)
+        print_debug(zappy, client, cmd->args);
     if (client->info->team_id == TEAM_ID_GRAPHIC)
         return exec_graphic_command(client, cmd, zappy, client_fd);
     if (client->info->team_id == -1)
         return set_team(zappy, client_fd, cmd);
     add_command_list(client, cmd);
-    if (cmd && cmd->args)
-        print_debug(client, cmd->args);
     return 0;
 }
