@@ -1,2 +1,4 @@
 pygame
 unittest
+pytest-cov
+coverage
