@@ -19,8 +19,10 @@ static void tick_all_client(my_zappy_t *zappy)
 static void refill_ressources(my_zappy_t *zappy)
 {
     if ((zappy->time->actual != zappy->time->last)
-        && ((int)zappy->time->actual % 20 == 0))
+        && ((int)zappy->time->actual % 20 == 0)) {
             refill_map(zappy->map);
+            send_to_graphics(zappy, "smg météorite\n");
+        }
 }
 
 void get_actual_time(my_zappy_t *zappy, my_time_t *time)
