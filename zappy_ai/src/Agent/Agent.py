@@ -223,6 +223,8 @@ class Agent:
         """
         caseCenter = 0
         currentOdd = 0
+        if listIndex == 0 or listIndex == 1:
+            return (0, None)
         y = self.__getYtoGo(listIndex)
         for i in range(0, y):
             currentOdd += 2
