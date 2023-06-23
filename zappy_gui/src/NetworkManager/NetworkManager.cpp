@@ -276,9 +276,9 @@ void zp::NetworkManager::getIncantationStart(const std::vector<std::string> &tok
 
     for (std::size_t i = 4; i < tokens.size(); i++)
         alienId.push_back(std::stoi(tokens[i]));
-    for (auto alien : aliens)
+    for (auto &alien : aliens)
         if (std::count(alienId.begin(), alienId.end(), alien->getId()))
-            static_cast<zp::Alien *>(alien.get())->setIncanting(true);
+            alien->setIncanting(true);
 }
 
 void zp::NetworkManager::getIncantationEnd(const std::vector<std::string> &tokens, zp::Map &map)
@@ -286,14 +286,13 @@ void zp::NetworkManager::getIncantationEnd(const std::vector<std::string> &token
     auto aliens = map.getAliens();
     sf::Vector2i myPos;
     sf::Vector2i alienPos(std::stoi(tokens[1]), std::stoi(tokens[2]));
-    zp::Alien *newAlien;
 
-    for (auto alien : aliens) {
-        newAlien = static_cast<zp::Alien *>(alien.get());
+    for (auto &alien : aliens) {
+        auto newAlien = alien;
         myPos.x = newAlien->getTilePosition().x - 1;
         myPos.y = newAlien->getTilePosition().y - 1;
         if (myPos == alienPos)
-            static_cast<zp::Alien *>(alien.get())->setIncanting(false);
+            alien->setIncanting(false);
     }
 }
 

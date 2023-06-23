@@ -40,8 +40,8 @@ public:
     int getId() const override { return m_id; }
     const std::string &getTeamName() const override { return m_teamName; }
     const sf::Vector2i &getPosition() const { return m_position; }
-    const sf::Vector2i &getTilePosition() const { return m_tilePosition; }
-    void setIncanting(bool incanting);
+    const sf::Vector2i getTilePosition() const override { return m_tilePosition; }
+    void setIncanting(bool incanting) override;
 
 private:
     sf::Sprite m_elevation_sprite;
