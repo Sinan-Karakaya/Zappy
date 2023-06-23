@@ -26,7 +26,6 @@ from src.Color.Color import coloredPrint
 
 class Agent:
     def __init__(self, server: Server):
-        self.actions = {}
         self.inventory = {
             "food": 0,
             "linemate": 0,
