@@ -19,6 +19,7 @@
 #include <SFML/Network.hpp>
 
 #include "Utils/Utils.hpp"
+#include "Utils/GameManager.hpp"
 #include "Map/Map.hpp"
 #include "Entities/Alien.hpp"
 #include "Entities/Egg.hpp"
@@ -79,12 +80,6 @@ private:
      * @param map Map on which the players should be updated
      */
     void updatePlayers(std::unique_ptr<Map> &map);
-
-    /**
-     * @brief Update the rocks on the map
-     * @param map Map on which the rocks should be updated
-     */
-    void updateRocks(std::unique_ptr<Map> &map);
 
     /**
      * @brief Handle the welcome command, send "GRAPHIC" to the server
@@ -183,6 +178,13 @@ private:
      * @param map map to update
      */
     void eggHatched(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief End the current game
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void endGame(const std::vector<std::string> &tokens, Map &map);
 
     /**
      * @brief For commands I don't care about for now

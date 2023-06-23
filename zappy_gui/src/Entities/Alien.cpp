@@ -26,11 +26,12 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
         spdlog::error("Cannot load texture");
         throw std::runtime_error("Cannot load texture");
     }
+    m_baseTexture.setSmooth(true);
     m_textures[Direction::NONE].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(0, 0, 84, 84));
-    m_textures[Direction::NORTH].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(0, 0, 84, 84));
-    m_textures[Direction::WEST].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(84, 0, 84, 84));
-    m_textures[Direction::SOUTH].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(168, 0, 84, 84));
-    m_textures[Direction::EAST].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(252, 0, 84, 84));
+    m_textures[Direction::EAST].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(0, 0, 84, 84));
+    m_textures[Direction::SOUTH].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(84, 0, 84, 84));
+    m_textures[Direction::WEST].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(168, 0, 84, 84));
+    m_textures[Direction::NORTH].loadFromImage(m_baseTexture.copyToImage(), sf::IntRect(252, 0, 84, 84));
     m_sprite.setTexture(m_textures[Direction::WEST]);
     m_sprite.setPosition(m_position.x, m_position.y);
     m_sprite.setColor(zp::TeamManager::getTeamColor(teamName));
@@ -45,6 +46,19 @@ zp::Alien::Alien(sf::Vector2i tilePos, zp::Direction dir, const std::string &tea
     m_elevation_sprite.setPosition(m_position.x, m_position.y);
     m_elevation_sprite.setTexture(m_elevation_texture);
     m_elevation_sprite.setTextureRect(m_elevation_rect);
+    if (!m_font.loadFromFile(FONT_PATH)) {
+        spdlog::error("Could not load font");
+        throw std::runtime_error("Could not load font");
+    }
+    m_text.setFont(m_font);
+    m_text.setCharacterSize(20);
+    m_text.setFillColor(sf::Color::White);
+    m_text.setOutlineColor(sf::Color::Black);
+    m_text.setOutlineThickness(1);
+    m_text.setRotation(180);
+    m_text.setScale(-1, 1);
+    m_text.setPosition(m_position.x - 10, m_position.y + 40);
+    m_text.setString(std::to_string(m_id));
 }
 
 void zp::Alien::drawIncantation(sf::RenderTexture &window)
@@ -70,6 +84,7 @@ void zp::Alien::draw(sf::RenderTexture &window)
     if (m_incanting == true)
         drawIncantation(window);
     window.draw(m_sprite);
+    window.draw(m_text);
 }
 
 void zp::Alien::setTilePosition(int x, int y, int mapHeight)
@@ -81,6 +96,7 @@ void zp::Alien::setTilePosition(int x, int y, int mapHeight)
             ALIEN_HEIGHT / 4;
     m_sprite.setPosition(m_position.x, m_position.y);
     m_elevation_sprite.setPosition(m_position.x, m_position.y);
+    m_text.setPosition(m_position.x - 10, m_position.y + 40);
 }
 
 void zp::Alien::setDirection(zp::Direction dir)

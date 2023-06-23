@@ -32,6 +32,7 @@ zp::NetworkManager::NetworkManager(Chat &chat, bool &isConnected)
     m_commands["enw"] = std::bind(&NetworkManager::eggLaid, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["edi"] = std::bind(&NetworkManager::removeEgg, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["ebo"] = std::bind(&NetworkManager::eggHatched, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["seg"] = std::bind(&NetworkManager::endGame, this, std::placeholders::_1, std::placeholders::_2);
 }
 
 zp::NetworkManager::~NetworkManager()
@@ -83,7 +84,6 @@ void zp::NetworkManager::update(std::unique_ptr<Map> &map)
         if (m_socket.isReadyToWrite()) {
             updateMap(map);
             updatePlayers(map);
-            updateRocks(map);
             for (auto &message : m_messageQueue) {
                 if (message == "quit\n") {
                     disconnect(*map, m_chat);
@@ -118,11 +118,6 @@ void zp::NetworkManager::updatePlayers(std::unique_ptr<Map> &map)
         request = "pin " + std::to_string(alien->getId()) + "\n";
         m_socket.send(request);
     }
-}
-
-void zp::NetworkManager::updateRocks(std::unique_ptr<Map> &map)
-{
-    (void)map;
 }
 
 void zp::NetworkManager::welcome(const std::vector<std::string> &tokens, Map &map)
@@ -350,4 +345,12 @@ void zp::NetworkManager::eggHatched(const std::vector<std::string> &tokens, zp::
         return;
     }
     map.removeEgg(std::stoi(tokens[1]));
+}
+
+void zp::NetworkManager::endGame(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    (void)tokens;
+    (void)map;
+    zp::GameManager::stateGame(tokens[1]);
+    zp::NetworkManager::addMessage("quit");
 }
