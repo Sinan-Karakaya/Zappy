@@ -108,6 +108,7 @@ static int exec_graphic_command(client_t *client, cmd_t *cmd,
             return 0;
         }
     }
+    send_message(client_fd, "suc\n");
     return 0;
 }
 

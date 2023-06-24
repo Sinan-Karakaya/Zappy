@@ -22,7 +22,6 @@ static char **add_to_names(char **names, char *new_name)
     if (!result)
         return NULL;
     for (int i = 0; names[i]; i++) {
-        free(result[i]);
         result[i] = strdup(names[i]);
     }
     result[size] = strdup(new_name);

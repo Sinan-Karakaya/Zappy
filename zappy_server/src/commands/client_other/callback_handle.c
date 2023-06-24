@@ -23,7 +23,7 @@ commands_time_t cmds_time[] = {
     {"Eject", &eject, 7},
     {"Take", &take, 7},
     {"Set", &set, 7},
-    {"Incantation", &incantation, 7},
+    {"Incantation", &incantation, 300},
     {"Connect_nbr", &connect_nbr, 0},
     {NULL, NULL, 0}
 };
