@@ -11,7 +11,12 @@ SRC_DIR = 	src/
 
 SRC	=	$(shell find src/ -name "*.c")
 
+SRC_BIS	=	$(shell find src/**/ -name "*.c")
+SRC_TESTS	=	$(shell find tests/ -name "*.c")
+
 OBJ	=	$(SRC:.c=.o)
+
+OBJ_BIS	=	$(SRC_BIS:.c=.o)
 
 LIBFLAGS	=	-L lib/my/ -lmy -I include/
 
@@ -27,8 +32,17 @@ $(NAME): $(OBJ)
 clean:
 	@rm -f $(OBJ)
 
+
 fclean:	clean
 	@rm -f $(NAME)
+	@rm -f unit_tests
+	@rm -f *.gcda
+	@rm -f *.gcno
+
+tests_run: $(OBJ_BIS)
+	@gcc -o unit_tests $(SRC_BIS) $(SRC_TESTS) $(CFLAGS) $(LD_FLAGS) \
+	--coverage -lcriterion
+	./unit_tests
 
 re:	fclean all
 

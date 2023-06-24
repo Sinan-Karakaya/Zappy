@@ -21,7 +21,6 @@ static char *get_info_player(my_zappy_t *zappy, int id)
         return NULL;
     asprintf(&result, "ppo %ld %d %d %d\n", client->player->id,
         client->player->x, client->player->y, client->player->direction);
-    destroy_client_info(client);
     return result;
 }
 

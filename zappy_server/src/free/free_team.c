@@ -7,29 +7,35 @@
 
 #include "free.h"
 
-static void destroy_team_info(team_info_t *info)
+void free_team_list(team_list_t *team_list)
 {
-    if (!info)
+    team_t *current = NULL;
+    team_t *next = NULL;
+
+    if (!team_list)
         return;
-    if (info->name)
-        free(info->name);
-    for (int i = 0; info->client_list[i].first; i++)
-        remove_id_in_list(info->client_list, info->client_list->first->id);
-    free(info);
+    current = team_list->first;
+    while (current) {
+        next = current->next;
+        if (current->info) {
+            free(current->info->name);
+            free(current->info->client_list);
+            free(current->info);
+        }
+        free(current);
+        current = next;
+    }
+    free(team_list);
 }
 
 void destroy_struct_team(team_t *team)
 {
-    team_t *tmp = NULL;
-
     if (!team)
         return;
-    while (team->next) {
-        tmp = team;
-        team = team->next;
-        if (tmp || tmp->info)
-            destroy_team_info(tmp->info);
-        free(tmp);
+    if (team->info) {
+        free(team->info->name);
+        free(team->info->client_list);
+        free(team->info);
     }
     free(team);
 }

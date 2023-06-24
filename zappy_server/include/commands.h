@@ -394,6 +394,35 @@ int verify_right(my_zappy_t *zappy, int fd, cmd_t *cmd);
 /// @return 0 if the function succeed, 84 otherwise
 int look(my_zappy_t *zappy, int fd, cmd_t *cmd);
 
+/// @brief look on the top the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_up(client_t *client, map_t *map, cmd_t *cmd);
+
+/// @brief look on the right of the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_right(client_t *client, map_t *map, cmd_t *cmd);
+
+/// @brief look down the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_down(client_t *client, map_t *map, cmd_t *cmd);
+
+/// @brief look on the left of the player and send the result to the client
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int look_left(client_t *client, map_t *map, cmd_t *cmd);
+
+
 /// @brief the callback function for the look
 /// @param zappy
 /// @param fd
@@ -421,5 +450,26 @@ int verify_left(my_zappy_t *zappy, int fd, cmd_t *cmd);
 /// @param cmd
 /// @return 0 if the function succeed, 84 otherwise
 int connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+/// @brief callback function for the connect_nbr
+/// @param zappy
+/// @param fd
+/// @param cmd
+/// @return 0 if the function succeed, 84 otherwise
+int verify_connect_nbr(my_zappy_t *zappy, int fd, cmd_t *cmd);
+
+// Commands utils
+
+/// @brief send the position of the player to the graphics
+/// @param zappy
+/// @param client
+/// @return 0 if the function succeed, 84 otherwise
+int send_pos_to_graphics(my_zappy_t *zappy, client_t *client);
+
+/// @brief send the inventory of the player to the graphics
+/// @param zappy
+/// @param client
+/// @return 0 if the function succeed, 84 otherwise
+int send_inventory_to_graphics(my_zappy_t *zappy, client_t *client);
 
 #endif /* !COMMANDS_H_ */

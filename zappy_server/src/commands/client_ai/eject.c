@@ -54,7 +54,7 @@ int eject(my_zappy_t *zappy, int fd, cmd_t *cmd)
             tmp_client->info->player->y = coordinates.y;
             pex(zappy, tmp_client->info->fd), asprintf(&str, "eject: %ld\n",
             get_real_direction(tmp_client->info->player->direction,
-            get_direction(client, tmp_client)));
+            get_direction(tmp_client, client)));
             send_message(tmp_client->info->fd, str), free(str);
         }
     } return add_cmd(cmd, "ok\n");

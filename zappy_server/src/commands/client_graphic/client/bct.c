@@ -20,13 +20,13 @@ int bct(my_zappy_t *zappy, int fd, cmd_t *cmd)
     if (x <= 0 || x >= (int)zappy->map->x || y <= 0 || y >= (int)zappy->map->y)
         return send_message(fd, "ko\n");
     asprintf(&result, "bct %d %d %ld %ld %ld %ld %ld %ld %ld\n", x, y,
-    zappy->map->tiles[x][y].inventory[FOOD],
-    zappy->map->tiles[x][y].inventory[LINEMATE],
-    zappy->map->tiles[x][y].inventory[DERAUMERE],
-    zappy->map->tiles[x][y].inventory[SIBUR],
-    zappy->map->tiles[x][y].inventory[MENDIANE],
-    zappy->map->tiles[x][y].inventory[PHIRAS],
-    zappy->map->tiles[x][y].inventory[THYSTAME]);
+    zappy->map->tiles[y][x].inventory[FOOD],
+    zappy->map->tiles[y][x].inventory[LINEMATE],
+    zappy->map->tiles[y][x].inventory[DERAUMERE],
+    zappy->map->tiles[y][x].inventory[SIBUR],
+    zappy->map->tiles[y][x].inventory[MENDIANE],
+    zappy->map->tiles[y][x].inventory[PHIRAS],
+    zappy->map->tiles[y][x].inventory[THYSTAME]);
     add_cmd(cmd, result);
     free(result);
     return 0;

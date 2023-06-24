@@ -14,9 +14,9 @@ size_t get_direction(client_t *client, client_t *other)
     int delta_y = other->info->player->y - client->info->player->y;
 
     if (delta_x > 0 && delta_y > 0)
-        return NE;
-    if (delta_x > 0 && delta_y < 0)
         return SE;
+    if (delta_x > 0 && delta_y < 0)
+        return NE;
     if (delta_x < 0 && delta_y > 0)
         return NW;
     if (delta_x < 0 && delta_y < 0)

@@ -53,5 +53,6 @@ client_info_t *init_clients_info(int fd, int width, int height)
     info->lst_cmd->first = NULL;
     info->lst_cmd->last = NULL;
     info->player = init_player(width, height);
+    info->player->id = fd;
     return info;
 }

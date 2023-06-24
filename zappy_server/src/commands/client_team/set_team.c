@@ -11,6 +11,8 @@
 static int send_message_graphic(NUSED my_zappy_t *zappy,
     client_t *client, cmd_t *cmd)
 {
+    remove_id_in_list(zappy->map->tiles[client->info->player->y]
+    [client->info->player->x].players, client->info->fd);
     if (cmd->args[0])
         free(cmd->args[0]);
     cmd->args[0] = strdup("msz");
@@ -33,12 +35,13 @@ static int send_message_graphic(NUSED my_zappy_t *zappy,
 static int send_message_team(my_zappy_t *zappy, client_t *client,
 team_t *team, cmd_t *cmd)
 {
-    char *msg = "";
+    char *msg = NULL;
 
     team->info->slots_available--;
     team->info->actual_users++;
     asprintf(&msg, "%ld\n", team->info->slots_available);
     add_cmd(cmd, msg);
+    free(msg);
     asprintf(&msg, "%ld %ld\n", zappy->map->x, zappy->map->y);
     add_cmd(cmd, msg);
     pnw(zappy, client->info->fd);

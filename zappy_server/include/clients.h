@@ -147,7 +147,6 @@ int remove_id_in_list(id_list_t *list, int id);
 command_t *init_lst_commands(char **args);
 size_t pop_front_cmd(lst_commands_t *list);
 void list_add_command(lst_commands_t *command_list, command_t *command);
-int print_debug(client_t *client, char **cmd);
 
 /// @brief destroy a command list
 /// @param list
