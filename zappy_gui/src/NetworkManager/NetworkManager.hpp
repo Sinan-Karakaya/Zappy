@@ -193,6 +193,20 @@ private:
      */
     void doNothing(const std::vector<std::string> &tokens, Map &map);
 
+    /**
+     * @brief Get the start of the incantation of multiple aliens
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void getIncantationStart(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Get the end of the incantation of multiple aliens
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
+    void getIncantationEnd(const std::vector<std::string> &tokens, Map &map);
+
 private:
     zp::Socket m_socket;
     std::string m_port;

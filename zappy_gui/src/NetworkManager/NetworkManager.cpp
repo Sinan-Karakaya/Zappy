@@ -27,6 +27,8 @@ zp::NetworkManager::NetworkManager(Chat &chat, bool &isConnected)
     m_commands["pin"] = std::bind(&NetworkManager::setInventory, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pex"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pdi"] = std::bind(&NetworkManager::removePlayer, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pic"] = std::bind(&NetworkManager::getIncantationStart, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["pie"] = std::bind(&NetworkManager::getIncantationEnd, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["enw"] = std::bind(&NetworkManager::eggLaid, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["edi"] = std::bind(&NetworkManager::removeEgg, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["ebo"] = std::bind(&NetworkManager::eggHatched, this, std::placeholders::_1, std::placeholders::_2);
@@ -203,6 +205,7 @@ void zp::NetworkManager::timeUnitModification(const std::vector<std::string> &to
 void zp::NetworkManager::broadCast(const std::vector<std::string> &tokens, zp::Map &map)
 {
     (void)map;
+ 
     std::string message = tokens[2];
     for (size_t i = 3; i < tokens.size(); i++)
         message += " " + tokens[i];
@@ -261,6 +264,33 @@ void zp::NetworkManager::disconnect(Map &map, Chat &chat)
     chat.clearMessages();
 }
 
+void zp::NetworkManager::getIncantationStart(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    auto aliens = map.getAliens();
+    std::vector<int> alienId;
+
+    for (std::size_t i = 4; i < tokens.size(); i++)
+        alienId.push_back(std::stoi(tokens[i]));
+    for (auto &alien : aliens)
+        if (std::count(alienId.begin(), alienId.end(), alien->getId()))
+            alien->setIncanting(true);
+}
+
+void zp::NetworkManager::getIncantationEnd(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    auto aliens = map.getAliens();
+    sf::Vector2i myPos;
+    sf::Vector2i alienPos(std::stoi(tokens[1]), std::stoi(tokens[2]));
+
+    for (auto &alien : aliens) {
+        auto newAlien = alien;
+        myPos.x = newAlien->getTilePosition().x - 1;
+        myPos.y = newAlien->getTilePosition().y - 1;
+        if (myPos == alienPos)
+            alien->setIncanting(false);
+    }
+}
+
 void zp::NetworkManager::eggLaid(const std::vector<std::string> &tokens, zp::Map &map)
 {
     if (tokens.size() != 5) {
@@ -315,7 +345,6 @@ void zp::NetworkManager::eggHatched(const std::vector<std::string> &tokens, zp::
         return;
     }
     map.removeEgg(std::stoi(tokens[1]));
-
 }
 
 void zp::NetworkManager::endGame(const std::vector<std::string> &tokens, zp::Map &map)

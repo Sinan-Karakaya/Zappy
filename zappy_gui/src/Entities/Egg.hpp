@@ -38,6 +38,9 @@ public:
 
     void setRockQuantity(Rocks rock, int quantity) override { m_inventory[rock] = quantity; }
     const std::unordered_map<Rocks, int> &getInventory() const override { return m_inventory; }
+
+    void setIncanting(bool incanting) override { (void)incanting; }
+    const sf::Vector2i getTilePosition() const override { return m_tilePosition; }
 };
 
 } // zp
