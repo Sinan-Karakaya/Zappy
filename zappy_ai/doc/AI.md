@@ -24,7 +24,7 @@ The AI :robot: of this project will be compose of one in multiple choices of **[
 
 ## Definition
 
-All the AI, no matter what Agent they have, will share these features/commands, here is a list of them:
+All the AI, no matter what Agent they have, will share these features/commands, here is the list of them:
 
 | Action                       | Command              | Time Limit | Response                                       |
 | ---------------------------- | -------------------- | ---------- | ---------------------------------------------- |
@@ -57,16 +57,14 @@ All the AI, no matter what Agent they have, will share these features/commands, 
     | Name               | Description                                                                            |
     | ------------------ | -------------------------------------------------------------------------------------- |
     | Trantorian :alien: | Live a life of a basic *Trantorian* without particularities.                           |
-    | Blocker 🧱          | Gather with other *Blockers* to block the access of places.                            |
-    | Répétoile :star:   | Repeat **"Broadcast Hi!"** command to block the communications to other *Trantorians*. |
-    | Pusher :fist:      | His unique goal is to push anyone who is on his way.                                   |
+    | Répétoile :star:   | Repeat of other team to block the communications to other *Trantorians*.               |
 
     </br>
 
   - **Attributes**
 
-        self.actions -> list of actions to send to the server
         self.inventory -> dictionnary that contains all the inventory of the *Trantorian*
+        self.server -> server object
         self.isDead -> boolean to see if the *Trantorian* is dead
         self.inventory -> list of all the materials that the *Trantorian* have
         self.vision -> list with all the tiles that he can see
@@ -114,6 +112,16 @@ All the AI, no matter what Agent they have, will share these features/commands, 
 
         def run(self, server: Server)
         // do all the function that define his type
+
+        def __treatMessage(self, message : str)
+        // Treats the message received from the server to avoid getting the wrong response.
+
+        def __getRealResponse(self, message: str):
+        // Returns the real message from the server removing useless mesage like broadcast or death.
+
+        def __bufferManager(self, message: str):
+        // Get the real message even if the server send it with misplace /n.
+
   
     </br>
 
@@ -146,11 +154,28 @@ All the AI, no matter what Agent they have, will share these features/commands, 
 
     </br>
 
-    - **🧱 Blocker 🧱**
+    - **🧱 Basic 🧱**
 
     </br>
 
-    - **:fist: Pusher :fist:**
+    - **Attributes**
+
+            self.teamName -> keep the team name of the *Trantorian*
+            self.state -> state of the *Trantorian*
+
+      - **Functions**
+
+            def birth(self, server: Server) *function override*
+            // init the *Trantorian* at his birth
+
+            def live(self, server: Server) *function override*
+            // do all the action that are necessary to live
+
+            def repeat(self, server: Server)
+            // use to repeat a broadcast in loop to block the communication
+
+            def searchObject(self, server: Server, object: str)
+            // search an object on the tile that he can see
 
 </br>
 

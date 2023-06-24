@@ -2,7 +2,7 @@
 ## EPITECH PROJECT, 2023
 ## zappy_ai
 ## File description:
-## Repetoile
+## Basic
 ##
 
 from src.Agent.Agent import Agent
@@ -11,38 +11,11 @@ from random import randint
 from src.Color.Color import WARNING
 
 
-class Repetoile(Agent):
+class Basic(Agent):
     def __init__(self, teamName, server):
         super().__init__(server)
         self.teamName = teamName
-        self.idStack = []
-        print("Team name: " + self.teamName)
         self.state = "Searching food"
-
-    def repeat(self):
-        """
-        Repeat a message from the broadcast stack if the message is not from the same team.
-
-        @return: None
-        """
-        if len(self.broadcastStack) > 0:
-            message = None
-
-            for i in range(randint(0, 25)):
-                currentMessage = self.broadcastStack[
-                    randint(0, len(self.broadcastStack) - 1)
-                ]
-                currentMessage = currentMessage.split(",")[1]
-                if not self.teamName in currentMessage:
-                    message = currentMessage
-                    break
-            if message is None:
-                return
-
-            try:
-                self.askServer("Broadcast " + message)
-            except:
-                ...
 
     def live(self):
         """
@@ -50,9 +23,9 @@ class Repetoile(Agent):
 
         @return: None
         """
-        if self.inventory["food"] <= 10 and self.state != "Joining":
+        if self.inventory["food"] <= 40 and self.state != "Joining":
             self.state = "Searching food"
-        elif self.state == "Joining" and self.inventory["food"] < 6:
+        elif self.state == "Joining" and self.inventory["food"] < 20:
             self.state = "Searching food"
         else:
             self.state = "Searching rock"
@@ -66,8 +39,6 @@ class Repetoile(Agent):
             self.searchObject("food")
 
         self.fillInventory()
-        self.repeat()
-        print("Curretly my state is: " + self.state)
 
     def birth(self):
         """
@@ -76,8 +47,7 @@ class Repetoile(Agent):
         @return: None
         """
 
-        self.broadcast("I'm born")
-        self.askServer("Fork")
+        self.broadcast("I'm born as a basic agent !")
         self.state = "Searching food"
 
     def checkMessageId(self, id: int):
@@ -92,13 +62,7 @@ class Repetoile(Agent):
         return False
 
     def canUseMessage(self, message: str):
-        try:
-            messageId = message.split(":")[1]
-            if self.checkMessageId(int(messageId)):
-                return False
-            return True
-        except:
-            return False
+        return True
 
     def broadcast(self, message: str):
         """
@@ -112,8 +76,4 @@ class Repetoile(Agent):
 
         @return: None
         """
-        messageId = randint(0, 2147483646)
-        self.idStack.append(messageId)
-        self.askServer(
-            "Broadcast " + self.teamName + " " + message + ":" + str(messageId)
-        )
+        self.askServer("Broadcast " + message)

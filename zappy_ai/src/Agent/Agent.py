@@ -26,7 +26,6 @@ from src.Color.Color import coloredPrint
 
 class Agent:
     def __init__(self, server: Server):
-        self.actions = {}
         self.inventory = {
             "food": 0,
             "linemate": 0,
@@ -129,7 +128,7 @@ class Agent:
         """
 
         now = datetime.datetime.now()
-        print("Current time is:", now.time(), end=" ")
+        print("[" + str(now.time()) + "]", end=" ")
         print("Sending: " + msg, end=" ")
         self.server.socket.sendall((msg + "\n").encode("ASCII"))
 
@@ -141,12 +140,16 @@ class Agent:
             if "Current level" in response:
                 self.level = int(response.split(" ")[2]) - 1
                 self.isElevating = False
+                self.incatationID = randint(0, 1000000000)
+                self.followID = None
         else:
             if "Current level" in response:
                 self.level = int(response.split(" ")[2]) - 1
                 self.isElevating = False
                 response = self.server.getResponse()
                 response = self.__getRealResponse(response)
+                self.incatationID = randint(0, 1000000000)
+                self.followID = None
         coloredPrint(response)
 
         return response
@@ -219,6 +222,8 @@ class Agent:
         """
         caseCenter = 0
         currentOdd = 0
+        if listIndex == 0 or listIndex == 1:
+            return (0, None)
         y = self.__getYtoGo(listIndex)
         for i in range(0, y):
             currentOdd += 2
@@ -360,7 +365,7 @@ class Agent:
             indexEnd = message.find(" ", indexIncating + len(words.incanting) + 1)
             stringLevel = message[indexIncating + len(words.incanting) + 1 : indexEnd]
             level = int(stringLevel)
-            if level == self.level:
+            if level == self.level + 1:
                 return True
         return False
 
@@ -382,13 +387,23 @@ class Agent:
             return id
         return None
 
+    def searchWord(self, word: str):
+        for i in range(10):
+            if len(self.broadcastStack) > i:
+                if word in self.broadcastStack[-i]:
+                    return True
+        return False
+
+    def canUseMessage(self, message: str):
+        ...
+
     def joinIncantate(self):
         """
         Manage the meet of different agent with the same level to level up
 
         @return: None
         """
-        if len(self.broadcastStack) > 0 and words.incanting in self.broadcastStack[-1]:
+        if len(self.broadcastStack) > 0 and self.searchWord(words.incanting):
             if not self.__checkIncantationLevel(self.broadcastStack[-1]):
                 return False
 
@@ -397,6 +412,9 @@ class Agent:
                 return False
 
             if self.followID != self.__getFollowId(self.broadcastStack[-1]):
+                return False
+
+            if not self.canUseMessage(self.broadcastStack[-1]):
                 return False
 
             self.broadcast("I'm joining the incantation " + str(self.followID) + "!")
@@ -413,7 +431,7 @@ class Agent:
                 "I'm "
                 + words.incanting
                 + " "
-                + str(self.level)
+                + str(self.level + 1)
                 + " "
                 + str(self.incatationID)
                 + "!"
