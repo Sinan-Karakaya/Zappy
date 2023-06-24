@@ -80,6 +80,18 @@ public:
      */
     virtual const std::unordered_map<Rocks, int> &getInventory() const = 0;
 
+    /**
+     * @brief Set incanting
+     * @param incanting true if incanting
+     */
+    virtual void setIncanting(bool incanting) = 0;
+
+    /**
+     * @brief Get the position of the entity on the map
+     * @return position of the entity on the map
+     */
+    virtual const sf::Vector2i getTilePosition() const = 0;
+
 protected:
     int m_id = -1;
     std::string m_teamName;
