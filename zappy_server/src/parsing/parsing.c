@@ -11,20 +11,21 @@
 
 static parsing_t *init_parsing(void)
 {
-    parsing_t *parsing = calloc(1, sizeof(parsing_t));
+    parsing_t *parsing = malloc(sizeof(parsing_t));
 
     if (!parsing)
         return NULL;
     parsing->port = 4242;
     parsing->width = 10;
     parsing->height = 10;
-    parsing->names = calloc(5, sizeof(char *));
+    parsing->names = malloc(sizeof(char *) * 5);
     if (!parsing->names)
         return NULL;
     parsing->names[0] = strdup("Team1");
     parsing->names[1] = strdup("Team2");
     parsing->names[2] = strdup("Team3");
     parsing->names[3] = strdup("Team4");
+    parsing->names[4] = NULL;
     parsing->clients_nb = 3;
     parsing->freq = 100;
     return parsing;

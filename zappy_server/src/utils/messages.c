@@ -31,14 +31,18 @@ int send_message_error(int fd, char *message)
 
 int send_all_message(cmd_t *cmd, int fd)
 {
-    char *result = "";
+    char *result = calloc(1, sizeof(char));
 
     if (!cmd || !cmd->result)
         return 84;
     for (size_t i = 0; cmd->result[i]; i++) {
-        asprintf(&result, "%s%s", result, cmd->result[i]);
+        char *temp;
+        asprintf(&temp, "%s%s", result, cmd->result[i]);
+        free(result);
+        result = temp;
     }
     send_message(fd, result);
+    free(result);
     return 0;
 }
 

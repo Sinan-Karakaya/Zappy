@@ -23,7 +23,6 @@ static char *get_info_player(my_zappy_t *zappy, int id)
     client->player->inventory[LINEMATE], client->player->inventory[DERAUMERE],
     client->player->inventory[SIBUR], client->player->inventory[MENDIANE],
     client->player->inventory[PHIRAS], client->player->inventory[THYSTAME]);
-    destroy_client_info(client);
     return result;
 }
 

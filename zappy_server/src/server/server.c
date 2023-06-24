@@ -16,13 +16,16 @@
 static char *read_input(int fd)
 {
     char buffer[1024] = {0};
+    size_t size = 0;
 
     while (true) {
         if ((strlen(buffer) >= 2 && buffer[strlen(buffer) - 2] == '\r'
         && buffer[strlen(buffer) - 1] == '\n')
         || (strlen(buffer) >= 1 && buffer[strlen(buffer) - 1] == '\n'))
             break;
-        read(fd, buffer + strlen(buffer), 1);
+        size = read(fd, buffer + strlen(buffer), 1);
+        if (size == 0)
+            return NULL;
     }
     return strdup(buffer);
 }
@@ -30,15 +33,15 @@ static char *read_input(int fd)
 static int read_loop(my_zappy_t *zappy, int fd)
 {
     char *buffer = NULL;
-    cmd_t *cmd = calloc(1, sizeof(cmd_t));
+    cmd_t *cmd = NULL;
     client_t *client = get_client_by_fd(zappy->client_list, fd);
-
+    char **tmp = NULL;
     if (FD_ISSET(fd, &zappy->server->rset)) {
         if (!(buffer = read_input(fd)))
-            return 84;
+            return disconnect_player(zappy, fd);
     } if (FD_ISSET(fd, &zappy->server->wset)) {
         if (buffer) {
-            cmd = init_cmd(get_command(buffer));
+            tmp = get_command(buffer), cmd = init_cmd(tmp);
             handle_commands(zappy, fd, cmd);
             send_all_message(cmd, fd);
         } if (!client || !zappy)
@@ -47,21 +50,23 @@ static int read_loop(my_zappy_t *zappy, int fd)
             send_message(fd, "ko\n");
     } if (buffer)
         free(buffer);
-    destroy_cmd(cmd);
+    destroy_cmd(cmd), free_array(tmp);
     return false;
 }
 
 static int read_cmd(my_zappy_t *zappy)
 {
+    client_t *actual = NULL;
     client_t *tmp = NULL;
 
     if (!zappy || !zappy->client_list)
         return 84;
     eat_all_client(zappy);
-    tmp = zappy->client_list->first;
-    while (tmp != NULL) {
-        read_loop(zappy, tmp->info->fd);
-        tmp = tmp->next;
+    actual = zappy->client_list->first;
+    while (actual != NULL) {
+        tmp = actual->next;
+        read_loop(zappy, actual->info->fd);
+        actual = tmp;
     }
     return 0;
 }
@@ -81,7 +86,9 @@ int create_server(parsing_t *parsing)
         return 84;
     signal(SIGINT, sigint_handler);
     srand(time(NULL));
-    while (is_running(0) || !zappy->is_end) {
+    while (is_running(0)) {
+        if (zappy->is_end)
+            break;
         set_fds(zappy->server, zappy->client_list);
         fd_max = calculate_fd_max(zappy);
         if (select(fd_max + 1, &zappy->server->rset, &zappy->server->wset,
@@ -89,8 +96,7 @@ int create_server(parsing_t *parsing)
             break;
         if (accept_client(zappy) == 84)
             return 84;
-        read_cmd(zappy);
-        time_manager(zappy);
+        read_cmd(zappy), time_manager(zappy);
     } signal(SIGINT, SIG_DFL);
     return free_zappy(zappy);
 }

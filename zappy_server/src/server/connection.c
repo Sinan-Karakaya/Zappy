@@ -7,6 +7,7 @@
 
 #include "commands.h"
 #include "my_id.h"
+#include "free.h"
 
 static void set_id_client(client_list_t *client_list,
     client_info_t *client_info, map_t *map)

@@ -24,5 +24,6 @@ int right(my_zappy_t *zappy, int fd, cmd_t *cmd)
         client->info->player->direction = NORTH;
     else
         client->info->player->direction += 1;
+    send_pos_to_graphics(zappy, client);
     return add_cmd(cmd, "ok\n");
 }

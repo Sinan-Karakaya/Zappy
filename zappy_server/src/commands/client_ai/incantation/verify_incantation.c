@@ -68,7 +68,7 @@ bool succeed)
     for (my_id_t *tmp = zappy->map->tiles[client->info->player->y]
     [client->info->player->x].players->first; tmp; tmp = tmp->next) {
         other = get_client_by_fd(zappy->client_list, tmp->id);
-        if (other->info->player->lvl == client->info->player->lvl
+        if (other && other->info->player->lvl == client->info->player->lvl
         && other->info->player->is_incanting == true) {
             other = get_client_by_fd(zappy->client_list, tmp->id);
             send_message(other->info->fd, result);

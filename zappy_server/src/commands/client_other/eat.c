@@ -35,7 +35,7 @@ int eat_all_client(my_zappy_t *zappy)
         if (actual->info->player->is_alive == false) {
             tmp = actual->next;
             send_message(actual->info->fd, DEATH);
-            destroy_client_in_list(zappy->client_list, actual->info->fd);
+            disconnect_player(zappy, actual->info->fd);
         } else
             tmp = actual->next;
     }

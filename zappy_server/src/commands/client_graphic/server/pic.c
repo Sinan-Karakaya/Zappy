@@ -15,9 +15,8 @@ int pic(my_zappy_t *zappy, client_t *client, id_list_t *list)
 
     if (!client || !list)
         return 0;
-    while (list->first->next) {
-        asprintf(&tmp, "%s%d ", tmp, list->first->id);
-        list = (id_list_t *)list->first->next;
+    for (my_id_t *my_id = list->first; my_id; my_id = my_id->next) {
+        asprintf(&tmp, "%s%d ", tmp, my_id->id);
     }
     asprintf(&tmp, "%s%d", tmp, list->first->id);
     asprintf(&result, "pic %d %d %ld %s\n", client->info->player->x,

@@ -20,8 +20,6 @@ int pex(my_zappy_t *zappy, int fd)
         return 84;
     asprintf(&str, "pex %d\n", client->info->user_id);
     send_to_graphics(zappy, str);
-    destroy_client_info(client->info);
     free(str);
-    free(client);
     return 0;
 }
