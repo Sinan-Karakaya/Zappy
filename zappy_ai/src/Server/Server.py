@@ -19,7 +19,11 @@ class Server:
         Connect client to the server and init the socket.
         """
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.connect((self.ip, self.port))
+        try:
+            connect = self.socket.connect((self.ip, self.port))
+        except:
+            print("Error: Can't connect to the server.")
+            exit(84)
 
     def getResponse(self):
         """
