@@ -18,6 +18,7 @@ zp::NetworkManager::NetworkManager(Chat &chat, bool &isConnected)
     m_commands["sgt"] = std::bind(&NetworkManager::timeUnitRequest, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["sst"] = std::bind(&NetworkManager::timeUnitModification, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["ppo"] = std::bind(&NetworkManager::getPlayerPos, this, std::placeholders::_1, std::placeholders::_2);
+    m_commands["plv"] = std::bind(&NetworkManager::getPlayerLevel, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pbc"] = std::bind(&NetworkManager::broadCast, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["pgt"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
     m_commands["suc"] = std::bind(&NetworkManager::doNothing, this, std::placeholders::_1, std::placeholders::_2);
@@ -116,6 +117,8 @@ void zp::NetworkManager::updatePlayers(std::unique_ptr<Map> &map)
         std::string request = "ppo " + std::to_string(alien->getId()) + "\n";
         m_socket.send(request);
         request = "pin " + std::to_string(alien->getId()) + "\n";
+        m_socket.send(request);
+        request = "plv " + std::to_string(alien->getId()) + "\n";
         m_socket.send(request);
     }
 }
@@ -353,4 +356,17 @@ void zp::NetworkManager::endGame(const std::vector<std::string> &tokens, zp::Map
     (void)map;
     zp::GameManager::stateGame(tokens[1]);
     zp::NetworkManager::addMessage("quit");
+}
+
+void zp::NetworkManager::getPlayerLevel(const std::vector<std::string> &tokens, zp::Map &map)
+{
+    auto aliens = map.getAliens();
+
+    spdlog::info("Player {} is now level {}", tokens[1], tokens[2]);
+    for (auto &alien : aliens) {
+        if (alien->getId() == std::stoi(tokens[1])) {
+            alien->setLevel(std::stoi(tokens[2]));
+            return;
+        }
+    }
 }

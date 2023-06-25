@@ -43,6 +43,9 @@ public:
     const sf::Vector2i getTilePosition() const override { return m_tilePosition; }
     void setIncanting(bool incanting) override;
 
+    void setLevel(int level) override { m_level = level; }
+    int getLevel() const override { return m_level; }
+
 private:
     sf::Sprite m_elevation_sprite;
     sf::Texture m_elevation_texture;

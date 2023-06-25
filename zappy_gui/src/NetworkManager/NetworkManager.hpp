@@ -128,6 +128,13 @@ private:
      * @param tokens Vector of the response
      * @param map map to update
      */
+    void getPlayerLevel(const std::vector<std::string> &tokens, Map &map);
+
+    /**
+     * @brief Handle response from plv
+     * @param tokens Vector of the response
+     * @param map map to update
+     */
     void timeUnitRequest(const std::vector<std::string> &tokens, Map &map);
 
     /**

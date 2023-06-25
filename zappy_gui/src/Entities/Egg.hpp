@@ -41,6 +41,9 @@ public:
 
     void setIncanting(bool incanting) override { (void)incanting; }
     const sf::Vector2i getTilePosition() const override { return m_tilePosition; }
+
+    void setLevel(int level) override { m_level = level; }
+    int getLevel() const override { return m_level; }
 };
 
 } // zp

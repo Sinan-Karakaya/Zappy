@@ -85,8 +85,6 @@ void zp::WindowManager::handleEvents()
         }
         if (m_zoom < MIN_ZOOM)
             m_zoom = MIN_ZOOM;
-//        auto center = m_gameView.getCenter();
-//        m_viewPos = {center.x - m_gameView.getSize().x / 2, center.y - m_gameView.getSize().y / 2};
         m_gameTexture.setView(m_gameView);
 
     }
@@ -418,6 +416,7 @@ void zp::WindowManager::drawInventory(Map &map)
                 if (player->getTeamName() != team)
                     continue;
                 if (ImGui::TreeNode(std::to_string(player->getId()).c_str())) {
+                    ImGui::Text("Level: %d", player->getLevel());
                     if (ImGui::BeginTable(std::to_string(player->getId()).c_str(), 2, ImGuiTableFlags_Resizable |
                     ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders)) {
                         auto inventory = player->getInventory();

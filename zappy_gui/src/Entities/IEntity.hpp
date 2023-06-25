@@ -92,6 +92,18 @@ public:
      */
     virtual const sf::Vector2i getTilePosition() const = 0;
 
+    /**
+     * @brief Set the level of the entity
+     * @param level level of the entity
+     */
+    virtual void setLevel(int level) = 0;
+
+    /**
+     * @brief Get the level of the entity
+     * @return level of the entity
+     */
+    virtual int getLevel() const = 0;
+
 protected:
     int m_id = -1;
     std::string m_teamName;
@@ -103,6 +115,7 @@ protected:
     sf::Font m_font;
     sf::Text m_text;
     Direction m_direction = Direction::WEST;
+    int m_level = 1;
 
     std::unordered_map<Rocks, int> m_inventory;
 
