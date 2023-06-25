@@ -11,12 +11,6 @@ on:
           - edited
           - reopened
 
-env:
-    BUILD_TYPE: Release
-    AI_DIR: zappy_ai
-    GUI_DIR: zappy_gui
-    SERVER_DIR: zappy_server
-
 jobs:
     build:
         runs-on: ubuntu-latest
@@ -24,17 +18,7 @@ jobs:
         steps:
             - uses: actions/checkout@v3
 
-            - name: Build Zappy_AI
+            - name: Build
               run: |
-                  cd $AI_DIR
-                  pip install black
-                  ./build.sh
-
-            - name: Install dependencies
-              run: sudo apt-get update && sudo apt-get install -y cmake libsfml-dev libfmt-dev
-
-            - name: Build Zappy_GUI
-              run: cmake -S $GUI_DIR -B $GUI_DIR/build -DCMAKE_BUILD_TYPE=$BUILD_TYPE && cmake --build $GUI_DIR/build
-
-            - name: Build Zappy_Server
-              run: make -C $SERVER_DIR
+                  sudo apt-get install libsfml-dev
+                  make
